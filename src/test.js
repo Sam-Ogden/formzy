@@ -1,4 +1,4 @@
-import FormContainer from '.'
+import FormContainer from './FormContainer'
 
 describe( 'FormContainer', () => {
   it( 'is truthy', () => {
