@@ -14,7 +14,7 @@ export default class FormContainer extends Component {
   componentWillMount = () => {
     const { fields } = this.props
 
-    // Create refs for form fields and inputs
+    // Create refs for field containers and inputs
     refs = [ ...Array( fields.length ) ].map( i => React.createRef( i ) )
     inputRefs = [ ...Array( fields.length ) ].map( i => React.createRef( -i ) )
   }
@@ -24,19 +24,21 @@ export default class FormContainer extends Component {
   /**
    *  Handles scrolling between form elements and focus on next input field
    *  @param {Number} i The index of form elements to scroll to
-   *  @returns {Component} FormContainer
    */
   scrollToRef = i => {
     window.scrollTo( 0, refs[ i ].current.offsetTop )
     inputRefs[ i ].current.focus()
   }
 
-  onChange = ( fieldName, newVal ) => this.setState( { form: { [ fieldName ]: newVal } } )
+  onChange = ( fieldName, newVal ) => {
+    const { form } = this.state
+    this.setState( { form: ( { ...form, [ fieldName ]: newVal } ) } )
+  }
 
   submit = () => {
     const { onSubmit } = this.props
     const { form } = this.state
-    onSubmit( form )
+    return onSubmit( form )
   }
 
   render() {
@@ -49,17 +51,17 @@ export default class FormContainer extends Component {
         {fields.map( ( Field, i ) => (
           <div
             className={formStyle.field}
-            ref={refs[ i ]}
+            ref={refs[ i ]} // Ref to scroll to element
             key={i}
           >
             {React.cloneElement( Field, {
               onChange: this.onChange,
               next: () => this.scrollToRef( i < refs.length - 1 ? i + 1 : i ),
-              refProp: inputRefs[ i ],
+              refProp: inputRefs[ i ], // Pass ref down to input element for focussing
             } )}
           </div>
         ) )}
-        <div className={formStyle.submit} type="submit" onClick={this.submit}>Submit</div>
+        <button className={formStyle.submit} type="button" onClick={this.submit}>Submit</button>
       </form>
     )
   }

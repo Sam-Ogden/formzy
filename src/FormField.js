@@ -4,7 +4,6 @@
 import React, { Component } from 'react'
 import { func, string, instanceOf, shape } from 'prop-types'
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class FormField extends Component {
   static propTypes = {
     name: string.isRequired,
