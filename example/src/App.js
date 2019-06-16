@@ -10,17 +10,23 @@ export default class App extends Component {
 
   render () {
     return (
-      <div>
         <FormContainer fields={fields} onSubmit={this.onSubmit} />
-      </div>
     )
   }
 }
 
 const fields = [
-  <FormField name="fname" validate={() => 1} title="First Name" />,
-  <FormField name="lname" validate={() => 1} title="Last Name" />,
-  <FormField name="mname" validate={() => 1} title="Middle Name" />,
-  <FormField name="email" validate={() => 1} title="Email" />,
-  <FormField name="dob" validate={() => 1} title="DOB" />,
+  <FormField name="fname" validate={() => 1} title="What is your First Name?" required/>,
+  <FormField name="lname" validate={() => 1} title="And your Last Name?" />,
+  <FormField name="mname" validate={() => 1} title="What is your Middle Name?" />,
+  <FormField name="email" type="email" validate={() => 1} title="What is your Email Address?" />,
+  <FormField name="bday" type="date" validate={() => 1} title="When were you born?" />,
+  <FormField 
+    name="degree" 
+    type="select" 
+    description="For example A levels, bachelors or masters" 
+    validate={() => 1} 
+    title="What is your highest level of education?" 
+  />,
+
 ]

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { func, arrayOf, instanceOf } from 'prop-types'
-import formStyle from './formContainer.css'
+import formStyle from './FormContainer.css'
 
 let refs = []
 let inputRefs = []
@@ -47,10 +47,10 @@ export default class FormContainer extends Component {
     } = this.props
 
     return (
-      <form>
+      <form className={formStyle.formContainer}>
         {fields.map( ( Field, i ) => (
           <div
-            className={formStyle.field}
+            className={formStyle.fieldContainer}
             ref={refs[ i ]} // Ref to scroll to element
             key={i}
           >

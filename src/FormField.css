@@ -1,0 +1,41 @@
+
+.title {
+    font-size: 2em;
+    margin-bottom: 10px;
+    margin-top: 0vh;
+}
+
+.input {
+    border: 0px;
+    border-bottom: 2px solid #66aef7;
+    background-color: transparent;
+    height: 6vh;
+    width: 50vw;
+    font-size: 1.4em;
+    transition: border 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    border-bottom: 2px solid transparent;
+}
+
+.nextBtn {
+    padding: 10px 20px;
+    background-color: black;
+    color: beige;
+    font-size: 1em;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.description {
+    color: #777;
+    font-size: 1.2em;
+}

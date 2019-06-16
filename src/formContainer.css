@@ -1,6 +1,11 @@
-/* add css styles here (optional) */
 html{
   scroll-behavior: smooth;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .submit {
@@ -10,9 +15,12 @@ html{
   font-size: 2em;
 }
 
-.field {
-  width: 100%;
-  height: 400px;
+.fieldContainer {
+  height: 75vh;
   background-color: beige;
-  border: 10px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding-left: 10vw;
+  border-bottom: 1px solid #ccc;
 }
