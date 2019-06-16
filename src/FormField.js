@@ -12,6 +12,7 @@ export default class FormField extends Component {
     required: bool,
     title: string.isRequired,
     description: string,
+    placeholder: string,
     validate: func,
     onChange: func,
     next: func,
@@ -26,6 +27,7 @@ export default class FormField extends Component {
     type: 'text',
     required: false,
     description: '',
+    placeholder: 'Type your answer here...',
   }
 
   state = { value: null, err: '' }
@@ -45,7 +47,7 @@ export default class FormField extends Component {
   }
 
   render() {
-    const { name, title, refProp, type, required, description } = this.props
+    const { name, title, refProp, type, required, description, placeholder } = this.props
     const { err } = this.state
     return (
       <div>
@@ -53,7 +55,7 @@ export default class FormField extends Component {
         {description !== '' && <p className={style.description}>{description}</p>}
         <input
           className={style.input}
-          placeholder="Type your answer here"
+          placeholder={placeholder}
           type={type}
           name={name}
           onChange={this.inputChange}
