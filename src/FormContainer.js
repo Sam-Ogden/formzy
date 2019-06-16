@@ -8,15 +8,18 @@ let inputRefs = []
 export default class FormContainer extends Component {
   static propTypes = {
     onSubmit: func.isRequired,
-    fields: arrayOf( instanceOf( Object ) ).isRequired,
+    children: arrayOf( instanceOf( Object ) ),
+  }
+
+  static defaultProps = {
+    children: {},
   }
 
   componentWillMount = () => {
-    const { fields } = this.props
-
+    const { children } = this.props
     // Create refs for field containers and inputs
-    refs = [ ...Array( fields.length ) ].map( i => React.createRef( i ) )
-    inputRefs = [ ...Array( fields.length ) ].map( i => React.createRef( -i ) )
+    refs = [ ...Array( children.length ) ].map( i => React.createRef( i ) )
+    inputRefs = [ ...Array( children.length ) ].map( i => React.createRef( -i ) )
   }
 
   state = { form: {} }
@@ -43,12 +46,12 @@ export default class FormContainer extends Component {
 
   render() {
     const {
-      fields,
+      children,
     } = this.props
 
     return (
       <form className={formStyle.formContainer}>
-        {fields.map( ( Field, i ) => (
+        {children.length > 0 && children.map( ( Field, i ) => (
           <div
             className={formStyle.fieldContainer}
             ref={refs[ i ]} // Ref to scroll to element

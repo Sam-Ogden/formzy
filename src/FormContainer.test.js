@@ -10,12 +10,12 @@ describe( 'FormContainer Component', () => {
     expect( FormContainer ).toBeTruthy()
   } )
   test( 'renders', () => {
-    const wrapper = shallow( <FormContainer fields={[]} onSubmit={() => {}} /> )
+    const wrapper = shallow( <FormContainer onSubmit={() => {}} /> )
     expect( wrapper.exists() ).toBe( true )
   } )
 
   test( 'state updates on change', () => {
-    const wrapper = shallow( <FormContainer fields={[]} onSubmit={() => {}} /> )
+    const wrapper = shallow( <FormContainer onSubmit={() => {}} /> )
 
     wrapper.instance().onChange( 'akey', 'X' )
     wrapper.instance().onChange( 'bkey', 'Z' )
@@ -25,7 +25,7 @@ describe( 'FormContainer Component', () => {
   } )
 
   test( 'submit button returns state to parent component', () => {
-    const wrapper = shallow( <FormContainer fields={[]} onSubmit={form => form} /> )
+    const wrapper = shallow( <FormContainer onSubmit={form => form} /> )
     wrapper.instance().onChange( 'akey', 'X' )
     expect( wrapper.instance().submit() ).toEqual( { akey: 'X' } )
   } )
