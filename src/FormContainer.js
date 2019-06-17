@@ -25,15 +25,19 @@ export default class FormContainer extends Component {
     inputRefs = [ ...Array( children.length ) ].map( i => React.createRef( -i ) )
   }
 
-  state = { form: {}, progress: 0 }
+  state = { form: {}, active: 0 }
 
   /**
    *  Handles scrolling between form elements and focus on next input field
    *  @param {Number} i The index of form elements to scroll to
    */
   scrollToRef = i => {
-    window.scrollTo( 0, refs[ i ].current.offsetTop )
-    inputRefs[ i ].current.focus()
+    const { children } = this.props
+    if ( i < children.length ) {
+      window.scrollTo( 0, refs[ i ].current.offsetTop )
+      inputRefs[ i ].current.focus()
+    }
+    this.setState( { active: i } )
   }
 
   onChange = ( fieldName, newVal ) => {
@@ -54,7 +58,7 @@ export default class FormContainer extends Component {
     } = this.props
 
     const {
-      progress,
+      active,
     } = this.state
 
     return (
@@ -67,13 +71,13 @@ export default class FormContainer extends Component {
           >
             {React.cloneElement( Field, {
               onChange: this.onChange,
-              next: () => this.scrollToRef( i < refs.length - 1 ? i + 1 : i ),
+              next: () => this.scrollToRef( i + 1 ),
               refProp: inputRefs[ i ], // Pass ref down to input element for focussing
             } )}
           </div>
         ) )}
         <button className={formStyle.submit} type="button" onClick={this.submit}>Submit</button>
-        {showProgress && <ProgressBar progress={progress} />}
+        {showProgress && <ProgressBar progress={Math.round( 100 * active / children.length, 0 )} />}
       </form>
     )
   }
