@@ -1,4 +1,7 @@
 import FormContainer from './FormContainer'
-import FormField from './FormField'
+import ShortTextField from './ShortTextField'
+import NumberField from './NumberField'
+import Field from './Field'
+import ProgressBar from './ProgressBar'
 
-export { FormContainer, FormField }
+export { FormContainer, ShortTextField, NumberField, Field, ProgressBar }

@@ -2,17 +2,17 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 
 import React, { Component } from 'react'
-import { func, string, instanceOf, shape, bool } from 'prop-types'
-import style from './FormField.css'
+import { func, string, instanceOf, shape, bool, number } from 'prop-types'
 
 export default class FormField extends Component {
   static propTypes = {
+    title: string.isRequired,
+    description: string,
     name: string.isRequired,
     type: string,
     required: bool,
-    title: string.isRequired,
-    description: string,
     placeholder: string,
+    maxlength: number,
     validate: func,
     onChange: func,
     next: func,
@@ -20,14 +20,15 @@ export default class FormField extends Component {
   }
 
   static defaultProps = {
-    onChange: () => null,
-    validate: () => true,
-    next: () => true,
+    description: '',
     refProp: null,
     type: 'text',
     required: false,
-    description: '',
     placeholder: 'Type your answer here...',
+    maxlength: 524288,
+    validate: () => true,
+    onChange: () => null,
+    next: () => true,
   }
 
   state = { value: null, err: '' }
@@ -47,7 +48,7 @@ export default class FormField extends Component {
   }
 
   render() {
-    const { name, title, refProp, type, required, description, placeholder } = this.props
+    const { name, title, refProp, type, required, description, placeholder, maxlength } = this.props
     const { err } = this.state
     return (
       <div>
@@ -62,6 +63,7 @@ export default class FormField extends Component {
           onKeyPress={( { key } ) => ( key === 'Enter' ? this.next() : null )}
           ref={refProp}
           required={required}
+          maxLength={maxlength}
         />
         <p>{err}</p>
         <button className={style.nextBtn} type="button" onClick={this.next}>Next</button>

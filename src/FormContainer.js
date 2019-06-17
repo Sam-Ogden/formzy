@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { func, arrayOf, instanceOf } from 'prop-types'
+import { func, arrayOf, instanceOf, bool } from 'prop-types'
 import formStyle from './FormContainer.css'
+import ProgressBar from './ProgressBar'
 
 let refs = []
 let inputRefs = []
@@ -9,10 +10,12 @@ export default class FormContainer extends Component {
   static propTypes = {
     onSubmit: func.isRequired,
     children: arrayOf( instanceOf( Object ) ),
+    showProgress: bool,
   }
 
   static defaultProps = {
     children: {},
+    showProgress: true,
   }
 
   componentWillMount = () => {
@@ -22,7 +25,7 @@ export default class FormContainer extends Component {
     inputRefs = [ ...Array( children.length ) ].map( i => React.createRef( -i ) )
   }
 
-  state = { form: {} }
+  state = { form: {}, progress: 0 }
 
   /**
    *  Handles scrolling between form elements and focus on next input field
@@ -47,7 +50,12 @@ export default class FormContainer extends Component {
   render() {
     const {
       children,
+      showProgress,
     } = this.props
+
+    const {
+      progress,
+    } = this.state
 
     return (
       <form className={formStyle.formContainer}>
@@ -65,6 +73,7 @@ export default class FormContainer extends Component {
           </div>
         ) )}
         <button className={formStyle.submit} type="button" onClick={this.submit}>Submit</button>
+        {showProgress && <ProgressBar progress={progress} />}
       </form>
     )
   }

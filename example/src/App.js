@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { FormContainer, FormField } from 'react-form'
+import { FormContainer, ShortTextField, NumberField } from 'react-form'
 
 export default class App extends Component {
 
@@ -10,13 +10,18 @@ export default class App extends Component {
 
   render () {
     return (
-        <FormContainer onSubmit={this.onSubmit} >
-            <FormField name="fname" validate={() => 1} title="What is your First Name?" required/>
-            <FormField name="lname" validate={() => 1} title="And your Last Name?" />
-            <FormField name="mname" validate={() => 1} title="What is your Middle Name?" />
-            <FormField name="email" type="email" validate={() => 1} title="What is your Email Address?" />
-            <FormField name="bday" type="date" validate={() => 1} title="When were you born?" />
-            <FormField 
+        <FormContainer onSubmit={this.onSubmit} showProgress={true}>
+            <ShortTextField 
+              name="fname" 
+              validate={() => 1} 
+              title="What is your First Name?" 
+              maxlength={25} 
+              required />
+            <NumberField name="ncars" validate={() => 1} max={10} title="How many cars do you own?" />
+            <ShortTextField name="mname" validate={() => 1} title="What is your Middle Name?" />
+            <ShortTextField name="email" type="email" validate={() => 1} title="What is your Email Address?" />
+            <ShortTextField name="bday" type="date" validate={() => 1} title="When were you born?" />
+            <ShortTextField 
               name="degree" 
               type="select" 
               description="For example A levels, bachelors or masters" 
