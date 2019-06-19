@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { func, arrayOf, instanceOf, bool } from 'prop-types'
+import { func, arrayOf, instanceOf, bool, number } from 'prop-types'
+import zenscroll from 'zenscroll'
 import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
 
@@ -11,11 +12,13 @@ export default class FormContainer extends Component {
     onSubmit: func.isRequired,
     children: arrayOf( instanceOf( Object ) ),
     showProgress: bool,
+    scrollDuration: number,
   }
 
   static defaultProps = {
     children: {},
     showProgress: true,
+    scrollDuration: 777,
   }
 
   componentWillMount = () => {
@@ -32,10 +35,10 @@ export default class FormContainer extends Component {
    *  @param {Number} i The index of form elements to scroll to
    */
   scrollToRef = i => {
-    const { children } = this.props
+    const { children, scrollDuration } = this.props
     if ( i < children.length ) {
-      window.scrollTo( 0, refs[ i ].current.offsetTop )
-      inputRefs[ i ].current.focus()
+      zenscroll.to( refs[ i ].current, scrollDuration )
+      setTimeout( () => { inputRefs[ i ].current.focus() }, scrollDuration )
     }
     this.setState( { active: i } )
   }

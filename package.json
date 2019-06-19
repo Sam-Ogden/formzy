@@ -65,6 +65,7 @@
   ],
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "reactstrap": "^8.0.0"
+    "reactstrap": "^8.0.0",
+    "zenscroll": "^4.0.2"
   }
 }
