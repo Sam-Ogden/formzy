@@ -12,6 +12,7 @@
 
 .container {
     padding-left: 10vw;
+    padding-right: 10vw;
     display: flex;
     flex-wrap: wrap;
     align-content: center;
@@ -19,8 +20,15 @@
     height: 100%;
 }
 
+
 .inner {
-    flex-basis: 25%;
+    flex-basis: 100%;
+}
+
+@media screen and (min-width: 960px) {
+    .inner {
+        flex-basis: 25%;
+    }
 }
 
 .label {
