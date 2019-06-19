@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { func, arrayOf, instanceOf, bool, number } from 'prop-types'
+import { func, arrayOf, instanceOf, bool, number, string } from 'prop-types'
 import zenscroll from 'zenscroll'
 import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
+import { SubmitField } from '.'
 
 let refs = []
 let inputRefs = []
+const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
 
 export default class FormContainer extends Component {
   static propTypes = {
@@ -14,6 +16,9 @@ export default class FormContainer extends Component {
     showProgress: bool,
     scrollDuration: number,
     edgeOffset: number,
+    submitTitle: string,
+    submitDescription: string,
+    submitButtonText: string,
   }
 
   static defaultProps = {
@@ -21,13 +26,17 @@ export default class FormContainer extends Component {
     showProgress: true,
     scrollDuration: 777,
     edgeOffset: 0,
+    submitTitle: 'Thank You!',
+    submitDescription: 'We will be in touch shortly.',
+    submitButtonText: 'Submit Form',
   }
 
   componentWillMount = () => {
     const { children, scrollDuration, edgeOffset } = this.props
     // Create refs for field containers and inputs
-    refs = [ ...Array( children.length ) ].map( i => React.createRef( i ) )
-    inputRefs = [ ...Array( children.length ) ].map( i => React.createRef( -i ) )
+    refs = [ ...Array( children.length + 1 ) ].map( i => React.createRef( i ) )
+    inputRefs = [ ...Array( children.length + 1 ) ].map( i => React.createRef( -i ) )
+    // Setup scroll behaviour
     zenscroll.setup( scrollDuration, edgeOffset )
   }
 
@@ -40,10 +49,12 @@ export default class FormContainer extends Component {
   scrollToRef = i => {
     const { children } = this.props
     const { defaultDuration } = zenscroll.setup()
-    if ( i < children.length ) {
+
+    if ( i <= children.length ) {
       zenscroll.to( refs[ i ].current )
-      setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration )
+      setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration - 50 )
     }
+
     this.setState( { active: i } )
   }
 
@@ -62,11 +73,16 @@ export default class FormContainer extends Component {
     const {
       children,
       showProgress,
+      submitTitle,
+      submitDescription,
+      submitButtonText,
     } = this.props
 
     const {
       active,
     } = this.state
+
+    const formLength = children.length
 
     return (
       <form className={formStyle.formContainer}>
@@ -83,8 +99,20 @@ export default class FormContainer extends Component {
             } )}
           </div>
         ) )}
-        <button className={formStyle.submit} type="button" onClick={this.submit}>Submit</button>
-        {showProgress && <ProgressBar progress={Math.round( 100 * active / children.length, 0 )} />}
+        <div
+          className={formStyle.fieldContainer}
+          ref={refs[ formLength ]} // Ref to scroll to element
+          key={formLength}
+        >
+          <SubmitField
+            onSubmit={this.submit}
+            title={submitTitle}
+            description={submitDescription}
+            buttonText={submitButtonText}
+            refProp={inputRefs[ formLength ]}
+          />
+        </div>
+        {showProgress && <ProgressBar progress={progress( active, formLength )} />}
       </form>
     )
   }

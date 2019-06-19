@@ -13,6 +13,7 @@ export default class FormField extends Component {
     required: bool,
     placeholder: string,
     maxlength: number,
+    hasNext: bool,
     validate: func,
     onChange: func,
     next: func,
@@ -26,6 +27,7 @@ export default class FormField extends Component {
     required: false,
     placeholder: 'Type your answer here...',
     maxlength: 524288,
+    hasNext: true,
     validate: () => true,
     onChange: () => null,
     next: () => true,
@@ -48,27 +50,10 @@ export default class FormField extends Component {
   }
 
   render() {
-    const { name, title, refProp, type, required, description, placeholder, maxlength } = this.props
+    const { name, title, refProp, type, required, description, placeholder, maxlength, hasNext } = this.props
     const { err } = this.state
     return (
-      <div>
-        <h4 className={style.title}>{title}</h4>
-        {description !== '' && <p className={style.description}>{description}</p>}
-        <input
-          className={style.input}
-          placeholder={placeholder}
-          type={type}
-          name={name}
-          onChange={this.inputChange}
-          onKeyPress={( { key } ) => ( key === 'Enter' ? this.next() : null )}
-          ref={refProp}
-          required={required}
-          maxLength={maxlength}
-        />
-        <p>{err}</p>
-        <button className={style.nextBtn} type="button" onClick={this.next}>Next</button>
-        <span>Press <span className={style.bold}>Enter</span></span>
-      </div>
+      <div />
     )
   }
 }
