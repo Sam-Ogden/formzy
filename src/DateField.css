@@ -1,0 +1,22 @@
+.dateInputContainer {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.dateTitles {
+    width: 100px;
+    margin: 0px;
+}
+
+.inputField {
+    width: 4em;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+}
+
+.inputField:focus {
+    outline: none;
+    border-bottom: 2px solid transparent;
+}
