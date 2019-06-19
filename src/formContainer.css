@@ -16,11 +16,12 @@ html{
 }
 
 .fieldContainer {
-  height: 75vh;
+  height: 100vh;
   background-color: beige;
   display: flex;
   align-items: center;
   justify-content: left;
   padding-left: 10vw;
+  padding-bottom: 25vh;
   border-bottom: 1px solid #ccc;
 }
