@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { func, arrayOf, instanceOf, bool, number, string } from 'prop-types'
+import { func, arrayOf, instanceOf, bool, number, string, oneOfType } from 'prop-types'
 import zenscroll from 'zenscroll'
 import is from 'is_js'
 import formStyle from './FormContainer.css'
@@ -13,7 +13,7 @@ const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
 export default class FormContainer extends Component {
   static propTypes = {
     onSubmit: func.isRequired,
-    children: arrayOf( instanceOf( Object ) ),
+    children: oneOfType( [ arrayOf( instanceOf( Object ) ), instanceOf( Object ) ] ).isRequired,
     showProgress: bool,
     scrollDuration: number,
     edgeOffset: number,
@@ -23,7 +23,6 @@ export default class FormContainer extends Component {
   }
 
   static defaultProps = {
-    children: {},
     showProgress: true,
     scrollDuration: 777,
     edgeOffset: 0,
@@ -34,9 +33,10 @@ export default class FormContainer extends Component {
 
   componentWillMount = () => {
     const { children, scrollDuration, edgeOffset } = this.props
+    const formLength = children.length || 1
     // Create refs for field containers and inputs
-    refs = [ ...Array( children.length + 1 ) ].map( i => React.createRef( i ) )
-    inputRefs = [ ...Array( children.length + 1 ) ].map( i => React.createRef( -i ) )
+    refs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( i ) )
+    inputRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( -i ) )
     // Setup scroll behaviour
     zenscroll.setup( scrollDuration, edgeOffset )
   }
@@ -50,11 +50,11 @@ export default class FormContainer extends Component {
   scrollToRef = i => {
     const { children } = this.props
     const { defaultDuration } = zenscroll.setup()
-
-    if ( i <= children.length ) {
+    const formLength = children.length || 1
+    if ( i <= formLength ) {
       if ( is.ios() ) {
         inputRefs[ i ].current.focus()
-        if ( i === children.length ) zenscroll.center( inputRefs[ i ].current )
+        if ( i === formLength ) zenscroll.center( inputRefs[ i ].current )
       } else {
         zenscroll.to( refs[ i ].current )
         setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration - 50 )
@@ -88,11 +88,11 @@ export default class FormContainer extends Component {
       active,
     } = this.state
 
-    const formLength = children.length
+    const formLength = children.length || 1
 
     return (
       <form className={formStyle.formContainer}>
-        {children.length > 0 && children.map( ( Field, i ) => (
+        {formLength > 1 ? children.map( ( Field, i ) => (
           <div
             className={formStyle.fieldContainer}
             ref={refs[ i ]} // Ref to scroll to element
@@ -104,7 +104,18 @@ export default class FormContainer extends Component {
               refProp: inputRefs[ i ], // Pass ref down to input element for focussing
             } )}
           </div>
-        ) )}
+        ) )
+          : (
+            <div
+              className={formStyle.fieldContainer}
+            >
+              {React.cloneElement( children, {
+                onChange: this.onChange,
+                next: () => this.scrollToRef( formLength ),
+              } )}
+            </div>
+          )
+        }
         <div
           className={formStyle.fieldContainer}
           ref={refs[ formLength ]} // Ref to scroll to element
