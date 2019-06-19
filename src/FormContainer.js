@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { func, arrayOf, instanceOf, bool, number, string } from 'prop-types'
 import zenscroll from 'zenscroll'
+import is from 'is_js'
 import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
 import { SubmitField } from '.'
@@ -51,8 +52,13 @@ export default class FormContainer extends Component {
     const { defaultDuration } = zenscroll.setup()
 
     if ( i <= children.length ) {
-      zenscroll.to( refs[ i ].current )
-      setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration - 50 )
+      if ( is.ios() ) {
+        inputRefs[ i ].current.focus()
+        if ( i === children.length ) zenscroll.center( inputRefs[ i ].current )
+      } else {
+        zenscroll.to( refs[ i ].current )
+        setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration - 50 )
+      }
     }
 
     this.setState( { active: i } )
