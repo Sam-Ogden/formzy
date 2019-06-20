@@ -8,7 +8,7 @@ import FormField from './FormField'
 import Field from './Field'
 import style from './FormField.css'
 
-export default class ShortTextField extends FormField {
+export default class SubmitField extends FormField {
   static propTypes = {
     onSubmit: func.isRequired,
     buttonText: string,

@@ -4,7 +4,7 @@ import zenscroll from 'zenscroll'
 import is from 'is_js'
 import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
-import { SubmitField } from '.'
+import SubmitField from './SubmitField'
 
 let refs = []
 let inputRefs = []
