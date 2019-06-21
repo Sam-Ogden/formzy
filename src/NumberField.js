@@ -1,39 +1,57 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-one-expression-per-line */
 
-import React from 'react'
+import React, { Component } from 'react'
 import { number } from 'prop-types'
 import style from './FormField.css'
-import FormField from './FormField'
 import Field from './Field'
+import { withScrollBehaviour, commonPropTypes, commonDefaultProps } from './withScrollBehaviour'
 
-export default class NumberField extends FormField {
+class NumberField extends Component {
   static propTypes = {
+    ...commonPropTypes,
     min: number,
     max: number,
   }
 
   static defaultProps = {
+    ...commonDefaultProps,
     type: 'number',
     min: Number.MIN_VALUE,
     max: Number.MAX_VALUE,
   }
 
-  state = { value: null, err: '' }
+  state = { err: '' }
+
+  onChange = ( { target: { value } } ) => {
+    const { inputChange } = this.props
+    inputChange( value )
+  }
 
   render() {
-    const { name, title, refProp, type, required, description, placeholder, min, max } = this.props
+    const { name,
+      title,
+      refProp,
+      type,
+      required,
+      description,
+      placeholder,
+      min,
+      max,
+      next } = this.props
+
     const { err } = this.state
+
     return (
-      <Field title={title} description={description} next={this.next}>
+      <Field title={title} description={description} next={next}>
         <div>
           <input
             className={style.input}
             placeholder={placeholder}
             type={type}
             name={name}
-            onChange={this.inputChange}
-            onKeyPress={( { key } ) => ( key === 'Enter' ? this.next() : null )}
+            onChange={this.onChange}
+            onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
             ref={refProp}
             required={required}
             min={min}
@@ -45,3 +63,5 @@ export default class NumberField extends FormField {
     )
   }
 }
+
+export default withScrollBehaviour( NumberField )

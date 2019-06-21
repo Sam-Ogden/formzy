@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 
 import React, { Component } from 'react'
-import { func, string, instanceOf, shape, bool, number } from 'prop-types'
+import { func, string, instanceOf, shape, bool } from 'prop-types'
 
 export default class FormField extends Component {
   static propTypes = {
@@ -12,8 +12,6 @@ export default class FormField extends Component {
     type: string,
     required: bool,
     placeholder: string,
-    maxlength: number,
-    hasNext: bool,
     validate: func,
     onChange: func,
     next: func,
@@ -21,13 +19,11 @@ export default class FormField extends Component {
   }
 
   static defaultProps = {
-    description: '',
+    description: 'HEY',
     refProp: null,
     type: 'text',
     required: false,
     placeholder: 'Type your answer here...',
-    maxlength: 524288,
-    hasNext: true,
     validate: () => true,
     onChange: () => null,
     next: () => true,
@@ -40,7 +36,7 @@ export default class FormField extends Component {
   next = () => {
     const { next, validate, onChange, name } = this.props
     const { value } = this.state
-    const res = validate( value )
+    const res = validate( value ) || true
     if ( res ) {
       onChange( name, value )
       next()

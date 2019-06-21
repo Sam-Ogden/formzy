@@ -119,10 +119,10 @@ export default class FormContainer extends Component {
         {formLength > 1 ? children.map(
           ( Field, i ) => FieldContainer( i, Field, this.onChange, this.scrollToRef ),
         )
-          : FieldContainer( formLength, children )
+          : FieldContainer( 0, children, this.onChange, this.scrollToRef )
         }
 
-        {FieldContainer( formLength, submitComponent )}
+        {FieldContainer( formLength, submitComponent, this.onChange )}
 
         {showProgress && <ProgressBar progress={progress( active, formLength )} />}
       </form>

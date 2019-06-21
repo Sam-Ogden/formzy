@@ -1,37 +1,57 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-one-expression-per-line */
 
-import React from 'react'
+import React, { Component } from 'react'
+import { number } from 'prop-types'
 import style from './FormField.css'
-import FormField from './FormField'
 import Field from './Field'
+import { withScrollBehaviour, commonPropTypes, commonDefaultProps } from './withScrollBehaviour'
 
-export default class ShortTextField extends FormField {
+class ShortTextField extends Component {
   static propTypes = {
+    ...commonPropTypes,
+    maxLength: number,
   }
 
   static defaultProps = {
+    ...commonDefaultProps,
     type: 'text',
+    maxLength: 524288,
   }
 
-  state = { value: null, err: '' }
+  onChange = ( { target: { value } } ) => {
+    const { inputChange } = this.props
+    inputChange( value )
+  }
+
+  state = { err: '' }
 
   render() {
-    const { name, title, refProp, type, required, description, placeholder, maxlength } = this.props
+    const { name,
+      title,
+      refProp,
+      type,
+      required,
+      description,
+      placeholder,
+      maxLength,
+      next } = this.props
+
     const { err } = this.state
+
     return (
-      <Field title={title} description={description} next={this.next}>
+      <Field title={title} description={description} next={next}>
         <div>
           <input
             className={style.input}
             placeholder={placeholder}
             type={type}
             name={name}
-            onChange={this.inputChange}
-            onKeyPress={( { key } ) => ( key === 'Enter' ? this.next() : null )}
+            onChange={this.onChange}
+            onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
             ref={refProp}
             required={required}
-            maxLength={maxlength}
+            maxLength={maxLength}
           />
           <p>{err}</p>
         </div>
@@ -39,3 +59,5 @@ export default class ShortTextField extends FormField {
     )
   }
 }
+
+export default withScrollBehaviour( ShortTextField )
