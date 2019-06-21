@@ -1,10 +1,10 @@
 {
-  "name": "react-form",
+  "name": "react-formtype",
   "version": "1.0.0",
   "description": "",
   "author": "Sam-Ogden",
   "license": "MIT",
-  "repository": "Sam-Ogden/react-form",
+  "repository": "Sam-Ogden/react-formtype",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
