@@ -8,7 +8,22 @@ import SubmitField from './SubmitField'
 
 let refs = []
 let inputRefs = []
+
 const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
+
+const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
+  <div
+    className={formStyle.fieldContainer}
+    ref={refs[ i ]} // Ref to scroll to element
+    key={i}
+  >
+    {React.cloneElement( Field, {
+      onChange,
+      next: () => scrollToRef( i + 1 ),
+      refProp: inputRefs[ i ], // Pass ref down to input element for focussing
+    } )}
+  </div>
+)
 
 export default class FormContainer extends Component {
   static propTypes = {
@@ -90,45 +105,25 @@ export default class FormContainer extends Component {
 
     const formLength = children.length || 1
 
+    const submitComponent = (
+      <SubmitField
+        onSubmit={this.submit}
+        title={submitTitle}
+        description={submitDescription}
+        buttonText={submitButtonText}
+      />
+    )
+
     return (
       <form className={formStyle.formContainer}>
-        {formLength > 1 ? children.map( ( Field, i ) => (
-          <div
-            className={formStyle.fieldContainer}
-            ref={refs[ i ]} // Ref to scroll to element
-            key={i}
-          >
-            {React.cloneElement( Field, {
-              onChange: this.onChange,
-              next: () => this.scrollToRef( i + 1 ),
-              refProp: inputRefs[ i ], // Pass ref down to input element for focussing
-            } )}
-          </div>
-        ) )
-          : (
-            <div
-              className={formStyle.fieldContainer}
-            >
-              {React.cloneElement( children, {
-                onChange: this.onChange,
-                next: () => this.scrollToRef( formLength ),
-              } )}
-            </div>
-          )
+        {formLength > 1 ? children.map(
+          ( Field, i ) => FieldContainer( i, Field, this.onChange, this.scrollToRef ),
+        )
+          : FieldContainer( formLength, children )
         }
-        <div
-          className={formStyle.fieldContainer}
-          ref={refs[ formLength ]} // Ref to scroll to element
-          key={formLength}
-        >
-          <SubmitField
-            onSubmit={this.submit}
-            title={submitTitle}
-            description={submitDescription}
-            buttonText={submitButtonText}
-            refProp={inputRefs[ formLength ]}
-          />
-        </div>
+
+        {FieldContainer( formLength, submitComponent )}
+
         {showProgress && <ProgressBar progress={progress( active, formLength )} />}
       </form>
     )
