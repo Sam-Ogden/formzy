@@ -44,33 +44,19 @@ import { FormContainer, ShortTextField, NumberField, DateField } from  'react-fo
 class  Example  extends  Component {
 
 render () {
-
-return (
-
-<FormContainer
-
-showProgress={true}
-
-onSubmit={formData  => {...}}
-
-submitTitle="Thanks!"
-
-submitButtonText="Send form"
-
->
-
-<ShortTextField  title="What is your name?"  name="name"  required />
-
-<NumberField  title="How many oranges would you like?"  name="noranges"  min={0}  max={10} />
-
-<DataField  title="When were you born?"  name="dob" />
-
-</FormContainer>
-
-)
-
-}
-
+  return (
+    <FormContainer
+      showProgress={true}
+      onSubmit={formData  => {...}}
+      submitTitle="Thanks!"
+      submitButtonText="Send form"
+    >
+      <ShortTextField  title="What is your name?"  name="name"  required />
+      <NumberField  title="How many oranges would you like?"  name="noranges"  min={0}  max={10} />
+      <DataField  title="When were you born?"  name="dob" />
+    </FormContainer>
+    )
+  }
 }
 
 ```
@@ -85,45 +71,25 @@ submitButtonText="Send form"
 Container component for handling form state and transitions between form fields. All Fields in the form must be children of the FormContainer component.
 ```jsx
 static  propTypes  = {
-
-onSubmit: func.isRequired, // Function to call upon submission. Accept object as argument.
-
-children: oneOfType( [ arrayOf( // Array of fields (form body)
-
-instanceOf( Object ),
-
-), instanceOf( Object ) ] ).isRequired,
-
-showProgress: bool, // Whether to show progress bar
-
-scrollDuration: number, // Scroll animation time
-
-edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
-
-submitTitle: string, // Title of the Submit field
-
-submitDescription: string,
-
-submitButtonText: string,
-
+  onSubmit: func.isRequired, // Function to call upon submission. Accept object as argument.
+  children: oneOfType( [ arrayOf( // Array of fields (form body)
+  instanceOf( Object ),
+  ), instanceOf( Object ) ] ).isRequired,
+  showProgress: bool, // Whether to show progress bar
+  scrollDuration: number, // Scroll animation time
+  edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
+  submitTitle: string, // Title of the Submit field
+  submitDescription: string,
+  submitButtonText: string,
 }
 
-  
-
 static  defaultProps  = {
-
-showProgress: true,
-
-scrollDuration: 777,
-
-edgeOffset: 0,
-
-submitTitle: 'Thank You!',
-
-submitDescription: '',
-
-submitButtonText: 'Submit Form',
-
+  showProgress: true,
+  scrollDuration: 777,
+  edgeOffset: 0,
+  submitTitle: 'Thank You!',
+  submitDescription: '',
+  submitButtonText: 'Submit Form',
 }
 ```
 ### ShortTextField
