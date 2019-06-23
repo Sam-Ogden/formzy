@@ -41,20 +41,18 @@ class ShortTextField extends Component {
 
     return (
       <Field title={title} description={description} next={next}>
-        <div>
-          <input
-            className={style.input}
-            placeholder={placeholder}
-            type={type}
-            name={name}
-            onChange={this.onChange}
-            onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
-            ref={refProp}
-            required={required}
-            maxLength={maxLength}
-          />
-          <p>{err}</p>
-        </div>
+        <input
+          className={style.input}
+          placeholder={placeholder}
+          type={type}
+          name={name}
+          onChange={this.onChange}
+          onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
+          ref={refProp}
+          required={required}
+          maxLength={maxLength}
+        />
+        <p>{err}</p>
       </Field>
     )
   }

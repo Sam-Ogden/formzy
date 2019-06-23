@@ -41,49 +41,48 @@ class DateField extends Component {
 
     return (
       <Field title={title} description={description} next={next}>
-        <div>
-          <div onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
-            <span className={style.dateInputContainer}>
-              <span className={style.dateTitles}>Day:</span>
-              <input
-                label="day"
-                name="day"
-                type="number"
-                placeholder="dd"
-                onChange={this.onChange}
-                ref={refProp}
-                required={required}
-                className={style.inputField}
-                min={0}
-                max={31}
-              />
-            </span>
-            <span className={style.dateInputContainer}>
-              <span className={style.dateTitles}>Month:</span>
-              <input
-                name="month"
-                type="number"
-                placeholder="mm"
-                onChange={this.onChange}
-                required={required}
-                className={style.inputField}
-                min={1}
-                max={12}
-              />
-            </span>
-            <span className={style.dateInputContainer}>
-              <span className={style.dateTitles}>Year:</span>
-              <input
-                name="year"
-                type="number"
-                placeholder="yyyy"
-                onChange={this.onChange}
-                required={required}
-                className={style.inputField}
-                min={0}
-              />
-            </span>
-            {includeTime
+        <div onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
+          <span className={style.dateInputContainer}>
+            <span className={style.dateTitles}>Day:</span>
+            <input
+              label="day"
+              name="day"
+              type="number"
+              placeholder="dd"
+              onChange={this.onChange}
+              ref={refProp}
+              required={required}
+              className={style.inputField}
+              min={0}
+              max={31}
+            />
+          </span>
+          <span className={style.dateInputContainer}>
+            <span className={style.dateTitles}>Month:</span>
+            <input
+              name="month"
+              type="number"
+              placeholder="mm"
+              onChange={this.onChange}
+              required={required}
+              className={style.inputField}
+              min={1}
+              max={12}
+            />
+          </span>
+          <span className={style.dateInputContainer}>
+            <span className={style.dateTitles}>Year:</span>
+            <input
+              name="year"
+              type="number"
+              placeholder="yyyy"
+              onChange={this.onChange}
+              required={required}
+              className={style.inputField}
+              min={0}
+            />
+          </span>
+          {includeTime
               && (
               <span className={style.dateInputContainer}>
                 <span className={style.dateTitles}>Time:</span>
@@ -97,9 +96,8 @@ class DateField extends Component {
                 />
               </span>
               )}
-          </div>
-          <p>{err}</p>
         </div>
+        <p>{err}</p>
       </Field>
     )
   }
