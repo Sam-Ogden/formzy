@@ -7,7 +7,7 @@ import { func, string, instanceOf, shape, bool } from 'prop-types'
 export const commonPropTypes = {
   title: string.isRequired,
   description: string,
-  name: string.isRequired,
+  name: string,
   type: string,
   required: bool,
   placeholder: string,
@@ -21,6 +21,7 @@ export const commonDefaultProps = {
   description: '',
   refProp: null,
   type: 'text',
+  name: '',
   required: false,
   placeholder: 'Type your answer here...',
   validate: () => null,
