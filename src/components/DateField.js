@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { string, bool } from 'prop-types'
 import style from './DateField.css'
 import Field from './Field'
-import { withScrollBehaviour, commonPropTypes, commonDefaultProps } from './hocs/withScrollBehaviour'
+import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
 
 class DateField extends Component {
   static propTypes = {
@@ -109,4 +109,4 @@ class DateField extends Component {
   }
 }
 
-export default withScrollBehaviour( DateField )
+export default withFieldProps( DateField )

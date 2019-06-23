@@ -28,7 +28,7 @@ export const commonDefaultProps = {
   next: () => true,
 }
 
-export const withScrollBehaviour = Field => class extends Component {
+export const withFieldProps = Field => class extends Component {
   static propTypes = commonPropTypes
 
   static defaultProps = commonDefaultProps

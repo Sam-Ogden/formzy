@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { number } from 'prop-types'
 import style from './FormField.css'
 import Field from './Field'
-import { withScrollBehaviour, commonPropTypes, commonDefaultProps } from './hocs/withScrollBehaviour'
+import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
 
 class ShortTextField extends Component {
   static propTypes = {
@@ -60,4 +60,4 @@ class ShortTextField extends Component {
   }
 }
 
-export default withScrollBehaviour( ShortTextField )
+export default withFieldProps( ShortTextField )
