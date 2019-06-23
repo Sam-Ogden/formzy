@@ -24,9 +24,7 @@ export default class SubmitField extends FormField {
     const { title, description, buttonText, onSubmit, refProp } = this.props
     return (
       <Field title={title} description={description}>
-        <div>
-          <button className={style.nextBtn} type="button" onClick={onSubmit} ref={refProp}>{buttonText}</button>
-        </div>
+        <button className={style.nextBtn} type="button" onClick={onSubmit} ref={refProp}>{buttonText}</button>
       </Field>
     )
   }
