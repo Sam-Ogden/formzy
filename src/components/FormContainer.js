@@ -27,12 +27,14 @@ const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
 
 export default class FormContainer extends Component {
   static propTypes = {
-    onSubmit: func.isRequired,
-    children: oneOfType( [ arrayOf( instanceOf( Object ) ), instanceOf( Object ) ] ).isRequired,
-    showProgress: bool,
-    scrollDuration: number,
-    edgeOffset: number,
-    submitTitle: string,
+    onSubmit: func.isRequired, // Function to call upon submission. Accept object as argument.
+    children: oneOfType( [ arrayOf( // Array of fields (form body)
+      instanceOf( Object ),
+    ), instanceOf( Object ) ] ).isRequired,
+    showProgress: bool, // Whether to show progress bar
+    scrollDuration: number, // Scroll animation time
+    edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
+    submitTitle: string, // Title of the Submit field
     submitDescription: string,
     submitButtonText: string,
   }
@@ -42,7 +44,7 @@ export default class FormContainer extends Component {
     scrollDuration: 777,
     edgeOffset: 0,
     submitTitle: 'Thank You!',
-    submitDescription: 'We will be in touch shortly.',
+    submitDescription: '',
     submitButtonText: 'Submit Form',
   }
 
