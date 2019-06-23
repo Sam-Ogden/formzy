@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Children } from 'react'
 import { func, arrayOf, instanceOf, bool, number, string, oneOfType } from 'prop-types'
 import zenscroll from 'zenscroll'
 import is from 'is_js'
@@ -8,6 +8,7 @@ import SubmitField from './SubmitField'
 
 let refs = []
 let inputRefs = []
+let childrenArr = []
 
 const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
 
@@ -56,6 +57,8 @@ export default class FormContainer extends Component {
     inputRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( -i ) )
     // Setup scroll behaviour
     zenscroll.setup( scrollDuration, edgeOffset )
+    // If single child is passed then convert it to array
+    childrenArr = Array.isArray( children ) ? children : Children.toArray( children )
   }
 
   state = { form: {}, active: 0 }
@@ -94,7 +97,6 @@ export default class FormContainer extends Component {
 
   render() {
     const {
-      children,
       showProgress,
       submitTitle,
       submitDescription,
@@ -104,8 +106,6 @@ export default class FormContainer extends Component {
     const {
       active,
     } = this.state
-
-    const formLength = children.length || 1
 
     const submitComponent = (
       <SubmitField
@@ -118,17 +118,14 @@ export default class FormContainer extends Component {
 
     return (
       <form className={formStyle.formContainer}>
-        {formLength > 1 ? children.map(
+        {childrenArr.map(
           ( Field, i ) => FieldContainer( i, Field, this.onChange, this.scrollToRef ),
-        )
-          : FieldContainer( 0, children, this.onChange, this.scrollToRef )
-        }
+        )}
 
-        {FieldContainer( formLength, submitComponent, this.onChange )}
+        {FieldContainer( childrenArr.length, submitComponent, this.onChange )}
 
-        {showProgress && <ProgressBar progress={progress( active, formLength )} />}
+        {showProgress && <ProgressBar progress={progress( active, childrenArr.length )} />}
       </form>
     )
   }
 }
-
