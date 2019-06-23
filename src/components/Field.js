@@ -1,7 +1,7 @@
 import React from 'react'
 import { string, func, instanceOf } from 'prop-types'
 
-import style from './FormField.css'
+import style from './Field.css'
 
 const Field = ( { children, description, title, next, err } ) => (
   <div>

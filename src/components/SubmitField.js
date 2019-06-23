@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 
 import { func, string } from 'prop-types'
 import Field from './Field'
-import style from './FormField.css'
+import style from './Field.css'
 import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
 
 class SubmitField extends Component {

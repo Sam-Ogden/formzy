@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react'
 import { number } from 'prop-types'
-import style from './FormField.css'
+import style from './Field.css'
 import Field from './Field'
 import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
 
