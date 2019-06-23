@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/jsx-one-expression-per-line */
-
 import React, { Component } from 'react'
 import { bool } from 'prop-types'
 import style from './DateField.css'
@@ -40,7 +37,7 @@ class DateField extends Component {
 
     return (
       <Field title={title} description={description} next={next} err={err}>
-        <div onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
+        <div role="presentation" onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
           <span className={style.dateInputContainer}>
             <span className={style.dateTitles}>Day:</span>
             <input
