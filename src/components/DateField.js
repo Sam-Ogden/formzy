@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 
 import React, { Component } from 'react'
-import { string, bool } from 'prop-types'
+import { bool } from 'prop-types'
 import style from './DateField.css'
 import Field from './Field'
 import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
@@ -10,16 +10,12 @@ import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/with
 class DateField extends Component {
   static propTypes = {
     ...commonPropTypes,
-    min: string,
-    max: string,
     includeTime: bool,
   }
 
   static defaultProps = {
     ...commonDefaultProps,
     type: 'date',
-    min: '',
-    max: '',
     includeTime: false,
   }
 
