@@ -21,8 +21,6 @@ class NumberField extends Component {
     max: Number.MAX_VALUE,
   }
 
-  state = { err: '' }
-
   onChange = ( { target: { value } } ) => {
     const { inputChange } = this.props
     inputChange( value )
@@ -38,12 +36,11 @@ class NumberField extends Component {
       placeholder,
       min,
       max,
-      next } = this.props
-
-    const { err } = this.state
+      next,
+      err } = this.props
 
     return (
-      <Field title={title} description={description} next={next}>
+      <Field title={title} description={description} next={next} err={err}>
         <input
           className={style.input}
           placeholder={placeholder}
@@ -56,7 +53,6 @@ class NumberField extends Component {
           min={min}
           max={max}
         />
-        <p>{err}</p>
       </Field>
     )
   }

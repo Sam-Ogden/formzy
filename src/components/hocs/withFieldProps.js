@@ -23,12 +23,12 @@ export const commonDefaultProps = {
   type: 'text',
   required: false,
   placeholder: 'Type your answer here...',
-  validate: () => true,
+  validate: () => null,
   onChange: () => null,
   next: () => true,
 }
 
-export const withFieldProps = Field => class extends Component {
+export const withFieldProps = WrappedComponent => class extends Component {
   static propTypes = commonPropTypes
 
   static defaultProps = commonDefaultProps
@@ -38,24 +38,39 @@ export const withFieldProps = Field => class extends Component {
   next = () => {
     const { next, validate, onChange, name } = this.props
     const { value } = this.state
-    const res = validate( value )
-    if ( res ) {
+    const err = validate( value )
+    if ( !err ) {
       onChange( name, value )
       next()
-    } else {
-      this.setState( { err: res.err } )
     }
+
+    this.setState( { err } )
   }
 
   state = { value: null, err: '' }
 
   render() {
     const { next } = this.props
+    const { err } = this.state
+
     return (
       <div>
         {next
-          ? <Field {...this.props} inputChange={this.inputChange} next={this.next} />
-          : <Field {...this.props} inputChange={this.inputChange} /> // For submit button
+          ? (
+            <WrappedComponent
+              {...this.props}
+              inputChange={this.inputChange}
+              next={this.next}
+              err={err}
+            />
+          )
+          : (
+            <WrappedComponent
+              {...this.props}
+              inputChange={this.inputChange}
+              err={err}
+            />
+          )
         }
 
       </div>

@@ -19,7 +19,7 @@ class DateField extends Component {
     includeTime: false,
   }
 
-  state = { value: null, err: '' }
+  state = { value: null }
 
   onChange = ( { target: { name, value } } ) => {
     const { inputChange } = this.props
@@ -35,12 +35,11 @@ class DateField extends Component {
       required,
       description,
       includeTime,
-      next } = this.props
-
-    const { err } = this.state
+      next,
+      err } = this.props
 
     return (
-      <Field title={title} description={description} next={next}>
+      <Field title={title} description={description} next={next} err={err}>
         <div onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
           <span className={style.dateInputContainer}>
             <span className={style.dateTitles}>Day:</span>
@@ -97,7 +96,6 @@ class DateField extends Component {
               </span>
               )}
         </div>
-        <p>{err}</p>
       </Field>
     )
   }

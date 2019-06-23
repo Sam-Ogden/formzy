@@ -24,8 +24,6 @@ class ShortTextField extends Component {
     inputChange( value )
   }
 
-  state = { err: '' }
-
   render() {
     const { name,
       title,
@@ -35,12 +33,11 @@ class ShortTextField extends Component {
       description,
       placeholder,
       maxLength,
-      next } = this.props
-
-    const { err } = this.state
+      next,
+      err } = this.props
 
     return (
-      <Field title={title} description={description} next={next}>
+      <Field title={title} description={description} next={next} err={err}>
         <input
           className={style.input}
           placeholder={placeholder}
@@ -52,7 +49,6 @@ class ShortTextField extends Component {
           required={required}
           maxLength={maxLength}
         />
-        <p>{err}</p>
       </Field>
     )
   }
