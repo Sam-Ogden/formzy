@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { number } from 'prop-types'
 import style from './FormField.css'
 import Field from './Field'
-import { withScrollBehaviour, commonPropTypes, commonDefaultProps } from './withScrollBehaviour'
+import { withScrollBehaviour, commonPropTypes, commonDefaultProps } from './hocs/withScrollBehaviour'
 
 class NumberField extends Component {
   static propTypes = {
