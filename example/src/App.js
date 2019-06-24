@@ -25,7 +25,8 @@ export default class App extends Component {
           name="noranges" 
           validate={orangeValidation} 
           min={0} 
-          max={10} 
+          max={10}
+          defaultValue={5}
         />
         <DateField title="When were you born?" name="dob" />
       </FormContainer>

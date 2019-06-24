@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { func, string, instanceOf, shape, bool } from 'prop-types'
+import { func, string, instanceOf, shape, bool, any } from 'prop-types'
 
 // Props that may be used by all Fields of the form
 export const commonPropTypes = {
@@ -7,6 +7,8 @@ export const commonPropTypes = {
   description: string, // Optional description offering instructions
   name: string, // The input field name, values entered by user is stored as [name]: value
   type: string, // The field type
+  // eslint-disable-next-line react/forbid-prop-types
+  defaultValue: any, // The default value the field should take
   required: bool, // Whether a value must be entered by the user
   placeholder: string, // Input placeholder text
   onChange: func, // This is passed in by FormContainer to update the form state
@@ -24,6 +26,7 @@ export const commonDefaultProps = {
   description: '',
   refProp: null,
   type: 'text',
+  defaultValue: null,
   name: '',
   required: false,
   placeholder: 'Type your answer here...',
@@ -38,9 +41,20 @@ export const commonDefaultProps = {
  * @returns {Class} A new component type with additional functionality added
  */
 export const withFieldProps = WrappedComponent => class extends Component {
+  state = { value: null, err: '' }
+
   static propTypes = commonPropTypes
 
   static defaultProps = commonDefaultProps
+
+  componentDidMount() {
+    const { defaultValue, onChange, name } = this.props
+    // Set default value and save in FormContainer state
+    if ( defaultValue ) {
+      this.setState( { value: defaultValue } )
+      onChange( name, defaultValue )
+    }
+  }
 
   inputChange = value => this.setState( { value } )
 
@@ -59,8 +73,6 @@ export const withFieldProps = WrappedComponent => class extends Component {
 
     this.setState( { err } )
   }
-
-  state = { value: null, err: '' }
 
   render() {
     const { next } = this.props
