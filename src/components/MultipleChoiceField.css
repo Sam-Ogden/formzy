@@ -1,0 +1,28 @@
+.optionButton {
+    display: block;
+    margin: 10px 0px;
+    padding: 5px 10px;
+    background-color: beige;
+    border: 2px solid #66aef7;
+    border-radius: 5px;
+    transition-duration: 125ms;
+    min-width: 50%;
+}
+
+.optionButton:focus {
+    outline: none;
+}
+
+.active {
+    background-color: #66aef7;
+    color: beige;
+    font-weight: bold;
+}
+
+.hiddenButton {
+    height: 0px;
+    width: 0px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
