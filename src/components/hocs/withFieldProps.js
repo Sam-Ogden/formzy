@@ -97,7 +97,6 @@ export const withFieldProps = WrappedComponent => class extends Component {
             />
           )
         }
-
       </div>
     )
   }
