@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
 import { bool } from 'prop-types'
+
 import style from './DateField.css'
 import Field from './Field'
 import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
 
+/**
+ * Form Field that takes date and time values.
+ * A custom input is used instead of type="date", this is to provide consistency across browsers
+ * The value is stored as { day: ..., month: ..., year: ..., time: ... }
+ */
 class DateField extends Component {
   static propTypes = {
     ...commonPropTypes,
-    includeTime: bool,
+    includeTime: bool, // Whether to display time input field
   }
 
   static defaultProps = {
@@ -18,6 +24,10 @@ class DateField extends Component {
 
   state = { value: null }
 
+  /**
+   * Function to call when the user updates a date input field
+   * Have 4 values for each component of the date
+   */
   onChange = ( { target: { name, value } } ) => {
     const { inputChange } = this.props
     const { value: val } = this.state
@@ -41,7 +51,6 @@ class DateField extends Component {
           <span className={style.dateInputContainer}>
             <span className={style.dateTitles}>Day:</span>
             <input
-              label="day"
               name="day"
               type="number"
               placeholder="dd"

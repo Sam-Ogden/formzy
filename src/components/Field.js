@@ -3,6 +3,10 @@ import { string, func, instanceOf } from 'prop-types'
 
 import style from './Field.css'
 
+/**
+ * @param {Object} props Field props
+ * @returns {Element} Field component with title, description and next button if needed
+ */
 const Field = ( { children, description, title, next, err } ) => (
   <div>
     <h4 className={style.title}>{title}</h4>
@@ -26,11 +30,11 @@ const Field = ( { children, description, title, next, err } ) => (
 )
 
 Field.propTypes = {
-  children: instanceOf( Object ).isRequired,
-  title: string.isRequired,
-  description: string,
-  next: func,
-  err: string,
+  children: instanceOf( Object ).isRequired, // The input element
+  title: string.isRequired, // The title of the field
+  description: string, // Description for additional instructions
+  next: func, // The function to call to scroll to the next field
+  err: string, // Any errors in the input given by a user
 }
 
 Field.defaultProps = {

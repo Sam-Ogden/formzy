@@ -1,13 +1,14 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/jsx-one-expression-per-line */
-
 import React, { Component } from 'react'
-
 import { func, string } from 'prop-types'
+
 import Field from './Field'
 import style from './Field.css'
 import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
 
+/**
+ * Submit Field is a Field without a value
+ * Does not have a next option
+ */
 class SubmitField extends Component {
   static propTypes = {
     ...commonPropTypes,

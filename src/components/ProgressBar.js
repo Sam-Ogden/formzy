@@ -3,6 +3,11 @@ import { number } from 'prop-types'
 import { Progress } from 'reactstrap'
 import style from './ProgressBar.css'
 
+/**
+ * Progress bar which is fixes itself to the bottom of the screen
+ * @param {Object} progress The percentage progress
+ * @returns {Element} A progress bar which is fixed to the bottom of the screen
+ */
 const ProgressBar = ( { progress } ) => (
   <div className={style.progressBar}>
     <div className={style.container}>
@@ -15,7 +20,7 @@ const ProgressBar = ( { progress } ) => (
 )
 
 ProgressBar.propTypes = {
-  progress: number.isRequired,
+  progress: number.isRequired, // Percent to display
 }
 
 export default ProgressBar

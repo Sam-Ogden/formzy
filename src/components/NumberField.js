@@ -1,12 +1,13 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/jsx-one-expression-per-line */
-
 import React, { Component } from 'react'
 import { number } from 'prop-types'
+
 import style from './Field.css'
 import Field from './Field'
 import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
 
+/**
+ * A form field the accepts numbers only
+ */
 class NumberField extends Component {
   static propTypes = {
     ...commonPropTypes,
@@ -21,6 +22,9 @@ class NumberField extends Component {
     max: Number.MAX_VALUE,
   }
 
+  /**
+   * Function to call when the user updates the value
+   */
   onChange = ( { target: { value } } ) => {
     const { inputChange } = this.props
     inputChange( value )

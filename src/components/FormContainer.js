@@ -2,20 +2,34 @@ import React, { Component, Children } from 'react'
 import { func, arrayOf, instanceOf, bool, number, string, oneOfType } from 'prop-types'
 import zenscroll from 'zenscroll'
 import is from 'is_js'
+
 import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
 import SubmitField from './SubmitField'
 
-let refs = []
-let inputRefs = []
+let refs = [] // to scroll to the container of a Field
+let inputRefs = [] // to focus on the next input of a field
 let childrenArr = []
 
+/**
+ * @param {Number} i Current position
+ * @param {*} length Total length of form
+ * @returns {Number} Progress percentage rounded to nearest whole number
+ */
 const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
 
+/**
+ *
+ * @param {Number} i The index of the field in the form
+ * @param {Element} Field A field component (e.g. NumberField, DateField etc)
+ * @param {Function} onChange The function to call when this Field is changed
+ * @param {Function} scrollToRef The function to call to scroll to next field
+ * @returns {Element} The field wrapped in a container
+ */
 const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
   <div
     className={formStyle.fieldContainer}
-    ref={refs[ i ]} // Ref to scroll to element
+    ref={refs[ i ]}
     key={i}
   >
     {React.cloneElement( Field, {
@@ -26,6 +40,10 @@ const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
   </div>
 )
 
+/**
+ * Container component for the form
+ * Maintains the form state and scrolling behaviour between form fields
+ */
 export default class FormContainer extends Component {
   static propTypes = {
     onSubmit: func.isRequired, // Function to call upon submission. Accept object as argument.
@@ -65,16 +83,16 @@ export default class FormContainer extends Component {
 
   /**
    *  Handles scrolling between form elements and focus on next input field
+   *  Handle scrolling behaviour differently depending on platform
    *  @param {Number} i The index of form elements to scroll to
    */
   scrollToRef = i => {
-    const { children } = this.props
     const { defaultDuration } = zenscroll.setup()
-    const formLength = children.length || 1
-    if ( i <= formLength ) {
+
+    if ( i <= childrenArr.length ) {
       if ( is.ios() ) {
         inputRefs[ i ].current.focus()
-        if ( i === formLength ) zenscroll.center( inputRefs[ i ].current )
+        if ( i === childrenArr.length ) zenscroll.center( inputRefs[ i ].current )
       } else {
         zenscroll.to( refs[ i ].current )
         setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration - 50 )
@@ -84,11 +102,20 @@ export default class FormContainer extends Component {
     this.setState( { active: i } )
   }
 
+  /**
+   * Called by Fields to update the form state in the container
+   * @param {String} fieldName The name attribute value of an input field
+   * @param {Any} newVal The value to update fieldName to
+   */
   onChange = ( fieldName, newVal ) => {
     const { form } = this.state
     this.setState( { form: ( { ...form, [ fieldName ]: newVal } ) } )
   }
 
+  /**
+   * Function to run when submit button is hit
+   * @returns {Any} onSubmit prop function call
+   */
   submit = () => {
     const { onSubmit } = this.props
     const { form } = this.state

@@ -1,12 +1,13 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/jsx-one-expression-per-line */
-
 import React, { Component } from 'react'
 import { number } from 'prop-types'
+
 import style from './Field.css'
 import Field from './Field'
 import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
 
+/**
+ * Form Field that accepts text
+ */
 class ShortTextField extends Component {
   static propTypes = {
     ...commonPropTypes,
@@ -19,6 +20,9 @@ class ShortTextField extends Component {
     maxLength: 524288,
   }
 
+  /**
+   * Function to call when the user updates the value
+   */
   onChange = ( { target: { value } } ) => {
     const { inputChange } = this.props
     inputChange( value )
