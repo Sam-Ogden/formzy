@@ -61,17 +61,18 @@ export const withFieldProps = WrappedComponent => class extends Component {
   /**
    * Function called by Fields to progress to the next Field
    * Validation is performed and errors shown before scrolling to next Field
+   * @returns {Any} result of onChange call or null if errors during validation
    */
   next = () => {
-    const { next, validate, onChange, name } = this.props
+    const { next: nextProp, validate, onChange, name } = this.props
     const { value } = this.state
     const err = validate( value )
-    if ( !err ) {
-      onChange( name, value )
-      next()
-    }
-
     this.setState( { err } )
+    if ( !err ) {
+      nextProp()
+      return onChange( name, value )
+    }
+    return null
   }
 
   render() {
