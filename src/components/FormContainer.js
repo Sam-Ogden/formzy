@@ -5,7 +5,7 @@ import is from 'is_js'
 
 import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
-import SubmitField from './SubmitField'
+import SubmitField from './fields/SubmitField'
 
 let refs = [] // to scroll to the container of a Field
 let inputRefs = [] // to focus on the next input of a field

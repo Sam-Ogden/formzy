@@ -3,7 +3,7 @@ import { arrayOf, string, bool } from 'prop-types'
 
 import style from './MultipleChoiceField.css'
 import Field from './Field'
-import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
+import { withFieldProps, commonPropTypes, commonDefaultProps } from '../hocs/withFieldProps'
 
 /**
  * A form field with a number of choice buttons

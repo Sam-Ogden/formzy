@@ -2,7 +2,7 @@ import React from 'react'
 import Enzyme, { shallow, mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
-import MultipleChoiceField from '../components/MultipleChoiceField'
+import MultipleChoiceField from '../components/fields/MultipleChoiceField'
 
 Enzyme.configure( { adapter: new Adapter() } )
 

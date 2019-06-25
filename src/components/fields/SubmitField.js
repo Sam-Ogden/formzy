@@ -3,7 +3,7 @@ import { func, string } from 'prop-types'
 
 import Field from './Field'
 import style from './Field.css'
-import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
+import { withFieldProps, commonPropTypes, commonDefaultProps } from '../hocs/withFieldProps'
 
 /**
  * Submit Field is a Field without a value

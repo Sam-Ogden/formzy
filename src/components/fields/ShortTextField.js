@@ -3,23 +3,21 @@ import { number } from 'prop-types'
 
 import style from './Field.css'
 import Field from './Field'
-import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
+import { withFieldProps, commonPropTypes, commonDefaultProps } from '../hocs/withFieldProps'
 
 /**
- * A form field the accepts numbers only
+ * Form Field that accepts text
  */
-class NumberField extends Component {
+class ShortTextField extends Component {
   static propTypes = {
     ...commonPropTypes,
-    min: number,
-    max: number,
+    maxLength: number,
   }
 
   static defaultProps = {
     ...commonDefaultProps,
-    type: 'number',
-    min: Number.MIN_VALUE,
-    max: Number.MAX_VALUE,
+    type: 'text',
+    maxLength: 524288,
   }
 
   /**
@@ -38,8 +36,7 @@ class NumberField extends Component {
       required,
       description,
       placeholder,
-      min,
-      max,
+      maxLength,
       next,
       err } = this.props
 
@@ -54,12 +51,11 @@ class NumberField extends Component {
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
           ref={refProp}
           required={required}
-          min={min}
-          max={max}
+          maxLength={maxLength}
         />
       </Field>
     )
   }
 }
 
-export default withFieldProps( NumberField )
+export default withFieldProps( ShortTextField )

@@ -3,7 +3,7 @@ import { bool } from 'prop-types'
 
 import style from './DateField.css'
 import Field from './Field'
-import { withFieldProps, commonPropTypes, commonDefaultProps } from './hocs/withFieldProps'
+import { withFieldProps, commonPropTypes, commonDefaultProps } from '../hocs/withFieldProps'
 
 /**
  * Form Field that takes date and time values.
