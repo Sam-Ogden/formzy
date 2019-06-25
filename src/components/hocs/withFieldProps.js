@@ -78,26 +78,21 @@ export const withFieldProps = WrappedComponent => class extends Component {
     const { next } = this.props
     const { err } = this.state
 
-    return (
-      <div>
-        {next
-          ? (
-            <WrappedComponent
-              {...this.props}
-              inputChange={this.inputChange}
-              next={this.next}
-              err={err}
-            />
-          )
-          : (
-            <WrappedComponent
-              {...this.props}
-              inputChange={this.inputChange}
-              err={err}
-            />
-          )
-        }
-      </div>
-    )
+    return next
+      ? (
+        <WrappedComponent
+          {...this.props}
+          inputChange={this.inputChange}
+          next={this.next}
+          err={err}
+        />
+      )
+      : (
+        <WrappedComponent
+          {...this.props}
+          inputChange={this.inputChange}
+          err={err}
+        />
+      )
   }
 }

@@ -65,17 +65,19 @@ class MultipleChoiceField extends Component {
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
         />
         <Field title={title} description={description} next={next} err={err}>
-          {options.map( option => (
-            <button
-              value={option}
-              type="button"
-              onClick={this.onChange}
-              key={option}
-              className={[ selected.includes( option ) ? style.active : '', style.optionButton ].join( ' ' )}
-            >
-              {option}
-            </button>
-          ) )}
+          <div className="mcf-options-container">
+            {options.map( option => (
+              <button
+                value={option}
+                type="button"
+                onClick={this.onChange}
+                key={option}
+                className={[ selected.includes( option ) ? style.active : '', style.optionButton ].join( ' ' )}
+              >
+                {option}
+              </button>
+            ) )}
+          </div>
         </Field>
       </div>
     )
