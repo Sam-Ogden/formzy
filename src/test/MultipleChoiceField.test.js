@@ -17,6 +17,48 @@ describe( 'MultipleChoiceField Component', () => {
     expect( wrapper.exists() ).toBe( true )
   } )
 
+  // Next function is provided by the Higher Order Component in ../components/hocs/withFieldProps
+  describe( 'next function with passing validation', () => {
+    test( 'onChange prop function is called and returns correct value', () => {
+      const name = 'field'
+      const hoc = shallow(
+        <MultipleChoiceField
+          name={name}
+          title="field"
+          options={OPTIONS}
+          onChange={( name, value ) => ( { name, value } )}
+          next={() => 1}
+          validate={() => ''} // validation passes when string is empty
+          refProp={React.createRef( 0 )}
+        />,
+      )
+      const child = mount( hoc.get( 0 ) )
+      child.instance().onChange( { target: { value: 'A' } } )
+      expect( hoc.instance().next() ).toEqual( { name, value: [ 'A' ] } )
+    } )
+  } )
+
+  describe( 'next function with failing validation', () => {
+    test( 'next returns null and err state variable is non-empty', () => {
+      const validationErr = 'ERR'
+      const name = 'field'
+      const hoc = shallow(
+        <MultipleChoiceField
+          name={name}
+          title="field"
+          options={OPTIONS}
+          onChange={( name, value ) => ( { name, value } )}
+          next={() => 1}
+          validate={() => validationErr} // validation fails when string is non-empty
+          refProp={React.createRef( 0 )}
+        />,
+      )
+      const child = mount( hoc.get( 0 ) )
+      child.instance().onChange( { target: { value: 'A' } } )
+      expect( hoc.instance().next() ).toEqual( null )
+      expect( hoc.instance().state.err ).toEqual( validationErr )
+    } )
+  } )
   /**
    * Multiple prop is false
    * - options are rendered
