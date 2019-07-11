@@ -3,7 +3,9 @@ import { number } from 'prop-types'
 
 import style from './Field.css'
 import Field from './Field'
-import { withFieldProps, commonPropTypes, commonDefaultProps } from '../hocs/withFieldProps'
+import { withFieldPropsAndFieldTransition,
+  commonPropTypes,
+  commonDefaultProps } from '../hocs/withFieldPropsAndFieldTransition'
 
 /**
  * Form Field that accepts text
@@ -58,4 +60,4 @@ class ShortTextField extends Component {
   }
 }
 
-export default withFieldProps( ShortTextField )
+export default withFieldPropsAndFieldTransition( ShortTextField )

@@ -42,7 +42,7 @@ describe( 'MultipleChoiceField Component', () => {
     expect( hoc.instance().state.value ).toEqual( newValue )
   } )
 
-  // Next function is provided by the Higher Order Component in ../components/hocs/withFieldProps
+  // Next function is provided by the Higher Order Component in ../components/hocs/withFieldPropsAndFieldTransition
   describe( 'next function with passing validation', () => {
     test( 'onChange prop function is called and returns correct value', () => {
       const name = 'field'
@@ -87,7 +87,7 @@ describe( 'MultipleChoiceField Component', () => {
       expect( wrapper.find( '.mcf-options-container button' ).length ).toBe( OPTIONS.length )
     } )
 
-    test( 'value is received by HOC withFieldProps', () => {
+    test( 'value is received by HOC withFieldPropsAndFieldTransition', () => {
       const hoc = shallow( MCFWithPassingValidation )
       const child = mount( hoc.get( 0 ) )
       child.instance().onChange( { target: { value: 'A' } } )

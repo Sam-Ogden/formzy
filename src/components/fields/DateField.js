@@ -3,7 +3,9 @@ import { bool } from 'prop-types'
 
 import style from './DateField.css'
 import Field from './Field'
-import { withFieldProps, commonPropTypes, commonDefaultProps } from '../hocs/withFieldProps'
+import { withFieldPropsAndFieldTransition,
+  commonPropTypes,
+  commonDefaultProps } from '../hocs/withFieldPropsAndFieldTransition'
 
 /**
  * Form Field that takes date and time values.
@@ -107,4 +109,4 @@ class DateField extends Component {
   }
 }
 
-export default withFieldProps( DateField )
+export default withFieldPropsAndFieldTransition( DateField )

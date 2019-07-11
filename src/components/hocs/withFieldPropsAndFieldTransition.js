@@ -36,11 +36,11 @@ export const commonDefaultProps = {
 }
 
 /**
- * withFieldProps is a higher order component adding common functionality required by all fields
+ * withFieldPropsAndFieldTransition is a higher order component adding common functionality required by all fields
  * @param {Element} WrappedComponent The component to add common functionality to
  * @returns {Class} A new component type with additional functionality added
  */
-export const withFieldProps = WrappedComponent => class extends Component {
+export const withFieldPropsAndFieldTransition = WrappedComponent => class extends Component {
   state = { value: null, err: '' }
 
   static propTypes = commonPropTypes

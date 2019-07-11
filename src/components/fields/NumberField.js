@@ -3,7 +3,9 @@ import { number } from 'prop-types'
 
 import style from './Field.css'
 import Field from './Field'
-import { withFieldProps, commonPropTypes, commonDefaultProps } from '../hocs/withFieldProps'
+import { withFieldPropsAndFieldTransition,
+  commonPropTypes,
+  commonDefaultProps } from '../hocs/withFieldPropsAndFieldTransition'
 
 /**
  * A form field the accepts numbers only
@@ -62,4 +64,4 @@ class NumberField extends Component {
   }
 }
 
-export default withFieldProps( NumberField )
+export default withFieldPropsAndFieldTransition( NumberField )
