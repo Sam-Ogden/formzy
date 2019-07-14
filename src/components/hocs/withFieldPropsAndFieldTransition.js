@@ -36,7 +36,8 @@ export const commonDefaultProps = {
 }
 
 /**
- * withFieldPropsAndFieldTransition is a higher order component adding common functionality required by all fields
+ * withFieldPropsAndFieldTransition is a higher order component adding common
+ * functionality required by all fields
  * @param {Element} WrappedComponent The component to add common functionality to
  * @returns {Class} A new component type with additional functionality added
  */
