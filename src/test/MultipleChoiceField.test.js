@@ -42,7 +42,10 @@ describe( 'MultipleChoiceField Component', () => {
     expect( hoc.instance().state.value ).toEqual( newValue )
   } )
 
-  // Next function is provided by the Higher Order Component in ../components/hocs/withFieldPropsAndFieldTransition
+  /**
+   * Next function is provided by the Higher Order Component in
+   * ../components/hocs/withFieldPropsAndFieldTransition
+  */
   describe( 'next function with passing validation', () => {
     test( 'onChange prop function is called and returns correct value', () => {
       const name = 'field'

@@ -7,7 +7,7 @@ import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
 import SubmitField from './fields/SubmitField'
 
-let refs = [] // to scroll to the container of a Field
+let fieldContainerRefs = [] // to scroll to the container of a Field
 let inputRefs = [] // to focus on the next input of a field
 let childrenArr = []
 
@@ -29,7 +29,7 @@ const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
 const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
   <div
     className={formStyle.fieldContainer}
-    ref={refs[ i ]}
+    ref={fieldContainerRefs[ i ]}
     key={i}
   >
     {React.cloneElement( Field, {
@@ -71,7 +71,7 @@ export default class FormContainer extends Component {
     const { children, scrollDuration, edgeOffset } = this.props
     const formLength = children.length || 1
     // Create refs for field containers and inputs
-    refs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( i ) )
+    fieldContainerRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( i ) )
     inputRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( -i ) )
     // Setup scroll behaviour
     zenscroll.setup( scrollDuration, edgeOffset )
@@ -94,7 +94,7 @@ export default class FormContainer extends Component {
         inputRefs[ i ].current.focus()
         if ( i === childrenArr.length ) zenscroll.center( inputRefs[ i ].current )
       } else {
-        zenscroll.to( refs[ i ].current )
+        zenscroll.to( fieldContainerRefs[ i ].current )
         setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration - 50 )
       }
     }

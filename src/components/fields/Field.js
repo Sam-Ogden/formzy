@@ -8,14 +8,14 @@ import style from './Field.css'
  * @returns {Element} Field component with title, description and next button if needed
  */
 const Field = ( { children, description, title, next, err } ) => (
-  <div>
-    <h4 className={style.title}>{title}</h4>
-    {description !== '' && <p className={style.description}>{description}</p>}
+  <div className="field">
+    <h4 className={`title ${style.title}`}>{title}</h4>
+    {description !== '' && <p className={`desc ${style.description}`}>{description}</p>}
     {children}
 
     {next
       && (
-      <div>
+      <div className="next-button">
         <button className={style.nextBtn} type="button" onClick={next}>Next</button>
         <span>
           Press
@@ -25,7 +25,7 @@ const Field = ( { children, description, title, next, err } ) => (
       )
     }
 
-    {err && <div className={style.errorBar}>{err}</div>}
+    {err && <div className={`validation-error ${style.errorBar}`}>{err}</div>}
   </div>
 )
 

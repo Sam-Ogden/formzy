@@ -59,7 +59,7 @@ class DateField extends Component {
               onChange={this.onChange}
               ref={refProp}
               required={required}
-              className={style.inputField}
+              className={`datefield-day ${style.inputField}`}
               min={0}
               max={31}
             />
@@ -72,7 +72,7 @@ class DateField extends Component {
               placeholder="mm"
               onChange={this.onChange}
               required={required}
-              className={style.inputField}
+              className={`datefield-month ${style.inputField}`}
               min={1}
               max={12}
             />
@@ -85,7 +85,7 @@ class DateField extends Component {
               placeholder="yyyy"
               onChange={this.onChange}
               required={required}
-              className={style.inputField}
+              className={`datefield-year ${style.inputField}`}
               min={0}
             />
           </span>
@@ -99,7 +99,7 @@ class DateField extends Component {
                   placeholder="00:00"
                   onChange={this.onChange}
                   required={required}
-                  className={style.inputField}
+                  className={`datefield-time ${style.inputField}`}
                 />
               </span>
               )}
