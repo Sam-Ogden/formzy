@@ -72,6 +72,7 @@ static defaultProps  = {
 ```
 ## Field Components
 Field components are always children of the FormContainer component
+
 All fields have a common set of props as shown below, as well as additional props relevant only to themselves 
 ```jsx
 const commonPropTypes = {
