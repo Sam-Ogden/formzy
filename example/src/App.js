@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld } from 'react-form'
 
 const orangeValidation = value => value >= 0 ? '' : 'Number of oranges must be greater than or equal to 0'
-const genderOpts = ['Male', 'Female', 'Other']
+const opts = ['Banana', 'Apple', 'Orange', 'Chicken Wings']
 
 export default class App extends Component {
 
@@ -18,10 +18,10 @@ export default class App extends Component {
         onSubmit={this.submit}
         submitTitle="Thanks!" 
         submitButtonText="Send form"
-        submitDescription="We will be in touch shortly."
+        submitDescription="You will have your oranges shortly."
       >
         <ShortTextField title="What is your name?" name="name" required />
-        <MultipleChoiceFIeld title="What gender are you?" name="gender" options={genderOpts} multiple/>
+        <MultipleChoiceFIeld title="Select the fruit you like" name="fruits" options={opts} multiple/>
         <NumberField 
           title="How many oranges would you like?" 
           name="noranges" 
@@ -30,7 +30,7 @@ export default class App extends Component {
           max={10}
           defaultValue={5}
         />
-        <DateField title="When were you born?" name="dob" />
+        <DateField title="When would you like your oranges?" name="orrangedate" />
       </FormContainer>
     )
   }
