@@ -45,7 +45,7 @@ class ShortTextField extends Component {
     return (
       <Field title={title} description={description} next={next} err={err}>
         <input
-          className={style.input}
+          className={`textfield-input ${style.input}`}
           placeholder={placeholder}
           type={type}
           name={name}

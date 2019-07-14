@@ -7,11 +7,9 @@ import DateField from '../components/fields/DateField'
 Enzyme.configure( { adapter: new Adapter() } )
 
 /**
- * Default value prop shows in value in state
- * Changing the fields changes the state
- * validation passes then state is returned
- * validation fails then string is returned
- * if includeTime prop is true then time field is visible
+ * - Default value prop shows value in state
+ * - Changing the fields changes the state
+ * - if includeTime prop is true then time field is visible
  */
 
 const dateFieldWithTime = (
@@ -55,6 +53,11 @@ describe( 'DateField Component', () => {
     timeinput.simulate( 'change', { target: { name: 'time', value: 0 } } )
 
     expect( dateField.instance().state.value ).toEqual( { day: 1, month: 2, year: 2000, time: 0 } )
+  } )
+
+  test( 'default prop value is saved in state', () => {
+    const dateField = mount( dateFieldWithTime )
+    expect( dateField.instance().state.value ).toEqual( { day: 1, month: 2, year: 2000 } )
   } )
 } )
 
