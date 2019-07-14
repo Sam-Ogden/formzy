@@ -45,6 +45,7 @@ render () {
 
 ### FormContainer
 Container component for handling form state and transitions between form fields. 
+
 **All Fields in the form must be children of the FormContainer component.**
 ```jsx
 static propTypes  = {
