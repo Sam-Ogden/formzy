@@ -7,9 +7,16 @@ import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
 import SubmitField from './fields/SubmitField'
 
+/**
+ * TODO
+ * -  Validation: pass in an object of validation (max, min, limit, required)
+ *    and pass this and value to validate value
+ */
+
 let fieldContainerRefs = [] // to scroll to the container of a Field
 let inputRefs = [] // to focus on the next input of a field
 let childrenArr = []
+const validationFuncs = {}
 
 /**
  * @param {Number} i Current position
@@ -23,10 +30,11 @@ const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
  * @param {Number} i The index of the field in the form
  * @param {Element} Field A field component (e.g. NumberField, DateField etc)
  * @param {Function} onChange The function to call when this Field is changed
- * @param {Function} scrollToRef The function to call to scroll to next field
+ * @param {Function} setDefaultValue Method to set default value without validation
+ * @param {String} err The validation err if any for given input for this field
  * @returns {Element} The field wrapped in a container
  */
-const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
+const FieldContainer = ( i, Field, onChange, setDefaultValue, err ) => (
   <div
     className={formStyle.fieldContainer}
     ref={fieldContainerRefs[ i ]}
@@ -34,8 +42,10 @@ const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
   >
     {React.cloneElement( Field, {
       onChange,
-      next: () => scrollToRef( i + 1 ),
       refProp: inputRefs[ i ], // Pass ref down to input element for focussing
+      setDefaultValue,
+      err,
+      fieldIndex: i,
     } )}
   </div>
 )
@@ -68,18 +78,27 @@ export default class FormContainer extends Component {
   }
 
   componentWillMount = () => {
-    const { children, scrollDuration, edgeOffset } = this.props
+    const { children } = this.props
     const formLength = children.length || 1
     // Create refs for field containers and inputs
     fieldContainerRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( i ) )
     inputRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( -i ) )
-    // Setup scroll behaviour
-    zenscroll.setup( scrollDuration, edgeOffset )
     // If single child is passed then convert it to array
     childrenArr = Array.isArray( children ) ? children : Children.toArray( children )
   }
 
-  state = { form: {}, active: 0 }
+  componentDidMount = () => {
+    const { scrollDuration, edgeOffset } = this.props
+    // Setup scroll behaviour
+    zenscroll.setup( scrollDuration, edgeOffset )
+    // Get validation funcs from children
+    childrenArr.forEach( Field => {
+      const { name, validate } = Field.props
+      validationFuncs[ name ] = validate
+    } )
+  }
+
+  state = { form: {}, active: 0, errors: {} }
 
   /**
    *  Handles scrolling between form elements and focus on next input field
@@ -106,10 +125,28 @@ export default class FormContainer extends Component {
    * Called by Fields to update the form state in the container
    * @param {String} fieldName The name attribute value of an input field
    * @param {Any} newVal The value to update fieldName to
+   * @param {Number} fieldIndex The index of the field being updated
    */
-  onChange = ( fieldName, newVal ) => {
+  onChange = ( fieldName, newVal, fieldIndex ) => {
+    const { form, errors } = this.state
+    const error = validationFuncs[ fieldName ] ? validationFuncs[ fieldName ]( newVal ) : ''
+
+    if ( error !== '' ) {
+      this.setState( { form: ( { ...form, [ fieldName ]: newVal } ),
+        errors: { ...errors, [ fieldName ]: error } } )
+    } else {
+      this.scrollToRef( fieldIndex + 1 )
+      this.setState( { form: ( { ...form, [ fieldName ]: newVal } ) } )
+    }
+  }
+
+  /**
+   * @param {String} fieldName name of field to update
+   * @param {Any} value the value to set for fieldname
+   */
+  setDefaultValue = ( fieldName, value ) => {
     const { form } = this.state
-    this.setState( { form: ( { ...form, [ fieldName ]: newVal } ) } )
+    this.setState( { form: { ...form, [ fieldName ]: value } } )
   }
 
   /**
@@ -119,6 +156,23 @@ export default class FormContainer extends Component {
   submit = () => {
     const { onSubmit } = this.props
     const { form } = this.state
+
+    // Validate inputs
+    const fields = Object.keys( validationFuncs )
+    const errors = {}
+    fields.forEach( fieldName => {
+      const error = validationFuncs[ fieldName ]( form[ fieldName ] )
+      if ( error !== '' ) errors[ fieldName ] = error
+    } )
+
+    // scroll to first field with error or submit if no errors
+    if ( Object.keys( errors ).length !== 0 ) {
+      const fieldIndexOfError = childrenArr.findIndex(
+        obj => obj.props.name === Object.keys( errors )[ 0 ],
+      )
+      this.scrollToRef( fieldIndexOfError )
+      return this.setState( { errors } )
+    }
     return onSubmit( form )
   }
 
@@ -132,6 +186,7 @@ export default class FormContainer extends Component {
 
     const {
       active,
+      errors,
     } = this.state
 
     const submitComponent = (
@@ -146,7 +201,12 @@ export default class FormContainer extends Component {
     return (
       <form className={formStyle.formContainer}>
         {childrenArr.map(
-          ( Field, i ) => FieldContainer( i, Field, this.onChange, this.scrollToRef ),
+          ( Field, i ) => {
+            const { name } = Field.props
+            return FieldContainer(
+              i, Field, this.onChange, this.setDefaultValue, errors[ name ],
+            )
+          },
         )}
 
         {FieldContainer( childrenArr.length, submitComponent, this.onChange )}
