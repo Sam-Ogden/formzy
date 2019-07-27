@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld } from 'react-form'
+import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld } from 'react-formtype'
 
 const orangeValidation = value => value >= 0 ? '' : 'Number of oranges must be greater than or equal to 0'
 const opts = ['Banana', 'Apple', 'Orange', 'Chicken Wings']
