@@ -1,8 +1,10 @@
 # react-form
 >
-[![NPM](https://img.shields.io/npm/v/react-form.svg)](https://www.npmjs.com/package/react-form) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-form.svg)](https://www.npmjs.com/package/react-formtype) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 A react library for building forms with similar functionality to TypeForm.
+
+This is still a work in progress and the first version is yet to be released. 
 
 ![](example.gif)
 ## Install
@@ -16,9 +18,8 @@ npm install --save react-formtype
 ```jsx
 import React, { Component } from 'react'
 
-import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld } from 'react-form'
+import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld } from 'react-formtype'
 
-const orangeValidation = value => value >= 0 ? '' : 'Number of oranges must be greater than or equal to 0'
 const opts = ['Banana', 'Apple', 'Orange', 'Chicken Wings']
 
 export default class App extends Component {
@@ -41,7 +42,6 @@ export default class App extends Component {
         <NumberField 
           title="How many oranges would you like?" 
           name="noranges" 
-          validate={orangeValidation} 
           min={0} 
           max={10}
           defaultValue={5}
@@ -100,8 +100,6 @@ const commonPropTypes = {
   defaultValue: any, // The default value the field should take
   required: bool, // Whether a value must be entered by the user
   placeholder: string, // Input placeholder text
-  // a function called with the given user value as an input, return empty string if valid else else an err message
-  validate: func, 
 }
 const commonDefaultProps = {
   description: '',
@@ -117,10 +115,12 @@ const commonDefaultProps = {
 ### ShortTextField
 ```jsx
 const additionalProps = {
-  maxLength: number,
+  maxTextLength: number,
+  minTextLength: number,
 }
 const defaultProps = {
-  maxLength: 524288,
+  maxTextLength: 524288,
+  minTextLength: 0,
 }
 ```
 ### NumberField

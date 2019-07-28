@@ -51,7 +51,7 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
   static defaultProps = commonDefaultProps
 
   componentDidMount() {
-    const { defaultValue, onChange, name } = this.props
+    const { defaultValue, onChange, name, fieldIndex, registerValidationError } = this.props
     // Set default value and save in FormContainer state
     if ( defaultValue ) {
       this.setState( { value: defaultValue } )
@@ -59,7 +59,8 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
     }
 
     this.requiredValidation = getValidationMethodsFromProps( this.props )
-    validateFromArray( defaultValue, this.requiredValidation )
+    const err = validateFromArray( defaultValue, this.requiredValidation )
+    registerValidationError( fieldIndex, err )
   }
 
   /**
