@@ -53,7 +53,7 @@ describe( 'Field Component', () => {
   } )
 
   test( 'error box is shown with invalid input', () => {
-    const field = mount( <Field title="title" err="error"><b /></Field> )
+    const field = mount( <Field title="title" err={[ 'error' ]}><b /></Field> )
     expect( field.find( '.field .validation-error' ).length ).toEqual( 1 )
   } )
 
