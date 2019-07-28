@@ -32,6 +32,7 @@
     "import/prefer-default-export": 0,
     "linebreak-style": 0,
     "no-await-in-loop": 0,
+    "no-use-before-define": 0,
     "no-loop-func": 0,
     "no-multiple-empty-lines": [
       "error",
