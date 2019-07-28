@@ -2,6 +2,7 @@ import React, { Component, Children } from 'react'
 import { func, arrayOf, instanceOf, bool, number, string, oneOfType } from 'prop-types'
 import zenscroll from 'zenscroll'
 import is from 'is_js'
+import _ from 'lodash'
 
 import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
@@ -24,9 +25,10 @@ const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
  * @param {Element} Field A field component (e.g. NumberField, DateField etc)
  * @param {Function} onChange The function to call when this Field is changed
  * @param {Function} scrollToRef The function to call to scroll to next field
+ * @param {Function} registerValidationError function to register errors with a fields input
  * @returns {Element} The field wrapped in a container
  */
-const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
+const FieldContainer = ( i, Field, onChange, scrollToRef, registerValidationError ) => (
   <div
     className={formStyle.fieldContainer}
     ref={fieldContainerRefs[ i ]}
@@ -36,6 +38,8 @@ const FieldContainer = ( i, Field, onChange, scrollToRef ) => (
       onChange,
       next: () => scrollToRef( i + 1 ),
       refProp: inputRefs[ i ], // Pass ref down to input element for focussing
+      registerValidationError,
+      fieldIndex: i,
     } )}
   </div>
 )
@@ -79,7 +83,7 @@ export default class FormContainer extends Component {
     childrenArr = Array.isArray( children ) ? children : Children.toArray( children )
   }
 
-  state = { form: {}, active: 0 }
+  state = { form: {}, active: 0, errors: {} }
 
   /**
    *  Handles scrolling between form elements and focus on next input field
@@ -113,13 +117,32 @@ export default class FormContainer extends Component {
   }
 
   /**
+   * Allows fields to register validation errors. This allows checks to occur onSubmit
+   * @param {Number} fieldIndex the index of the field in the form with errors
+   * @param {Array} err array of strings of errors for given field
+   */
+  registerValidationError = ( fieldIndex, err ) => {
+    const { errors } = this.state
+    this.setState( { errors: { ...errors, [ fieldIndex ]: err } } )
+  }
+
+  /**
    * Function to run when submit button is hit
    * @returns {Any} onSubmit prop function call
    */
   submit = () => {
     const { onSubmit } = this.props
-    const { form } = this.state
-    return onSubmit( form )
+    const { form, errors } = this.state
+
+    const isValid = _.reduce(
+      _.keys( errors ), ( bool, fieldIndex ) => ( bool && errors[ fieldIndex ].length === 0 ), true,
+    )
+
+    if ( isValid ) return onSubmit( form )
+
+    // Scroll to first error
+    this.scrollToRef( Number.parseInt( _.keys( errors )[ 0 ], 10 ) )
+    return false
   }
 
   render() {
@@ -146,7 +169,9 @@ export default class FormContainer extends Component {
     return (
       <form className={formStyle.formContainer}>
         {childrenArr.map(
-          ( Field, i ) => FieldContainer( i, Field, this.onChange, this.scrollToRef ),
+          ( Field, i ) => FieldContainer(
+            i, Field, this.onChange, this.scrollToRef, this.registerValidationError,
+          ),
         )}
 
         {FieldContainer( childrenArr.length, submitComponent, this.onChange )}

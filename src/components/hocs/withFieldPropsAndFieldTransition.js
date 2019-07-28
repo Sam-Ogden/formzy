@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
-import { func, string, instanceOf, shape, bool, any } from 'prop-types'
+import { func, string, instanceOf, shape, bool, any, number } from 'prop-types'
+
+import {
+  validateFromArray,
+  getValidationMethodsFromProps,
+} from '../../utils/validation'
 
 // Props that may be used by all Fields of the form
 export const commonPropTypes = {
   title: string.isRequired, // Title of the Field
   description: string, // Optional description offering instructions
   name: string, // The input field name, values entered by user is stored as [name]: value
+  fieldIndex: number, // Index of the field in the form
   type: string, // The field type
   // eslint-disable-next-line react/forbid-prop-types
   defaultValue: any, // The default value the field should take
@@ -14,12 +20,7 @@ export const commonPropTypes = {
   onChange: func, // This is passed in by FormContainer to update the form state
   next: func, // This is passed in by FormContainer to scroll to the next field
   refProp: shape( { current: instanceOf( Element ) } ),
-  /**
-   * the validate function must return an error string if the input is invalid
-   * @param {Any} value The value entered by the user
-   * @returns {String} an error message if the user made an error, otherwise an empty string
-   */
-  validate: func,
+  registerValidationError: func, // Pass errors back to FormContainer (to validate when onSubmit)
 }
 
 export const commonDefaultProps = {
@@ -28,11 +29,12 @@ export const commonDefaultProps = {
   type: 'text',
   defaultValue: null,
   name: '',
+  fieldIndex: 0,
   required: false,
   placeholder: 'Type your answer here...',
-  validate: () => '',
   onChange: () => null,
   next: () => true,
+  registerValidationError: () => null,
 }
 
 /**
@@ -42,7 +44,7 @@ export const commonDefaultProps = {
  * @returns {Class} A new component type with additional functionality added
  */
 export const withFieldPropsAndFieldTransition = WrappedComponent => class extends Component {
-  state = { value: null, err: '' }
+  state = { value: null, err: [] }
 
   static propTypes = commonPropTypes
 
@@ -55,9 +57,25 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
       this.setState( { value: defaultValue } )
       onChange( name, defaultValue )
     }
+
+    this.requiredValidation = getValidationMethodsFromProps( this.props )
+    validateFromArray( defaultValue, this.requiredValidation )
   }
 
-  inputChange = value => this.setState( { value } )
+  /**
+   * We store the new value in parent along with validation errors before hitting next/enter
+   * Ensures the value and errors are registered incase user scrolls to next field without
+   * hitting next btn
+   * Dont set err state here, only when user tries to progress display error
+   * @param {any} value the new value
+   */
+  inputChange = value => {
+    const { registerValidationError, onChange, name, fieldIndex } = this.props
+    const err = validateFromArray( value, this.requiredValidation )
+    this.setState( { value } )
+    registerValidationError( fieldIndex, err )
+    onChange( name, value )
+  }
 
   /**
    * Function called by Fields to progress to the next Field
@@ -65,15 +83,16 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
    * @returns {Any} result of onChange call or null if errors during validation
    */
   next = () => {
-    const { next: nextProp, validate, onChange, name } = this.props
+    const { next: nextProp } = this.props
     const { value } = this.state
-    const err = validate( value )
+    const err = validateFromArray( value, this.requiredValidation )
+    // Show errors to user when they try to progress
     this.setState( { err } )
-    if ( !err ) {
+    if ( err.length === 0 ) {
       nextProp()
-      return onChange( name, value )
+      return true
     }
-    return null
+    return false
   }
 
   render() {

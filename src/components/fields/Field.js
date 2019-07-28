@@ -1,5 +1,5 @@
 import React from 'react'
-import { string, func, instanceOf } from 'prop-types'
+import { string, func, instanceOf, arrayOf } from 'prop-types'
 
 import style from './Field.css'
 
@@ -25,7 +25,7 @@ const Field = ( { children, description, title, next, err } ) => (
       )
     }
 
-    {err && <div className={`validation-error ${style.errorBar}`}>{err}</div>}
+    {err.map( ( e, i ) => ( <div key={i} className={`validation-error ${style.errorBar}`}>{e}</div> ) )}
   </div>
 )
 
@@ -34,13 +34,13 @@ Field.propTypes = {
   title: string.isRequired, // The title of the field
   description: string, // Description for additional instructions
   next: func, // The function to call to scroll to the next field
-  err: string, // Any errors in the input given by a user
+  err: arrayOf( string ), // Any errors in the input given by a user
 }
 
 Field.defaultProps = {
   description: '',
   next: null,
-  err: '',
+  err: [],
 }
 
 export default Field
