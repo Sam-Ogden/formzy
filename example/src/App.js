@@ -28,7 +28,7 @@ export default class App extends Component {
           max={10}
           defaultValue={5}
         />
-        <DateField title="When would you like your oranges?" name="orrangedate" />
+        <DateField title="When would you like your oranges?" name="orrangedate" required/>
       </FormContainer>
     )
   }

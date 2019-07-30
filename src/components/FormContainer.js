@@ -56,7 +56,7 @@ class FormContainer extends Component {
     zenscroll.setup( scrollDuration, edgeOffset )
   }
 
-  state = { form: {}, active: 0 }
+  state = { form: {}, active: 0, submissionErrors: {} }
 
   errors = {}
 
@@ -69,9 +69,13 @@ class FormContainer extends Component {
     const { defaultDuration } = zenscroll.setup()
 
     if ( i <= childrenArr.length ) {
-      zenscroll.to( fieldContainerRefs[ i ].current, null, () => {
-      } )
-      setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration )
+      try {
+        zenscroll.to( fieldContainerRefs[ i ].current, null, () => {
+        } )
+        setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration )
+      } catch ( TypeError ) {
+        return
+      }
     }
 
     this.setState( { active: i } )
@@ -93,6 +97,15 @@ class FormContainer extends Component {
    * @param {Array} err array of strings of errors for given field
    */
   registerValidationError = ( fieldIndex, err ) => {
+    const { submissionErrors } = this.state
+
+    // Clear submission errors for this field since user is trying to rectify them
+    if ( submissionErrors[ fieldIndex ] && submissionErrors[ fieldIndex ].length !== 0 ) {
+      const newState = { ...submissionErrors, [ fieldIndex ]: [] }
+      this.setState( { submissionErrors: newState } )
+    }
+
+    // register new errors without re-render
     this.errors = { ...this.errors, [ fieldIndex ]: err }
   }
 
@@ -111,6 +124,8 @@ class FormContainer extends Component {
 
     if ( isValid ) return onSubmit( form )
 
+    // Re render with registered errors
+    this.setState( { submissionErrors: this.errors } )
     // Scroll to first error
     this.scrollToRef( Number.parseInt( _.keys( this.errors )[ 0 ], 10 ) )
     return false
@@ -124,7 +139,7 @@ class FormContainer extends Component {
       submitButtonText,
     } = this.props
 
-    const { active } = this.state
+    const { active, submissionErrors: errs } = this.state
 
     const submitComponent = (
       <SubmitField
@@ -139,7 +154,7 @@ class FormContainer extends Component {
       <form className={formStyle.formContainer}>
         {childrenArr.map(
           ( Field, i ) => FieldContainer(
-            i, Field, this.onChange, this.scrollToRef, this.registerValidationError,
+            i, Field, this.onChange, this.scrollToRef, this.registerValidationError, errs[ i ],
           ),
         )}
 
@@ -158,9 +173,10 @@ class FormContainer extends Component {
  * @param {Function} onChange The function to call when this Field is changed
  * @param {Function} scrollToRef The function to call to scroll to next field
  * @param {Function} registerValidationError function to register errors with a fields input
+ * @param {Array<String>} errs array of errors assocaited with user input for this field
  * @returns {Element} The field wrapped in a container
  */
-const FieldContainer = ( i, Field, onChange, scrollToRef, registerValidationError ) => (
+const FieldContainer = ( i, Field, onChange, scrollToRef, registerValidationError, errs ) => (
   <div
     className={formStyle.fieldContainer}
     ref={fieldContainerRefs[ i ]}
@@ -172,6 +188,7 @@ const FieldContainer = ( i, Field, onChange, scrollToRef, registerValidationErro
       refProp: inputRefs[ i ], // Pass ref down to input element for focussing
       registerValidationError,
       fieldIndex: i,
+      submissionErrors: errs,
     } )}
   </div>
 )

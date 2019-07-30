@@ -12,17 +12,19 @@ export const validationMethods = {
 }
 
 /**
- * Validate a value given array of validation methods and validation values
+ * Validate a value given array of required validation methods, validation values and optional
+ * methods object (allowing for custom validation methods)
  * @param {any} value the value to validate
  * @param {Array} requirements arr of objects corresponding to required validationMethods
+ * @param {Object} [methods = validationMethods] validation methods to use (optional)
  * @returns {Array} array of strings corresponding to the errors, or an empty array if no error
  * @example validateFromArray( 6, [ { min:0 },{ max:10 } ] )
  */
-export const validateFromArray = ( value, requirements ) => {
+export const validateFromArray = ( value, requirements, methods = validationMethods ) => {
   const errors = []
   requirements.forEach( method => {
     const methodKey = _.keys( method )[ 0 ]
-    const err = validationMethods[ methodKey ]( value, method[ methodKey ] )
+    const err = methods[ methodKey ]( value, method[ methodKey ] )
     if ( err !== '' ) errors.push( err )
   } )
   return errors
@@ -31,8 +33,11 @@ export const validateFromArray = ( value, requirements ) => {
 /**
  * Get the validationMethods requested in props as an array of keys
  * @param {Object} props object containing the validation props
+ * @param {Object} [methods = validationMethods] validation methods to use (optional)
  * @returns {Array} arr of strs corresponding to required validation methods in validationMethods
  */
-export const getValidationMethodsFromProps = props => _.intersection(
-  _.keys( props ), _.keys( validationMethods ),
+export const getValidationMethodsFromProps = (
+  props, methods = validationMethods,
+) => _.intersection(
+  _.keys( props ), _.keys( methods ),
 ).map( key => ( { [ key ]: props[ key ] } ) )

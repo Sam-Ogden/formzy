@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { func, string, instanceOf, shape, bool, any, number } from 'prop-types'
+import { func, string, instanceOf, shape, bool, any, number, arrayOf } from 'prop-types'
+import _ from 'lodash'
 
 import {
   validateFromArray,
@@ -21,6 +22,7 @@ export const commonPropTypes = {
   next: func, // This is passed in by FormContainer to scroll to the next field
   refProp: shape( { current: instanceOf( Element ) } ),
   registerValidationError: func, // Pass errors back to FormContainer (to validate when onSubmit)
+  submissionErrors: arrayOf( string ),
 }
 
 export const commonDefaultProps = {
@@ -35,6 +37,7 @@ export const commonDefaultProps = {
   onChange: () => null,
   next: () => true,
   registerValidationError: () => null,
+  submissionErrors: [],
 }
 
 /**
@@ -97,7 +100,7 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
   }
 
   render() {
-    const { next } = this.props
+    const { next, submissionErrors } = this.props
     const { err } = this.state
 
     return next
@@ -106,14 +109,14 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
           {...this.props}
           inputChange={this.inputChange}
           next={this.next}
-          err={err}
+          err={_.union( err, submissionErrors )}
         />
       )
       : (
         <WrappedComponent
           {...this.props}
           inputChange={this.inputChange}
-          err={err}
+          err={_.union( err, submissionErrors )}
         />
       )
   }
