@@ -3,9 +3,122 @@ import { func, string, instanceOf, shape, bool, any, number, arrayOf } from 'pro
 import _ from 'lodash'
 
 import {
+  defaultValidationMethods,
   validateFromArray,
   getValidationMethodsFromProps,
 } from '../../utils/validation'
+
+/**
+ * withFieldPropsAndFieldTransition is a higher order component adding common
+ * functionality required by all fields
+ * @param {Element} WrappedComponent The component to add common functionality to
+ * @returns {Class} A new component type with additional functionality added
+ */
+export const withFieldPropsAndFieldTransition = WrappedComponent => class extends Component {
+  state = { value: null, err: [] }
+
+  requiredValidation = []
+
+  validationMethods = {}
+
+  static propTypes = commonPropTypes
+
+  static defaultProps = commonDefaultProps
+
+  componentWillMount() {
+    const { defaultValue, onChange, name } = this.props
+    // Set default value and save in FormContainer state
+    if ( defaultValue ) {
+      this.setState( { value: defaultValue } )
+      onChange( name, defaultValue )
+    }
+
+    // Set default validation. Can be overridden inside fields using props.setupValidation
+    const validationProps = getValidationMethodsFromProps( this.props )
+    this.setupValidation( validationProps, defaultValidationMethods )
+  }
+
+  /**
+   * Setup validation for this field and register initial errors from new setup
+   * @param {Array} checks [{ methodKey: value }] pairs to validate input value against
+   * e.g [{min: 0}, {max: 10}, {required: true}]
+   * @param {Object} methods object of key-function pairs
+   */
+  setupValidation = ( checks, methods ) => {
+    const { fieldIndex, registerValidationError, defaultValue } = this.props
+
+    this.requiredValidation = checks
+    this.validationMethods = methods
+
+    const err = validateFromArray(
+      defaultValue, this.requiredValidation, this.validationMethods, this.props,
+    )
+    registerValidationError( fieldIndex, err )
+  }
+
+  /**
+   * We store the new value in parent along with validation errors before hitting next/enter
+   * Ensures the value and errors are registered incase user scrolls to next field without
+   * hitting next btn
+   * Dont set err state here, only when user tries to progress display error
+   * @param {any} value the new value
+   */
+  inputChange = value => {
+    const { registerValidationError, onChange, name, fieldIndex } = this.props
+    this.setState( { value } )
+
+    const err = validateFromArray(
+      value, this.requiredValidation, this.validationMethods, this.props,
+    )
+
+    registerValidationError( fieldIndex, err )
+    onChange( name, value )
+  }
+
+  /**
+   * Function called by Fields to progress to the next Field
+   * Validation is performed and errors shown before scrolling to next Field
+   * @returns {Any} result of onChange call or null if errors during validation
+   */
+  next = () => {
+    const { next: nextProp } = this.props
+    const { value } = this.state
+    const err = validateFromArray(
+      value, this.requiredValidation, this.validationMethods, this.props,
+    )
+    // Show errors to user when they try to progress
+    this.setState( { err } )
+    if ( err.length === 0 ) {
+      nextProp()
+      return true
+    }
+    return false
+  }
+
+  render() {
+    const { next, submissionErrors } = this.props
+    const { err } = this.state
+
+    return next
+      ? (
+        <WrappedComponent
+          {...this.props}
+          inputChange={this.inputChange}
+          next={this.next}
+          err={_.union( err, submissionErrors )}
+          setupValidation={this.setupValidation}
+        />
+      )
+      : (
+        <WrappedComponent
+          {...this.props}
+          inputChange={this.inputChange}
+          err={_.union( err, submissionErrors )}
+          setupValidation={this.setupValidation}
+        />
+      )
+  }
+}
 
 // Props that may be used by all Fields of the form
 export const commonPropTypes = {
@@ -38,86 +151,4 @@ export const commonDefaultProps = {
   next: () => true,
   registerValidationError: () => null,
   submissionErrors: [],
-}
-
-/**
- * withFieldPropsAndFieldTransition is a higher order component adding common
- * functionality required by all fields
- * @param {Element} WrappedComponent The component to add common functionality to
- * @returns {Class} A new component type with additional functionality added
- */
-export const withFieldPropsAndFieldTransition = WrappedComponent => class extends Component {
-  state = { value: null, err: [] }
-
-  static propTypes = commonPropTypes
-
-  static defaultProps = commonDefaultProps
-
-  componentDidMount() {
-    const { defaultValue, onChange, name, fieldIndex, registerValidationError } = this.props
-    // Set default value and save in FormContainer state
-    if ( defaultValue ) {
-      this.setState( { value: defaultValue } )
-      onChange( name, defaultValue )
-    }
-
-    this.requiredValidation = getValidationMethodsFromProps( this.props )
-    const err = validateFromArray( defaultValue, this.requiredValidation )
-    registerValidationError( fieldIndex, err )
-  }
-
-  /**
-   * We store the new value in parent along with validation errors before hitting next/enter
-   * Ensures the value and errors are registered incase user scrolls to next field without
-   * hitting next btn
-   * Dont set err state here, only when user tries to progress display error
-   * @param {any} value the new value
-   */
-  inputChange = value => {
-    const { registerValidationError, onChange, name, fieldIndex } = this.props
-    const err = validateFromArray( value, this.requiredValidation )
-    this.setState( { value } )
-    registerValidationError( fieldIndex, err )
-    onChange( name, value )
-  }
-
-  /**
-   * Function called by Fields to progress to the next Field
-   * Validation is performed and errors shown before scrolling to next Field
-   * @returns {Any} result of onChange call or null if errors during validation
-   */
-  next = () => {
-    const { next: nextProp } = this.props
-    const { value } = this.state
-    const err = validateFromArray( value, this.requiredValidation )
-    // Show errors to user when they try to progress
-    this.setState( { err } )
-    if ( err.length === 0 ) {
-      nextProp()
-      return true
-    }
-    return false
-  }
-
-  render() {
-    const { next, submissionErrors } = this.props
-    const { err } = this.state
-
-    return next
-      ? (
-        <WrappedComponent
-          {...this.props}
-          inputChange={this.inputChange}
-          next={this.next}
-          err={_.union( err, submissionErrors )}
-        />
-      )
-      : (
-        <WrappedComponent
-          {...this.props}
-          inputChange={this.inputChange}
-          err={_.union( err, submissionErrors )}
-        />
-      )
-  }
 }

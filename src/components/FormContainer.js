@@ -17,27 +17,9 @@ let childrenArr = []
  * Maintains the form state and scrolling behaviour between form fields
  */
 class FormContainer extends Component {
-  static propTypes = {
-    onSubmit: func.isRequired, // Function to call upon submission. Accept object as argument.
-    children: oneOfType( [ arrayOf( // Array of fields (form body)
-      instanceOf( Object ),
-    ), instanceOf( Object ) ] ).isRequired,
-    showProgress: bool, // Whether to show progress bar
-    scrollDuration: number, // Scroll animation time
-    edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
-    submitTitle: string, // Title of the Submit field
-    submitDescription: string,
-    submitButtonText: string,
-  }
+  state = { form: {}, active: 0, submissionErrors: {} }
 
-  static defaultProps = {
-    showProgress: true,
-    scrollDuration: 777,
-    edgeOffset: 0,
-    submitTitle: 'Thank You!',
-    submitDescription: '',
-    submitButtonText: 'Submit Form',
-  }
+  errors = {}
 
   componentWillMount = () => {
     const { children } = this.props
@@ -56,10 +38,6 @@ class FormContainer extends Component {
     zenscroll.setup( scrollDuration, edgeOffset )
   }
 
-  state = { form: {}, active: 0, submissionErrors: {} }
-
-  errors = {}
-
   /**
    *  Handles scrolling between form elements and focus on next input field
    *  Handle scrolling behaviour differently depending on platform
@@ -70,8 +48,7 @@ class FormContainer extends Component {
 
     if ( i <= childrenArr.length ) {
       try {
-        zenscroll.to( fieldContainerRefs[ i ].current, null, () => {
-        } )
+        zenscroll.to( fieldContainerRefs[ i ].current, null )
         setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration )
       } catch ( TypeError ) {
         return
@@ -111,7 +88,7 @@ class FormContainer extends Component {
 
   /**
    * Function to run when submit button is hit
-   * @returns {Any} onSubmit prop function call
+   * @returns {Any} result of onSubmit or false if invalid user inputs
    */
   submit = () => {
     const { onSubmit } = this.props
@@ -158,7 +135,7 @@ class FormContainer extends Component {
           ),
         )}
 
-        {FieldContainer( childrenArr.length, submitComponent, this.onChange )}
+        {FieldContainer( childrenArr.length, submitComponent )}
 
         {showProgress && <ProgressBar progress={progress( active, childrenArr.length )} />}
       </form>
@@ -166,8 +143,29 @@ class FormContainer extends Component {
   }
 }
 
+FormContainer.propTypes = {
+  onSubmit: func.isRequired, // Function to call upon submission. Accept object as argument.
+  children: oneOfType( [ arrayOf( // Array of fields (form body)
+    instanceOf( Object ),
+  ), instanceOf( Object ) ] ).isRequired,
+  showProgress: bool, // Whether to show progress bar
+  scrollDuration: number, // Scroll animation time
+  edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
+  submitTitle: string, // Title of the Submit field
+  submitDescription: string,
+  submitButtonText: string,
+}
+
+FormContainer.defaultProps = {
+  showProgress: true,
+  scrollDuration: 777,
+  edgeOffset: 0,
+  submitTitle: 'Thank You!',
+  submitDescription: '',
+  submitButtonText: 'Submit Form',
+}
+
 /**
- *
  * @param {Number} i The index of the field in the form
  * @param {Element} Field A field component (e.g. NumberField, DateField etc)
  * @param {Function} onChange The function to call when this Field is changed

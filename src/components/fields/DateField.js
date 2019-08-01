@@ -1,11 +1,36 @@
 import React, { Component } from 'react'
-import { bool } from 'prop-types'
+import { bool, func } from 'prop-types'
+import _ from 'lodash'
 
 import style from './DateField.css'
 import Field from './Field'
 import { withFieldPropsAndFieldTransition,
   commonPropTypes,
   commonDefaultProps } from '../hocs/withFieldPropsAndFieldTransition'
+import { defaultValidationMethods, getValidationMethodsFromProps } from '../../utils/validation'
+
+const required = ( value, isRequired ) => (
+  isRequired
+   && ( !_.has( value, 'day' ) || !_.has( value, 'month' ) || !_.has( value, 'year' ) )
+    ? 'This field is required' : ''
+)
+
+/**
+ *
+ * @param {Object} value user date input
+ * @param {*} [customValidation] value passed by validateFromArray
+ * @param {*} props component props passed by validateFromArray
+ * @returns {String} result of validating the date values given
+ */
+const validateDate = ( value, customValidation, props ) => {
+  if ( value && customValidation ) {
+    const { day, month, year, time } = value
+    if ( !day || !month || !year || ( props.includeTime && !time ) ) {
+      return 'All fields must be completed'
+    }
+  }
+  return ''
+}
 
 /**
  * Form Field that takes date and time values.
@@ -16,6 +41,7 @@ class DateField extends Component {
   static propTypes = {
     ...commonPropTypes,
     includeTime: bool, // Whether to display time input field
+    setupValidation: func.isRequired,
   }
 
   static defaultProps = {
@@ -25,6 +51,14 @@ class DateField extends Component {
   }
 
   state = { value: null }
+
+  componentDidMount() {
+    const { setupValidation } = this.props
+    let requiredValidation = getValidationMethodsFromProps( this.props )
+    const validationMethods = { ...defaultValidationMethods, required, validateDate }
+    requiredValidation = requiredValidation.concat( [ { validateDate: true } ] )
+    setupValidation( requiredValidation, validationMethods )
+  }
 
   /**
    * Function to call when the user updates a date input field

@@ -3,7 +3,7 @@ import _ from 'lodash'
 const valueIsEmpty = val => ( val === null || val === '' || val === [] )
 
 /** Available validation methods */
-export const validationMethods = {
+export const defaultValidationMethods = {
   min: ( val, min ) => ( val < min ? `Value must be greater than or equal to ${min}` : '' ),
   max: ( val, max ) => ( val > max ? `Value must be less than or equal to ${max}` : '' ),
   minTextLength: ( val, minLen ) => ( val && val.length < minLen ? `Input length must be greater than ${minLen}` : '' ),
@@ -17,14 +17,15 @@ export const validationMethods = {
  * @param {any} value the value to validate
  * @param {Array} requirements arr of objects corresponding to required validationMethods
  * @param {Object} [methods = validationMethods] validation methods to use (optional)
+ * @param {Object} props component props
  * @returns {Array} array of strings corresponding to the errors, or an empty array if no error
  * @example validateFromArray( 6, [ { min:0 },{ max:10 } ] )
  */
-export const validateFromArray = ( value, requirements, methods = validationMethods ) => {
+export const validateFromArray = ( value, requirements, methods = defaultValidationMethods, props ) => {
   const errors = []
   requirements.forEach( method => {
     const methodKey = _.keys( method )[ 0 ]
-    const err = methods[ methodKey ]( value, method[ methodKey ] )
+    const err = methods[ methodKey ]( value, method[ methodKey ], props )
     if ( err !== '' ) errors.push( err )
   } )
   return errors
@@ -32,12 +33,14 @@ export const validateFromArray = ( value, requirements, methods = validationMeth
 
 /**
  * Get the validationMethods requested in props as an array of keys
+ * customValidation is attached to allow fields to have custom validation checks without exposing it
+ * in their props
  * @param {Object} props object containing the validation props
  * @param {Object} [methods = validationMethods] validation methods to use (optional)
  * @returns {Array} arr of strs corresponding to required validation methods in validationMethods
  */
 export const getValidationMethodsFromProps = (
-  props, methods = validationMethods,
+  props, methods = defaultValidationMethods,
 ) => _.intersection(
   _.keys( props ), _.keys( methods ),
 ).map( key => ( { [ key ]: props[ key ] } ) )
