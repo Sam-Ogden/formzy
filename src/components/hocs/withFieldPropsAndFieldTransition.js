@@ -3,9 +3,8 @@ import { func, string, instanceOf, shape, bool, any, number, arrayOf } from 'pro
 import _ from 'lodash'
 
 import {
-  defaultValidationMethods,
-  validateFromArray,
-  getValidationMethodsFromProps,
+  validate,
+  validationChecksFromProps,
 } from '../../utils/validation'
 
 /**
@@ -17,9 +16,7 @@ import {
 export const withFieldPropsAndFieldTransition = WrappedComponent => class extends Component {
   state = { value: null, err: [] }
 
-  requiredValidation = []
-
-  validationMethods = {}
+  checks = []
 
   static propTypes = commonPropTypes
 
@@ -33,42 +30,57 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
       onChange( name, defaultValue )
     }
 
-    // Set default validation. Can be overridden inside fields using props.setupValidation
-    const validationProps = getValidationMethodsFromProps( this.props )
-    this.setupValidation( validationProps, defaultValidationMethods )
+    /**
+     * Set default validation. Can be overridden inside fields
+     * using props.updateValidationChecks and props.addValidationChecks
+     */
+    this.addValidationChecks( validationChecksFromProps( this.props ) )
   }
 
   /**
-   * Setup validation for this field and register initial errors from new setup
-   * @param {Array} checks [{ methodKey: value }] pairs to validate input value against
-   * e.g [{min: 0}, {max: 10}, {required: true}]
-   * @param {Object} methods object of key-function pairs
+   * Update the checks actually performed on inputs. Allows a field to introduce non-standard checks
+   * E.g. DateField requires extra validation to ensure valid date is passed. This should be a given
+   * and shouldnt require a developer to pass a prop requesting this check
+   * Run validation after update and register errs with parent
+   * @param {Object} checks { checkName: { func: function, test: val }, ... }
    */
-  setupValidation = ( checks, methods ) => {
-    const { fieldIndex, registerValidationError, defaultValue } = this.props
+  addValidationChecks = checks => {
+    const { value } = this.state
+    const { registerValidationError, fieldIndex } = this.props
+    this.checks = { ...this.checks, ...checks }
+    registerValidationError( fieldIndex, validate( value, this.checks, this.props ) )
+  }
 
-    this.requiredValidation = checks
-    this.validationMethods = methods
-
-    const err = validateFromArray(
-      defaultValue, this.requiredValidation, this.validationMethods, this.props,
-    )
-    registerValidationError( fieldIndex, err )
+  /**
+   * If a function with given name is being used in checks then it is updated with function given
+   * Allows overriding default methods
+   * Run validation after update and register errs with parent
+   * @param {Object} methods functions to add/override default validation methods with
+   * {funcName: <function>, func2name: <function>, ...}
+   */
+  updateValidationChecks = methods => {
+    const { value } = this.state
+    const { registerValidationError, fieldIndex } = this.props
+    _.forEach( methods, ( method, key ) => {
+      if ( _.keys( this.checks ).includes( key ) ) {
+        this.checks[ key ].func = method
+      }
+    } )
+    registerValidationError( fieldIndex, validate( value, this.checks, this.props ) )
   }
 
   /**
    * We store the new value in parent along with validation errors before hitting next/enter
    * Ensures the value and errors are registered incase user scrolls to next field without
    * hitting next btn
-   * Dont set err state here, only when user tries to progress display error
    * @param {any} value the new value
    */
   inputChange = value => {
     const { registerValidationError, onChange, name, fieldIndex } = this.props
     this.setState( { value } )
 
-    const err = validateFromArray(
-      value, this.requiredValidation, this.validationMethods, this.props,
+    const err = validate(
+      value, this.checks, this.props,
     )
 
     registerValidationError( fieldIndex, err )
@@ -83,8 +95,8 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
   next = () => {
     const { next: nextProp } = this.props
     const { value } = this.state
-    const err = validateFromArray(
-      value, this.requiredValidation, this.validationMethods, this.props,
+    const err = validate(
+      value, this.checks, this.props,
     )
     // Show errors to user when they try to progress
     this.setState( { err } )
@@ -106,7 +118,8 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
           inputChange={this.inputChange}
           next={this.next}
           err={_.union( err, submissionErrors )}
-          setupValidation={this.setupValidation}
+          addValidationChecks={this.addValidationChecks}
+          updateValidationChecks={this.updateValidationChecks}
         />
       )
       : (
@@ -114,7 +127,8 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
           {...this.props}
           inputChange={this.inputChange}
           err={_.union( err, submissionErrors )}
-          setupValidation={this.setupValidation}
+          updateValidationChecks={this.updateValidationChecks}
+          updateValidationMethods={this.updateValidationMethods}
         />
       )
   }

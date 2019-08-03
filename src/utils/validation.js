@@ -12,22 +12,21 @@ export const defaultValidationMethods = {
 }
 
 /**
- * Validate a value given array of required validation methods, validation values and optional
- * methods object (allowing for custom validation methods)
+ * Validate a value given obj of required validation checks
  * @param {any} value the value to validate
- * @param {Array} requirements arr of objects corresponding to required validationMethods
- * @param {Object} [methods = validationMethods] validation methods to use (optional)
+ * @param {Object} checks checks to perform. format { check: { func: <func>, test: <testValue> }, }
  * @param {Object} props component props
  * @returns {Array} array of strings corresponding to the errors, or an empty array if no error
- * @example validateFromArray( 6, [ { min:0 },{ max:10 } ] )
+ * @example validate( 6, [ { min:0 },{ max:10 } ] )
  */
-export const validateFromArray = ( value, requirements, methods = defaultValidationMethods, props ) => {
+export const validate = ( value, checks, props ) => {
   const errors = []
-  requirements.forEach( method => {
-    const methodKey = _.keys( method )[ 0 ]
-    const err = methods[ methodKey ]( value, method[ methodKey ], props )
+
+  _.forEach( checks, ( { func, test } ) => {
+    const err = func( value, test, props )
     if ( err !== '' ) errors.push( err )
   } )
+
   return errors
 }
 
@@ -36,11 +35,16 @@ export const validateFromArray = ( value, requirements, methods = defaultValidat
  * customValidation is attached to allow fields to have custom validation checks without exposing it
  * in their props
  * @param {Object} props object containing the validation props
- * @param {Object} [methods = validationMethods] validation methods to use (optional)
- * @returns {Array} arr of strs corresponding to required validation methods in validationMethods
+ * @param {Object} methods validation methods to use (optional)
+ * @returns {Object} object of checks e.g. { min: { func: methods.min, test: 0 }, max: {...} }
  */
-export const getValidationMethodsFromProps = (
+export const validationChecksFromProps = (
   props, methods = defaultValidationMethods,
-) => _.intersection(
-  _.keys( props ), _.keys( methods ),
-).map( key => ( { [ key ]: props[ key ] } ) )
+) => {
+  const checks = {}
+  const keys = _.intersection( _.keys( props ), _.keys( methods ) )
+  keys.forEach( k => {
+    checks[ k ] = { func: methods[ k ], test: props[ k ] }
+  } )
+  return checks
+}

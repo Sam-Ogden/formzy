@@ -1,8 +1,8 @@
-// validateFromArray
+// validate
 // getValidationMethodsFromProps
 
 import _ from 'lodash'
-import { validateFromArray, getValidationMethodsFromProps, validationMethods } from '../utils/validation'
+import { validate, validationChecksFromProps, defaultValidationMethods } from '../utils/validation'
 /**
  * TODO
  * - Tests for each method in the default validationMethods object
@@ -15,39 +15,44 @@ const mockProps = {
 }
 
 const methods = {
-  min: () => true,
-  max: () => true,
+  min: defaultValidationMethods.min,
+  max: defaultValidationMethods.max,
 }
 
 describe( 'validation', () => {
-  describe( 'getValidationMethodsFromProps', () => {
-    test( 'returns an array of objects, each with 1 KV pair corresponding to a validation test',
+  describe( 'validationChecksFromProps', () => {
+    test( 'returns object with correct checks',
       () => {
-        const result = getValidationMethodsFromProps( mockProps, methods )
-        expect( result ).toEqual( _.keys( methods ).map( k => ( { [ k ]: mockProps[ k ] } ) ) )
+        const result = validationChecksFromProps( mockProps, methods )
+        expect( result ).toEqual(
+          {
+            min: { func: methods.min, test: mockProps.min },
+            max: { func: methods.max, test: mockProps.max },
+          },
+        )
       } )
 
     test( 'no validation requirements in props returns empty array of validation tests',
       () => {
-        const result = getValidationMethodsFromProps( {}, methods )
-        expect( result.length ).toEqual( 0 )
+        const result = validationChecksFromProps( {}, methods )
+        expect( result ).toEqual( {} )
       } )
   } )
 
-  describe( 'validateFromArray', () => {
+  describe( 'validate method', () => {
     test( 'returns empty array with valid input',
       () => {
         const validValue = 1
-        const tests = getValidationMethodsFromProps( mockProps, methods )
-        const result = validateFromArray( validValue, tests, validationMethods )
+        const tests = validationChecksFromProps( mockProps, methods )
+        const result = validate( validValue, tests, {} )
         expect( result.length ).toEqual( 0 )
       } )
 
     test( 'returns non-empty array with invalid input',
       () => {
         const invalidValue = -1
-        const tests = getValidationMethodsFromProps( mockProps, methods )
-        const result = validateFromArray( invalidValue, tests, validationMethods )
+        const tests = validationChecksFromProps( mockProps, methods )
+        const result = validate( invalidValue, tests )
         expect( result.length ).toEqual( 1 )
       } )
   } )

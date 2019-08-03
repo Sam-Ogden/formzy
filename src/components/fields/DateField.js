@@ -4,26 +4,31 @@ import _ from 'lodash'
 
 import style from './DateField.css'
 import Field from './Field'
-import { withFieldPropsAndFieldTransition,
+import {
+  withFieldPropsAndFieldTransition,
   commonPropTypes,
-  commonDefaultProps } from '../hocs/withFieldPropsAndFieldTransition'
-import { defaultValidationMethods, getValidationMethodsFromProps } from '../../utils/validation'
+  commonDefaultProps,
+} from '../hocs/withFieldPropsAndFieldTransition'
 
-const required = ( value, isRequired ) => (
+const required = ( value, isRequired, props ) => (
   isRequired
-   && ( !_.has( value, 'day' ) || !_.has( value, 'month' ) || !_.has( value, 'year' ) )
-    ? 'This field is required' : ''
+   && (
+     !_.has( value, 'day' )
+   || !_.has( value, 'month' )
+   || !_.has( value, 'year' )
+   || ( props.includeTime && !_.has( value, 'time' ) ) )
+    ? 'All fields are required' : ''
 )
 
 /**
  *
  * @param {Object} value user date input
- * @param {*} [customValidation] value passed by validateFromArray
- * @param {*} props component props passed by validateFromArray
+ * @param {*} testVal value passed by validate
+ * @param {*} props component props passed by validate
  * @returns {String} result of validating the date values given
  */
-const validateDate = ( value, customValidation, props ) => {
-  if ( value && customValidation ) {
+const validateDate = ( value, testVal, props ) => {
+  if ( value && testVal ) {
     const { day, month, year, time } = value
     if ( !day || !month || !year || ( props.includeTime && !time ) ) {
       return 'All fields must be completed'
@@ -41,7 +46,8 @@ class DateField extends Component {
   static propTypes = {
     ...commonPropTypes,
     includeTime: bool, // Whether to display time input field
-    setupValidation: func.isRequired,
+    addValidationChecks: func.isRequired,
+    updateValidationChecks: func.isRequired,
   }
 
   static defaultProps = {
@@ -53,11 +59,10 @@ class DateField extends Component {
   state = { value: null }
 
   componentDidMount() {
-    const { setupValidation } = this.props
-    let requiredValidation = getValidationMethodsFromProps( this.props )
-    const validationMethods = { ...defaultValidationMethods, required, validateDate }
-    requiredValidation = requiredValidation.concat( [ { validateDate: true } ] )
-    setupValidation( requiredValidation, validationMethods )
+    const { addValidationChecks, updateValidationChecks } = this.props
+    // Override the required function without func specific to DateField
+    updateValidationChecks( { required, validateDate } )
+    addValidationChecks( { validateDate: { func: validateDate, test: true } } )
   }
 
   /**

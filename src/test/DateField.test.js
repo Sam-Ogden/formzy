@@ -7,9 +7,9 @@ import DateField from '../components/fields/DateField'
 Enzyme.configure( { adapter: new Adapter() } )
 
 /**
- * - Default value prop shows value in state
- * - Changing the fields changes the state
- * - if includeTime prop is true then time field is visible
+ * - custom validation tests (required and validateDate methods)
+ * - test custom methods successfully register
+ * - validation tests give expected results
  */
 
 const dateFieldWithTime = (
