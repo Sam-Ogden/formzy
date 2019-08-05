@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { bool, func } from 'prop-types'
+import { bool, func, string, instanceOf } from 'prop-types'
 import _ from 'lodash'
 
 import style from './DateField.css'
@@ -69,12 +69,12 @@ class DateField extends Component {
    * Function to call when the user updates a date input field
    * Have 4 values for each component of the date
    */
-  onChange = ( { target: { name, value } } ) => {
-    const { inputChange } = this.props
-    const { value: val } = this.state
-    const newDate = { value: ( { ...val, [ name ]: value } ) }
-    this.setState( newDate )
-    inputChange( newDate.value )
+  onChange = ( { target: { name, value: val } } ) => {
+    this.setState( ( { value } ) => ( { value: ( { ...value, [ name ]: val } ) } ), () => {
+      const { inputChange } = this.props
+      const { value } = this.state
+      inputChange( value )
+    } )
   }
 
   render() {
@@ -89,8 +89,7 @@ class DateField extends Component {
     return (
       <Field title={title} description={description} next={next} err={err}>
         <div role="presentation" onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
-          <span className={style.dateInputContainer}>
-            <span className={style.dateTitles}>Day:</span>
+          <DateFieldContainer title="Day:">
             <input
               name="day"
               type="number"
@@ -99,12 +98,9 @@ class DateField extends Component {
               ref={refProp}
               required={required}
               className={`datefield-day ${style.inputField}`}
-              min={0}
-              max={31}
             />
-          </span>
-          <span className={style.dateInputContainer}>
-            <span className={style.dateTitles}>Month:</span>
+          </DateFieldContainer>
+          <DateFieldContainer title="Month:">
             <input
               name="month"
               type="number"
@@ -112,12 +108,9 @@ class DateField extends Component {
               onChange={this.onChange}
               required={required}
               className={`datefield-month ${style.inputField}`}
-              min={1}
-              max={12}
             />
-          </span>
-          <span className={style.dateInputContainer}>
-            <span className={style.dateTitles}>Year:</span>
+          </DateFieldContainer>
+          <DateFieldContainer title="Year:">
             <input
               name="year"
               type="number"
@@ -125,22 +118,20 @@ class DateField extends Component {
               onChange={this.onChange}
               required={required}
               className={`datefield-year ${style.inputField}`}
-              min={0}
             />
-          </span>
+          </DateFieldContainer>
           {includeTime
               && (
-              <span className={style.dateInputContainer}>
-                <span className={style.dateTitles}>Time:</span>
-                <input
-                  name="time"
-                  type="time"
-                  placeholder="00:00"
-                  onChange={this.onChange}
-                  required={required}
-                  className={`datefield-time ${style.inputField}`}
-                />
-              </span>
+                <DateFieldContainer title="Time:">
+                  <input
+                    name="time"
+                    type="time"
+                    placeholder="00:00"
+                    onChange={this.onChange}
+                    required={required}
+                    className={`datefield-time ${style.inputField}`}
+                  />
+                </DateFieldContainer>
               )}
         </div>
       </Field>
@@ -148,4 +139,14 @@ class DateField extends Component {
   }
 }
 
+const DateFieldContainer = ( { title, children } ) => (
+  <span className={style.dateInputContainer}>
+    <span className={style.dateTitles}>{title}</span>
+    {children}
+  </span>
+)
+DateFieldContainer.propTypes = {
+  title: string.isRequired,
+  children: instanceOf( Object ).isRequired,
+}
 export default withFieldPropsAndFieldTransition( DateField )
