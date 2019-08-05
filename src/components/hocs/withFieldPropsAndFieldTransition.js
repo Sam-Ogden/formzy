@@ -79,58 +79,40 @@ export const withFieldPropsAndFieldTransition = WrappedComponent => class extend
     const { registerValidationError, onChange, name, fieldIndex } = this.props
     this.setState( { value } )
 
-    const err = validate(
-      value, this.checks, this.props,
-    )
-
-    registerValidationError( fieldIndex, err )
+    registerValidationError( fieldIndex, validate( value, this.checks, this.props ) )
     onChange( name, value )
   }
 
   /**
    * Function called by Fields to progress to the next Field
    * Validation is performed and errors shown before scrolling to next Field
-   * @returns {Any} result of onChange call or null if errors during validation
+   * @returns {Boolean} result of validation, true if successful
    */
   next = () => {
     const { next: nextProp } = this.props
     const { value } = this.state
-    const err = validate(
-      value, this.checks, this.props,
-    )
+    const err = validate( value, this.checks, this.props )
     // Show errors to user when they try to progress
     this.setState( { err } )
-    if ( err.length === 0 ) {
-      nextProp()
-      return true
-    }
-    return false
+    if ( err.length === 0 ) nextProp()
+    return err.length === 0
   }
 
   render() {
     const { next, submissionErrors } = this.props
     const { err } = this.state
 
+    const props = {
+      ...this.props,
+      inputChange: this.inputChange,
+      err: _.union( err, submissionErrors ),
+      addValidationChecks: this.addValidationChecks,
+      updateValidationChecks: this.updateValidationChecks,
+    }
+
     return next
-      ? (
-        <WrappedComponent
-          {...this.props}
-          inputChange={this.inputChange}
-          next={this.next}
-          err={_.union( err, submissionErrors )}
-          addValidationChecks={this.addValidationChecks}
-          updateValidationChecks={this.updateValidationChecks}
-        />
-      )
-      : (
-        <WrappedComponent
-          {...this.props}
-          inputChange={this.inputChange}
-          err={_.union( err, submissionErrors )}
-          updateValidationChecks={this.updateValidationChecks}
-          updateValidationMethods={this.updateValidationMethods}
-        />
-      )
+      ? ( <WrappedComponent {...props} next={this.next} /> )
+      : ( <WrappedComponent {...props} /> )
   }
 }
 
