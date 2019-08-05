@@ -62,11 +62,11 @@ class FormContainer extends Component {
    * Called by Fields to update the form state in the container
    * @param {String} fieldName The name attribute value of an input field
    * @param {Any} newVal The value to update fieldName to
+   * @returns {void}
    */
-  onChange = ( fieldName, newVal ) => {
-    const { form } = this.state
-    this.setState( { form: ( { ...form, [ fieldName ]: newVal } ) } )
-  }
+  onChange = ( fieldName, newVal ) => this.setState(
+    ( { form } ) => ( { form: ( { ...form, [ fieldName ]: newVal } ) } ),
+  )
 
   /**
    * Allows fields to register validation errors. This allows checks to occur onSubmit
