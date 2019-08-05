@@ -8,12 +8,12 @@ import {
 } from '../../utils/validation'
 
 /**
- * withFieldPropsAndFieldTransition is a higher order component adding common
+ * withValidationAndTransition is a higher order component adding common
  * functionality required by all fields
  * @param {Element} WrappedComponent The component to add common functionality to
  * @returns {Class} A new component type with additional functionality added
  */
-export const withFieldPropsAndFieldTransition = WrappedComponent => class extends Component {
+export const withValidationAndTransition = WrappedComponent => class extends Component {
   state = { value: null, err: [] }
 
   checks = []

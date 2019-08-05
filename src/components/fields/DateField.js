@@ -5,10 +5,10 @@ import _ from 'lodash'
 import style from './DateField.css'
 import Field from './Field'
 import {
-  withFieldPropsAndFieldTransition,
+  withValidationAndTransition,
   commonPropTypes,
   commonDefaultProps,
-} from '../hocs/withFieldPropsAndFieldTransition'
+} from '../hocs/withValidationAndTransition'
 
 const required = ( value, isRequired, props ) => (
   isRequired
@@ -149,4 +149,4 @@ DateFieldContainer.propTypes = {
   title: string.isRequired,
   children: instanceOf( Object ).isRequired,
 }
-export default withFieldPropsAndFieldTransition( DateField )
+export default withValidationAndTransition( DateField )

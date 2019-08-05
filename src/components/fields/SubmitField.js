@@ -3,9 +3,9 @@ import { func, string } from 'prop-types'
 
 import Field from './Field'
 import style from './Field.css'
-import { withFieldPropsAndFieldTransition,
+import { withValidationAndTransition,
   commonPropTypes,
-  commonDefaultProps } from '../hocs/withFieldPropsAndFieldTransition'
+  commonDefaultProps } from '../hocs/withValidationAndTransition'
 
 /**
  * Submit Field is a Field without a value
@@ -35,4 +35,4 @@ class SubmitField extends Component {
   }
 }
 
-export default withFieldPropsAndFieldTransition( SubmitField )
+export default withValidationAndTransition( SubmitField )

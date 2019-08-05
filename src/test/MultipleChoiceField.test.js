@@ -44,7 +44,7 @@ describe( 'MultipleChoiceField Component', () => {
 
   /**
    * Next function is provided by the Higher Order Component in
-   * ../components/hocs/withFieldPropsAndFieldTransition
+   * ../components/hocs/withValidationAndTransition
   */
   describe( 'next function with passing validation', () => {
     test( 'onChange prop function is called and returns correct value', () => {
@@ -68,7 +68,7 @@ describe( 'MultipleChoiceField Component', () => {
       expect( wrapper.find( '.mcf-options-container button' ).length ).toBe( OPTIONS.length )
     } )
 
-    test( 'value is received by HOC withFieldPropsAndFieldTransition', () => {
+    test( 'value is received by HOC withValidationAndTransition', () => {
       const hoc = shallow( MCFWithPassingValidation )
       const child = mount( hoc.get( 0 ) )
       child.instance().onChange( { target: { value: 'A' } } )

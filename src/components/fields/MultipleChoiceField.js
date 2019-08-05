@@ -3,9 +3,9 @@ import { arrayOf, string, bool } from 'prop-types'
 
 import style from './MultipleChoiceField.css'
 import Field from './Field'
-import { withFieldPropsAndFieldTransition,
+import { withValidationAndTransition,
   commonPropTypes,
-  commonDefaultProps } from '../hocs/withFieldPropsAndFieldTransition'
+  commonDefaultProps } from '../hocs/withValidationAndTransition'
 
 /**
  * A form field with a number of choice buttons
@@ -86,4 +86,4 @@ class MultipleChoiceField extends Component {
   }
 }
 
-export default withFieldPropsAndFieldTransition( MultipleChoiceField )
+export default withValidationAndTransition( MultipleChoiceField )

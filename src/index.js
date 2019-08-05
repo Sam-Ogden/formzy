@@ -6,7 +6,7 @@ import NumberField from './components/fields/NumberField'
 import Field from './components/fields/Field'
 import DateField from './components/fields/DateField'
 import MultipleChoiceFIeld from './components/fields/MultipleChoiceField'
-import { withFieldPropsAndFieldTransition } from './components/hocs/withFieldPropsAndFieldTransition'
+import { withValidationAndTransition } from './components/hocs/withValidationAndTransition'
 
 export { FormContainer,
   ShortTextField,
@@ -15,4 +15,4 @@ export { FormContainer,
   ProgressBar,
   DateField,
   MultipleChoiceFIeld,
-  withFieldPropsAndFieldTransition }
+  withValidationAndTransition }

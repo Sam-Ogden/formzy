@@ -159,7 +159,7 @@ const defaultProps = {
 ```
 
 ## Custom Fields
-Fields can be created using the withFieldPropsAndFieldTransition higher order component and the ```<Field />``` component which are both exported by react-formtype. 
+Fields can be created using the withValidationAndTransition higher order component and the ```<Field />``` component which are both exported by react-formtype. 
 
 ### The ```<Field />``` Component
 This is the default way to display the field components, it displays the title, description, validation errors and the next button. See ```src/components/fields/NumberField.js``` for example usage in the render method.
@@ -180,7 +180,7 @@ Field.defaultProps = {
 ```
 You can create your own Field component for use with your own fields. (Future feature: ability to pass in custom Field component to FormContainer so you can reuse all the premade fields with your own UI structure for the title/description/next buttons/errors).
 
-### The withFieldPropsAndFieldTransition HOC
+### The withValidationAndTransition HOC
 This component adds shared functionality to all field components. 
 * It provides validation checking and modifications
 * Registering validation errors with the parent component (FormContainer)
@@ -200,7 +200,7 @@ The HOC passes 2 functions to the wrapped field component to allow custom valida
 * ```addValidationChecks(checks)``` adds checks to be made each time an input is validated. This can be custom validation that is specific to your field component. The checks input should have the following structure ```{ min: {func: <function>, test: <value>}, max: {func: <function>, test: <value> } }``` where ```func``` is the method to run and ```test``` is the value to check against. 
 * ```updateValidationChecks(methods)``` allows you to update a method being used in the defaultValidationMethods in ```/src/utils/validation.js``` for example the required check may be more complex than just seeing if an value is null/empty string/empty array. E.g. with DateField we must check that {day, month, year} are all given. ```methods``` should look like ```{ methodName: <function>, methodName: <function> }```. E.g. To override the default ```required``` method call ```updateValidationChecks({required: newRequiredFunc })``` inside the field component onComponentDidMount method. 
 
-By using the above methods you can customise the validation for your own field components that are wrapped with the withFieldPropsAndFieldTransition HOC.
+By using the above methods you can customise the validation for your own field components that are wrapped with the withValidationAndTransition HOC.
 
 
 ## License

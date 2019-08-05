@@ -1,12 +1,12 @@
 import React from 'react'
-import Enzyme, { mount, shallow } from 'enzyme'
+import Enzyme, { shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import { spy } from 'sinon'
-import { withFieldPropsAndFieldTransition, NumberField } from '..'
+import { withValidationAndTransition, NumberField } from '..'
 
 Enzyme.configure( { adapter: new Adapter() } )
 
-const Type = withFieldPropsAndFieldTransition( NumberField )
+const Type = withValidationAndTransition( NumberField )
 const testComponent = (
   <Type
     title="test"
@@ -16,9 +16,9 @@ const testComponent = (
   />
 )
 
-describe( 'withFieldPropsAndFieldTransitions', () => {
+describe( 'withValidationAndTransitions', () => {
   test( 'is exported by src/index.js', () => {
-    expect( withFieldPropsAndFieldTransition ).toBeTruthy()
+    expect( withValidationAndTransition ).toBeTruthy()
   } )
 
   test( 'recognises validation props and adds to this.checks on mount', () => {
