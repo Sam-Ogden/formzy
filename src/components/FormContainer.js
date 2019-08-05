@@ -23,12 +23,11 @@ class FormContainer extends Component {
 
   componentWillMount = () => {
     const { children } = this.props
-    const formLength = children.length || 1
+    childrenArr = Children.toArray( children )
+    const formLength = childrenArr.length
     // Create refs for field containers and inputs
     fieldContainerRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( i ) )
     inputRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( -i ) )
-    // If single child is passed then convert it to array
-    childrenArr = Array.isArray( children ) ? children : Children.toArray( children )
   }
 
   componentDidMount = () => {
