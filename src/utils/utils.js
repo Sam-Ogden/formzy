@@ -14,12 +14,16 @@ import _ from 'lodash'
 */
 export const templateToTitle = ( str, params, placeholder = '_ _ _ _ _' ) => {
   _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
-  const fieldNames = str.match( /(?<={{_.).+?(?=}})/g ) || []
+  const fieldNames = str.match( /({{_.).+?(?=}})/g ) || []
 
   const paramsWithPlaceholder = params
 
   // Replace value for fields that have no value yet with placeholder string
-  fieldNames.forEach( name => {
+  fieldNames.forEach( dirtyName => {
+    // Drop the {{_. appendix of the parameter name
+    // Required for browser compatability (regexp lookbehind not available)
+    const name = dirtyName.slice( '{{_.'.length )
+
     paramsWithPlaceholder[ name ] = params[ name ] || placeholder
   } )
 
