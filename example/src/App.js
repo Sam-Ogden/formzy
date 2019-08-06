@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld } from 'react-formtype'
 
-const opts = ['Banana', 'Apple', 'Orange', 'Chicken Wings']
+const opts = ['Banana', 'Apple', 'Orange', 'Pear']
 
 export default class App extends Component {
 
@@ -17,10 +17,14 @@ export default class App extends Component {
         onSubmit={this.submit}
         submitTitle="Thanks!" 
         submitButtonText="Send form"
-        submitDescription="You will have your oranges shortly."
+        submitDescription="You will have your fruit shortly."
       >
-        <ShortTextField title="What is your name?" name="name" minTextLength={5} required />
-        <MultipleChoiceFIeld title="Select the fruit you like" name="fruits" options={opts} multiple/>
+        <ShortTextField title="Hi, what's your name?" name="name" minTextLength={2} required />
+        <MultipleChoiceFIeld 
+          title="Nice to meet you {{_.name}}, what fruit would you like?" 
+          name="fruits" 
+          options={opts} 
+          multiple/>
         <NumberField 
           title="How many oranges would you like?" 
           name="noranges" 
@@ -28,7 +32,7 @@ export default class App extends Component {
           max={10}
           defaultValue={5}
         />
-        <DateField title="When would you like your oranges?" name="orrangedate" required/>
+        <DateField title="When would you like your {{_.noranges}} oranges?" name="orrangedate" required/>
       </FormContainer>
     )
   }

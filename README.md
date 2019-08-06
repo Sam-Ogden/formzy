@@ -30,10 +30,14 @@ export default class App extends Component {
         onSubmit={this.submit}
         submitTitle="Thanks!" 
         submitButtonText="Send form"
-        submitDescription="You will have your oranges shortly."
+        submitDescription="You will have your fruit shortly."
       >
-        <ShortTextField title="What is your name?" name="name" required />
-        <MultipleChoiceField title="Select the fruit you like" name="fruits" options={opts} multiple/>
+        <ShortTextField title="Hi, what's your name?" name="name" minTextLength={2} required />
+        <MultipleChoiceFIeld 
+          title="Nice to meet you {{_.name}}, what fruit would you like?" 
+          name="fruits" 
+          options={opts} 
+          multiple/>
         <NumberField 
           title="How many oranges would you like?" 
           name="noranges" 
@@ -41,7 +45,7 @@ export default class App extends Component {
           max={10}
           defaultValue={5}
         />
-        <DateField title="When would you like your oranges?" name="orangedate" />
+        <DateField title="When would you like your {{_.noranges}} oranges?" name="orrangedate" required/>
       </FormContainer>
     )
   }
@@ -52,6 +56,10 @@ Fields should have unique ```name``` props as values are stored in the FormConta
 Assuming a value is given for each field in the above example, when the user hits submit, the submit method will receive:  
 
 ```data = { name: ..., fruits: [...], noranges: ..., orangedate: { day: ..., month: ..., year: ... } }```  
+
+## Referencing User Inputs In Titles
+Field titles can reference previous user inputs in the titles of other fields. This is achieved by:
+* using ```{{_.FIELD_NAME}}``` in the title prop.
 
 ## Components
 [FormContainer](#FormContainer)

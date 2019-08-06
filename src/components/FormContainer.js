@@ -1,12 +1,12 @@
 import React, { Component, Children } from 'react'
 import { func, arrayOf, instanceOf, bool, number, string, oneOfType } from 'prop-types'
 import zenscroll from 'zenscroll'
-// import is from 'is_js'
 import _ from 'lodash'
 
 import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
 import SubmitField from './fields/SubmitField'
+import { Provider } from './FormContext'
 
 let fieldContainerRefs = [] // to scroll to the container of a Field
 let inputRefs = [] // to focus on the next input of a field
@@ -115,7 +115,7 @@ class FormContainer extends Component {
       submitButtonText,
     } = this.props
 
-    const { active, submissionErrors: errs } = this.state
+    const { form, active, submissionErrors: errs } = this.state
 
     const submitComponent = (
       <SubmitField
@@ -128,14 +128,15 @@ class FormContainer extends Component {
 
     return (
       <form className={formStyle.formContainer}>
-        {childrenArr.map(
-          ( Field, i ) => FieldContainer(
-            i, Field, this.onChange, this.scrollToRef, this.registerValidationError, errs[ i ],
-          ),
-        )}
+        <Provider value={form}>
+          {childrenArr.map(
+            ( Field, i ) => FieldContainer(
+              i, Field, this.onChange, this.scrollToRef, this.registerValidationError, errs[ i ],
+            ),
+          )}
 
-        {FieldContainer( childrenArr.length, submitComponent )}
-
+          {FieldContainer( childrenArr.length, submitComponent )}
+        </Provider>
         {showProgress && <ProgressBar progress={progress( active, childrenArr.length )} />}
       </form>
     )

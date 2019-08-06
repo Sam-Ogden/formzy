@@ -2,6 +2,8 @@ import React from 'react'
 import { string, func, instanceOf, arrayOf } from 'prop-types'
 
 import style from './Field.css'
+import { Consumer } from '../FormContext'
+import { templateToTitle } from '../../utils/utils'
 
 /**
  * @param {Object} props Field props
@@ -9,7 +11,10 @@ import style from './Field.css'
  */
 const Field = ( { children, description, title, next, err } ) => (
   <div className="field">
-    <h4 className={`title ${style.title}`}>{title}</h4>
+    <Consumer>
+      {form => ( <h4 className={`title ${style.title}`}>{templateToTitle( title, form )}</h4> )}
+    </Consumer>
+
     {description !== '' && <p className={`desc ${style.description}`}>{description}</p>}
     {children}
 
