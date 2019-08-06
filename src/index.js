@@ -7,6 +7,7 @@ import Field from './components/fields/Field'
 import DateField from './components/fields/DateField'
 import MultipleChoiceFIeld from './components/fields/MultipleChoiceField'
 import { withValidationAndTransition } from './components/hocs/withValidationAndTransition'
+import { templateToTitle } from './utils/utils'
 
 export { FormContainer,
   ShortTextField,
@@ -15,4 +16,5 @@ export { FormContainer,
   ProgressBar,
   DateField,
   MultipleChoiceFIeld,
-  withValidationAndTransition }
+  withValidationAndTransition,
+  templateToTitle }
