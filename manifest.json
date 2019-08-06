@@ -1,6 +1,6 @@
 {
-  "short_name": "react-form",
-  "name": "react-form",
+  "short_name": "react-formtype",
+  "name": "react-formtype",
   "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#000000",
