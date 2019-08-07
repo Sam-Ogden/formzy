@@ -55,7 +55,7 @@ class FormContainer extends Component {
       }
     }
 
-    this.setState( { active: i } )
+    this.setState( prevState => ( { ...prevState, active: i } ) )
   }
 
   /**
@@ -70,25 +70,25 @@ class FormContainer extends Component {
 
   /**
    * Allows fields to register validation errors. This allows checks to occur onSubmit
-   * @param {Number} fieldIndex the index of the field in the form with errors
+   * @param {String} fieldName the name of the field in the form with errors
    * @param {Array} err array of strings of errors for given field
    */
-  registerValidationError = ( fieldIndex, err ) => {
+  registerValidationError = ( fieldName, err ) => {
     const { submissionErrors } = this.state
 
     // Clear submission errors for this field since user is trying to rectify them
-    if ( submissionErrors[ fieldIndex ] && submissionErrors[ fieldIndex ].length !== 0 ) {
-      const newState = { ...submissionErrors, [ fieldIndex ]: [] }
+    if ( submissionErrors[ fieldName ] && submissionErrors[ fieldName ].length !== 0 ) {
+      const newState = { ...submissionErrors, [ fieldName ]: [] }
       this.setState( { submissionErrors: newState } )
     }
 
     // register new errors without re-render
-    this.errors = { ...this.errors, [ fieldIndex ]: err }
+    this.errors = { ...this.errors, [ fieldName ]: err }
   }
 
   /**
-   * Function to run when submit button is hit
-   * @returns {Any} result of onSubmit or false if invalid user inputs
+   * Validate inputs and handle result of onSubmit callback
+   * @returns {Boolean} true if submission was successful, false otherwise
    */
   submit = () => {
     const { onSubmit } = this.props
@@ -96,15 +96,27 @@ class FormContainer extends Component {
 
     const isValid = _.reduce(
       _.keys( this.errors ),
-      ( bool, fieldIndex ) => ( bool && this.errors[ fieldIndex ].length === 0 ), true,
+      ( bool, fieldName ) => ( bool && this.errors[ fieldName ].length === 0 ),
+      true,
     )
 
-    if ( isValid ) return onSubmit( form )
+    // Run submit callback
+    if ( isValid ) {
+      const result = onSubmit( form )
+      if ( result === true || result === {} || result === undefined ) return true
+      this.errors = result
+    }
 
     // Re render with registered errors
-    this.setState( { submissionErrors: this.errors } )
+    this.setState( prevState => ( { ...prevState, submissionErrors: this.errors } ) )
+
     // Scroll to first error
-    this.scrollToRef( Number.parseInt( _.keys( this.errors )[ 0 ], 10 ) )
+    this.scrollToRef(
+      _.findIndex(
+        childrenArr,
+        child => child.props.name === _.keys( this.errors )[ 0 ],
+      ),
+    )
     return false
   }
 
@@ -116,7 +128,7 @@ class FormContainer extends Component {
       submitButtonText,
     } = this.props
 
-    const { form, active, submissionErrors: errs } = this.state
+    const { form, active, submissionErrors } = this.state
 
     const submitComponent = (
       <SubmitField
@@ -131,13 +143,18 @@ class FormContainer extends Component {
       <form className={formStyle.formContainer}>
         <Provider value={form}>
           {childrenArr.map(
-            ( Field, i ) => FieldContainer(
-              i, Field, this.onChange, this.scrollToRef, this.registerValidationError, errs[ i ],
-            ),
+            ( Field, i ) => {
+              const { name } = Field.props
+              return FieldContainer(
+                i, Field, this.onChange, this.scrollToRef,
+                this.registerValidationError, submissionErrors[ name ],
+              )
+            },
           )}
 
           {FieldContainer( childrenArr.length, submitComponent )}
         </Provider>
+
         {showProgress && <ProgressBar progress={progress( active, childrenArr.length )} />}
       </form>
     )
@@ -145,7 +162,15 @@ class FormContainer extends Component {
 }
 
 FormContainer.propTypes = {
-  onSubmit: func.isRequired, // Function to call upon submission. Accept object as argument.
+  /**
+   * onSubmit:
+   *  Function to call upon submission. Recieve form data object as arg.
+   *  Returns
+   *    object of errors, or true if there are none.
+   *    returned errors object should look like:
+   *    { fieldName: [ 'err', 'err1' ], anotherField: [ 'e1' ], ... }
+   */
+  onSubmit: func.isRequired,
   children: oneOfType( [ arrayOf( // Array of fields (form body)
     instanceOf( Object ),
   ), instanceOf( Object ) ] ).isRequired,
@@ -186,7 +211,6 @@ const FieldContainer = ( i, Field, onChange, scrollToRef, registerValidationErro
       next: () => scrollToRef( i + 1 ),
       refProp: inputRefs[ i ], // Pass ref down to input element for focussing
       registerValidationError,
-      fieldIndex: i,
       submissionErrors: errs,
     } )}
   </div>

@@ -13,8 +13,13 @@ const opts = ['Banana', 'Apple', 'Orange', 'Pear']
 
 export default class App extends Component {
 
-  submit = (data) => {
+  /**
+   * onSubmit callback should return true if no errors, or an object of errors of the form
+   * { fieldName: [ 'err', 'err1' ], anotherField: [ 'e1', 'e2' ] }
+   */
+  submit = data => {
     console.log(data)
+    return {name: ['error']}
   }
 
   render () {

@@ -31,14 +31,21 @@ describe( 'FormContainer Component', () => {
     expect( wrapper.state().form.bkey ).toEqual( 'Z' )
   } )
 
-  test( 'submit button returns state to parent component', () => {
+  test( 'submit calls onSubmit with form data when there are no validation errors', () => {
+    let receivedData = {}
+    const onSubmit = form => {
+      receivedData = form
+      return true
+    }
+
     const wrapper = shallow(
-      <FormContainer onSubmit={form => form}>
+      <FormContainer onSubmit={onSubmit}>
         <p />
       </FormContainer>,
     )
     wrapper.instance().onChange( 'akey', 'X' )
-    expect( wrapper.instance().submit() ).toEqual( { akey: 'X' } )
+    wrapper.instance().submit()
+    expect( receivedData ).toEqual( { akey: 'X' } )
   } )
 
   describe( 'submission validation process', () => {
@@ -83,5 +90,47 @@ describe( 'FormContainer Component', () => {
         expect( wrapper.instance().errors[ fieldIndex ] ).toEqual( newError )
         expect( wrapper.instance().state.submissionErrors[ fieldIndex ].length ).toEqual( 0 )
       } )
+
+    test(
+      'when onSubmit returns errors, these errors are saved to submissionErrors and submit returns false',
+      () => {
+        const error = [ 'err' ]
+        const wrapper = shallow(
+          <FormContainer onSubmit={() => ( { testField: error } )}>
+            <p name="testField" />
+          </FormContainer>,
+        )
+
+        const result = wrapper.instance().submit()
+
+        // errors return by callback onSubmit are registered in state
+        expect( result ).toEqual( false )
+        expect( wrapper.instance().state.submissionErrors.testField ).toEqual( error )
+      },
+    )
+
+    test( 'when onSubmit returns success, submit returns true', () => {
+      const wrapper = shallow(
+        <FormContainer onSubmit={() => true}>
+          <p />
+        </FormContainer>,
+      )
+
+      wrapper.instance().onChange( 'testField', 'random value' )
+      const result = wrapper.instance().submit()
+
+      // submit returns true
+      expect( result ).toEqual( true )
+      expect( wrapper.instance().state.submissionErrors ).toEqual( {} )
+    } )
+
+    test( 'doesnt break when onSubmit returns nothing', () => {
+      const wrapper = shallow(
+        <FormContainer onSubmit={() => {}}>
+          <p />
+        </FormContainer>,
+      )
+      wrapper.instance().submit()
+    } )
   } )
 } )

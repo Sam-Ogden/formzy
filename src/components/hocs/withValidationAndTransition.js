@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { func, string, instanceOf, shape, bool, any, number, arrayOf } from 'prop-types'
+import { func, string, instanceOf, shape, bool, any, arrayOf } from 'prop-types'
 import _ from 'lodash'
 
 import {
@@ -46,9 +46,9 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
    */
   addValidationChecks = checks => {
     const { value } = this.state
-    const { registerValidationError, fieldIndex } = this.props
+    const { registerValidationError, name } = this.props
     this.checks = { ...this.checks, ...checks }
-    registerValidationError( fieldIndex, validate( value, this.checks, this.props ) )
+    registerValidationError( name, validate( value, this.checks, this.props ) )
   }
 
   /**
@@ -60,13 +60,13 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
    */
   updateValidationChecks = methods => {
     const { value } = this.state
-    const { registerValidationError, fieldIndex } = this.props
+    const { registerValidationError, name } = this.props
     _.forEach( methods, ( method, key ) => {
       if ( _.keys( this.checks ).includes( key ) ) {
         this.checks[ key ].func = method
       }
     } )
-    registerValidationError( fieldIndex, validate( value, this.checks, this.props ) )
+    registerValidationError( name, validate( value, this.checks, this.props ) )
   }
 
   /**
@@ -76,10 +76,10 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
    * @param {any} value the new value
    */
   inputChange = value => {
-    const { registerValidationError, onChange, name, fieldIndex } = this.props
+    const { registerValidationError, onChange, name } = this.props
     this.setState( { value } )
 
-    registerValidationError( fieldIndex, validate( value, this.checks, this.props ) )
+    registerValidationError( name, validate( value, this.checks, this.props ) )
     onChange( name, value )
   }
 
@@ -121,7 +121,6 @@ export const commonPropTypes = {
   title: string, // Title of the Field
   description: string, // Optional description offering instructions
   name: string, // The input field name, values entered by user is stored as [name]: value
-  fieldIndex: number, // Index of the field in the form
   type: string, // The field type
   // eslint-disable-next-line react/forbid-prop-types
   defaultValue: any, // The default value the field should take
@@ -142,7 +141,6 @@ export const commonDefaultProps = {
   type: 'text',
   defaultValue: null,
   name: '',
-  fieldIndex: 0,
   required: false,
   placeholder: 'Type your answer here...',
   nextBtnText: 'Next',
