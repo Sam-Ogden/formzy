@@ -53,7 +53,8 @@ class MultipleChoiceField extends Component {
       options,
       refProp,
       next,
-      err } = this.props
+      err,
+      required } = this.props
 
     const { selected } = this.state
 
@@ -66,7 +67,7 @@ class MultipleChoiceField extends Component {
           ref={refProp}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
         />
-        <Field title={title} description={description} next={next} err={err}>
+        <Field title={title} description={description} next={next} err={err} required={required}>
           <div className="mcf-options-container">
             {options.map( option => (
               <button

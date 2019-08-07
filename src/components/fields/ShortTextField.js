@@ -43,7 +43,7 @@ class ShortTextField extends Component {
       err } = this.props
 
     return (
-      <Field title={title} description={description} next={next} err={err}>
+      <Field title={title} description={description} next={next} err={err} required={required}>
         <input
           className={`textfield-input ${style.input}`}
           placeholder={placeholder}

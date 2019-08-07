@@ -1,5 +1,5 @@
 import React from 'react'
-import { string, func, instanceOf, arrayOf } from 'prop-types'
+import { string, func, instanceOf, arrayOf, bool } from 'prop-types'
 
 import style from './Field.css'
 import { Consumer } from '../FormContext'
@@ -9,10 +9,16 @@ import { templateToTitle } from '../../utils/utils'
  * @param {Object} props Field props
  * @returns {Element} Field component with title, description and next button if needed
  */
-const Field = ( { children, description, title, next, nextBtnText, err } ) => (
+const Field = ( { children, description, title, next, nextBtnText, err, required } ) => (
   <div className="field">
     <Consumer>
-      {form => ( <h4 className={`title ${style.title}`}>{templateToTitle( title, form )}</h4> )}
+      {form => (
+        <h4 className={`title ${style.title}`}>
+          {templateToTitle( title, form )}
+          {' '}
+          {required ? '*' : ''}
+        </h4>
+      )}
     </Consumer>
 
     {description !== '' && <p className={`desc ${style.description}`}>{description}</p>}
@@ -41,6 +47,7 @@ Field.propTypes = {
   next: func, // The function to call to scroll to the next field
   nextBtnText: string, // Text to display in the next button
   err: arrayOf( string ), // Any errors in the input given by a user
+  required: bool,
 }
 
 Field.defaultProps = {
@@ -48,6 +55,7 @@ Field.defaultProps = {
   next: null,
   nextBtnText: 'Next',
   err: [],
+  required: false,
 }
 
 export default Field

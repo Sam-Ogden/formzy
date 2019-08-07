@@ -46,7 +46,7 @@ class NumberField extends Component {
       err } = this.props
 
     return (
-      <Field title={title} description={description} next={next} err={err}>
+      <Field title={title} description={description} next={next} err={err} required={required}>
         <input
           className={`numberfield-input ${style.input}`}
           placeholder={placeholder}
