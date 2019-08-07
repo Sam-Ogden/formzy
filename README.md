@@ -4,7 +4,8 @@
 
 ✏️ React library alternative for building TypeForm style forms.
 
-See an example [https://sam-ogden.github.io/react-formtype/](here).
+
+## [See an example here](https://sam-ogden.github.io/react-formtype/).
 
 ![](example.gif)
 
