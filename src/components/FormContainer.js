@@ -35,6 +35,7 @@ class FormContainer extends Component {
     // Setup scroll behaviour
     window.noZensmooth = true
     zenscroll.setup( scrollDuration, edgeOffset )
+    if ( process.env.NODE_ENV !== 'test' ) inputRefs[ 0 ].current.focus()
   }
 
   /**
