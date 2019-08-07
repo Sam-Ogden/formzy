@@ -2,9 +2,9 @@
 >
 [![NPM](https://img.shields.io/npm/v/react-form.svg)](https://www.npmjs.com/package/react-formtype) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-airbnb-brightgreen.svg)](https://github.com/airbnb/javascript)
 
-A react library for building forms with similar functionality to TypeForm.
+✏️ React library alternative for building TypeForm style forms.
 
-This is still a work in progress and the first version is yet to be released. 
+See an example [https://sam-ogden.github.io/react-formtype/](here).
 
 ![](example.gif)
 
@@ -13,9 +13,16 @@ This is still a work in progress and the first version is yet to be released.
 ```jsx
 import React, { Component } from 'react'
 
-import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld } from 'react-formtype'
+import { 
+  FormContainer, 
+  ShortTextField, 
+  NumberField, 
+  DateField, 
+  MultipleChoiceFIeld, 
+  InformationField 
+} from 'react-formtype'
 
-const opts = ['Banana', 'Apple', 'Orange', 'Chicken Wings']
+const opts = ['Banana', 'Apple', 'Orange', 'Pear']
 
 export default class App extends Component {
 
@@ -32,16 +39,22 @@ export default class App extends Component {
         submitButtonText="Send form"
         submitDescription="You will have your fruit shortly."
       >
-        <ShortTextField title="Hi, what's your name?" name="name" minTextLength={2} required />
+        <InformationField 
+          title="Hello, Welcome To The Fruit Order Form" 
+          description="Ready to start?" 
+          nextBtnText="Lets Go" 
+        />
+        <ShortTextField title="First off, what's your name?" name="name" minTextLength={2} required />
         <MultipleChoiceFIeld 
           title="Nice to meet you {{_.name}}, what fruit would you like?" 
           name="fruits" 
           options={opts} 
-          multiple/>
+          multiple
+        />
         <NumberField 
-          title="How many oranges would you like?" 
-          name="noranges" 
-          min={0} 
+          title="How many free oranges do you want?" 
+          name="noranges"
+          min={0}
           max={10}
           defaultValue={5}
         />
@@ -50,6 +63,7 @@ export default class App extends Component {
     )
   }
 }
+
 ```
 Fields should have unique ```name``` props as values are stored in the FormContainer as {fieldName: value} pairs. And will be passed to the onSubmit method this way.
 
@@ -71,6 +85,9 @@ Field titles can reference previous user inputs in the titles of other fields. T
 [DateField](#DateField)
 
 [MultipleChoiceField](#MultipleChoiceField)
+
+[InformationField](#InformationField)
+
 
 ### FormContainer
 Container component for handling form state and transitions between form fields. 
@@ -165,6 +182,10 @@ const defaultProps = {
   multiple: false, 
 }
 ```
+
+### InformationField
+This field is used to display information to the user, e.g. a welcome screen. 
+
 
 ## Custom Fields
 Fields can be created using the withValidationAndTransition higher order component and the ```<Field />``` component which are both exported by react-formtype. 
