@@ -16,7 +16,7 @@ html{
 }
 
 .fieldContainer {
-  height: 100vh;
+  height: 60vh;
   background-color: beige;
   display: flex;
   align-items: center;
