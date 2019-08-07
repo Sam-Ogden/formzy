@@ -118,7 +118,7 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
 
 // Props that may be used by all Fields of the form
 export const commonPropTypes = {
-  title: string.isRequired, // Title of the Field
+  title: string, // Title of the Field
   description: string, // Optional description offering instructions
   name: string, // The input field name, values entered by user is stored as [name]: value
   fieldIndex: number, // Index of the field in the form
@@ -127,6 +127,7 @@ export const commonPropTypes = {
   defaultValue: any, // The default value the field should take
   required: bool, // Whether a value must be entered by the user
   placeholder: string, // Input placeholder text
+  nextBtnText: string, // Text to display in next button
   onChange: func, // This is passed in by FormContainer to update the form state
   next: func, // This is passed in by FormContainer to scroll to the next field
   refProp: shape( { current: instanceOf( Element ) } ),
@@ -135,6 +136,7 @@ export const commonPropTypes = {
 }
 
 export const commonDefaultProps = {
+  title: '',
   description: '',
   refProp: null,
   type: 'text',
@@ -143,6 +145,7 @@ export const commonDefaultProps = {
   fieldIndex: 0,
   required: false,
   placeholder: 'Type your answer here...',
+  nextBtnText: 'Next',
   onChange: () => null,
   next: () => true,
   registerValidationError: () => null,

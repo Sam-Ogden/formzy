@@ -9,7 +9,7 @@ import { templateToTitle } from '../../utils/utils'
  * @param {Object} props Field props
  * @returns {Element} Field component with title, description and next button if needed
  */
-const Field = ( { children, description, title, next, err } ) => (
+const Field = ( { children, description, title, next, nextBtnText, err } ) => (
   <div className="field">
     <Consumer>
       {form => ( <h4 className={`title ${style.title}`}>{templateToTitle( title, form )}</h4> )}
@@ -21,7 +21,7 @@ const Field = ( { children, description, title, next, err } ) => (
     {next
       && (
       <div className="next-button">
-        <button className={style.nextBtn} type="button" onClick={next}>Next</button>
+        <button className={style.nextBtn} type="button" onClick={next}>{nextBtnText}</button>
         <span>
           Press
           <span className={style.bold}> Enter</span>
@@ -39,12 +39,14 @@ Field.propTypes = {
   title: string.isRequired, // The title of the field
   description: string, // Description for additional instructions
   next: func, // The function to call to scroll to the next field
+  nextBtnText: string, // Text to display in the next button
   err: arrayOf( string ), // Any errors in the input given by a user
 }
 
 Field.defaultProps = {
   description: '',
   next: null,
+  nextBtnText: 'Next',
   err: [],
 }
 

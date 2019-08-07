@@ -6,6 +6,8 @@ import NumberField from './components/fields/NumberField'
 import Field from './components/fields/Field'
 import DateField from './components/fields/DateField'
 import MultipleChoiceFIeld from './components/fields/MultipleChoiceField'
+import InformationField from './components/fields/InformationField'
+
 import { withValidationAndTransition } from './components/hocs/withValidationAndTransition'
 import { templateToTitle } from './utils/utils'
 
@@ -16,5 +18,6 @@ export { FormContainer,
   ProgressBar,
   DateField,
   MultipleChoiceFIeld,
+  InformationField,
   withValidationAndTransition,
   templateToTitle }
