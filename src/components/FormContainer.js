@@ -1,11 +1,9 @@
 import React, { Component, Children } from 'react'
-import { func, arrayOf, instanceOf, bool, number, string, oneOfType } from 'prop-types'
+import { func, arrayOf, instanceOf, bool, number, oneOfType } from 'prop-types'
 import zenscroll from 'zenscroll'
 import _ from 'lodash'
 
-import formStyle from './FormContainer.css'
 import ProgressBar from './ProgressBar'
-import SubmitField from './fields/SubmitField'
 import { Provider } from './FormContext'
 
 let fieldContainerRefs = [] // to scroll to the container of a Field
@@ -99,7 +97,6 @@ class FormContainer extends Component {
       ( bool, fieldName ) => ( bool && this.errors[ fieldName ].length === 0 ),
       true,
     )
-
     // Run submit callback
     if ( isValid ) {
       const result = onSubmit( form )
@@ -123,23 +120,19 @@ class FormContainer extends Component {
   render() {
     const {
       showProgress,
-      submitTitle,
-      submitDescription,
-      submitButtonText,
     } = this.props
 
     const { form, active, submissionErrors } = this.state
 
     return (
-      <form className={formStyle.formContainer}>
+      <form style={{ width: '100%', flexDirection: 'column', display: 'flex' }}>
         <Provider value={form}>
           {childrenArr.map(
             ( Field, i ) => {
               const { name } = Field.props
-
               return React.cloneElement( Field, {
                 onChange: this.onChange,
-                next: () => this.scrollToRef( i + 1 ),
+                next: i === childrenArr.length - 1 ? this.submit : () => this.scrollToRef( i + 1 ),
                 inputRef: inputRefs[ i ], // Pass ref down to input element for focussing
                 containerRef: fieldContainerRefs[ i ],
                 registerValidationError: this.registerValidationError,
@@ -147,15 +140,6 @@ class FormContainer extends Component {
               } )
             },
           )}
-
-          <SubmitField
-            onSubmit={this.submit}
-            title={submitTitle}
-            description={submitDescription}
-            buttonText={submitButtonText}
-            containerRef={fieldContainerRefs[ childrenArr.length ]}
-            inputRef={inputRefs[ childrenArr.length ]}
-          />
         </Provider>
 
         {showProgress && <ProgressBar progress={progress( active, childrenArr.length )} />}
@@ -166,10 +150,8 @@ class FormContainer extends Component {
 
 FormContainer.propTypes = {
   /**
-   * onSubmit:
-   *  Function to call upon submission. Recieve form data object as arg.
-   *  Returns
-   *    object of errors, or true if there are none.
+   * onSubmit: Function to call upon submission. Recieve form data object as arg.
+   * Returns: object of errors, or true if there are none.
    *    returned errors object should look like:
    *    { fieldName: [ 'err', 'err1' ], anotherField: [ 'e1' ], ... }
    */
@@ -180,18 +162,12 @@ FormContainer.propTypes = {
   showProgress: bool, // Whether to show progress bar
   scrollDuration: number, // Scroll animation time
   edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
-  submitTitle: string, // Title of the Submit field
-  submitDescription: string,
-  submitButtonText: string,
 }
 
 FormContainer.defaultProps = {
   showProgress: true,
   scrollDuration: 777,
   edgeOffset: 0,
-  submitTitle: 'Thank You!',
-  submitDescription: '',
-  submitButtonText: 'Submit Form',
 }
 
 /**

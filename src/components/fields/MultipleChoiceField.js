@@ -68,7 +68,14 @@ class MultipleChoiceField extends Component {
           ref={inputRef}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
         />
-        <Field title={title} description={description} next={next} err={err} required={required} containerRef={containerRef}>
+        <Field
+          title={title}
+          description={description}
+          next={next}
+          err={err}
+          required={required}
+          containerRef={containerRef}
+        >
           <div className="mcf-options-container">
             {options.map( option => (
               <button

@@ -29,24 +29,20 @@ const Field = (
     {description !== '' && <p className={`desc ${style.description}`}>{description}</p>}
     {children}
 
-    {next
-      && (
-      <div className="next-button">
-        <button className={style.nextBtn} type="button" onClick={next}>{nextBtnText}</button>
-        <span>
+    <div className="next-button">
+      <button className={style.nextBtn} type="button" onClick={next}>{nextBtnText}</button>
+      <span>
           Press
-          <span className={style.bold}> Enter</span>
-        </span>
-      </div>
-      )
-    }
+        <span className={style.bold}> Enter</span>
+      </span>
+    </div>
 
     {err.map( ( e, i ) => ( <div key={i} className={`validation-error ${style.errorBar}`}>{e}</div> ) )}
   </div>
 )
 
 Field.propTypes = {
-  children: instanceOf( Object ).isRequired, // The input element
+  children: instanceOf( Object ), // The input element
   title: string.isRequired, // The title of the field
   description: string, // Description for additional instructions
   next: func, // The function to call to scroll to the next field
@@ -63,6 +59,7 @@ Field.defaultProps = {
   err: [],
   required: false,
   containerRef: null,
+  children: null,
 }
 
 export default Field

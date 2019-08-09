@@ -6,7 +6,8 @@ import {
   NumberField, 
   DateField, 
   MultipleChoiceFIeld, 
-  InformationField 
+  InformationField,
+  SubmitField,
 } from 'react-formtype'
 
 const opts = ['Banana', 'Apple', 'Orange', 'Pear']
@@ -27,9 +28,6 @@ export default class App extends Component {
       <FormContainer 
         showProgress={true} 
         onSubmit={this.submit}
-        submitTitle="Thanks!" 
-        submitButtonText="Send form"
-        submitDescription="You will have your fruit shortly."
       >
         <InformationField 
           title="Hello, Welcome To The Fruit Order Form" 
@@ -51,6 +49,7 @@ export default class App extends Component {
           defaultValue={5}
         />
         <DateField title="When would you like your {{_.noranges}} oranges?" name="orrangedate" required/>
+        <SubmitField title="Thanks!" description="You will have your fruit shortly." nextBtnText="Send Form" />
       </FormContainer>
     )
   }
