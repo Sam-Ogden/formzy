@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { arrayOf, string, bool } from 'prop-types'
 
 import style from './MultipleChoiceField.css'
@@ -52,6 +52,7 @@ class MultipleChoiceField extends Component {
       description,
       options,
       inputRef,
+      containerRef,
       next,
       err,
       required } = this.props
@@ -59,7 +60,7 @@ class MultipleChoiceField extends Component {
     const { selected } = this.state
 
     return (
-      <div>
+      <Fragment>
         {/** Hidden button for focus and enter to progress behaviour */}
         <button
           type="button"
@@ -67,7 +68,7 @@ class MultipleChoiceField extends Component {
           ref={inputRef}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
         />
-        <Field title={title} description={description} next={next} err={err} required={required}>
+        <Field title={title} description={description} next={next} err={err} required={required} containerRef={containerRef}>
           <div className="mcf-options-container">
             {options.map( option => (
               <button
@@ -82,7 +83,7 @@ class MultipleChoiceField extends Component {
             ) )}
           </div>
         </Field>
-      </div>
+      </Fragment>
     )
   }
 }

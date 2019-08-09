@@ -1,5 +1,5 @@
 import React from 'react'
-import { string, func, instanceOf, arrayOf, bool } from 'prop-types'
+import { string, func, instanceOf, arrayOf, bool, shape } from 'prop-types'
 
 import style from './Field.css'
 import { Consumer } from '../FormContext'
@@ -9,8 +9,13 @@ import { templateToTitle } from '../../utils/utils'
  * @param {Object} props Field props
  * @returns {Element} Field component with title, description and next button if needed
  */
-const Field = ( { children, description, title, next, nextBtnText, err, required } ) => (
-  <div className="field">
+const Field = (
+  { children, description, title, next, nextBtnText, err, required, containerRef },
+) => (
+  <div
+    className={`field ${style.fieldContainer}`}
+    ref={containerRef}
+  >
     <Consumer>
       {form => (
         <h4 className={`title ${style.title}`}>
@@ -48,6 +53,7 @@ Field.propTypes = {
   nextBtnText: string, // Text to display in the next button
   err: arrayOf( string ), // Any errors in the input given by a user
   required: bool,
+  containerRef: shape( { current: instanceOf( Element ) } ),
 }
 
 Field.defaultProps = {
@@ -56,6 +62,7 @@ Field.defaultProps = {
   nextBtnText: 'Next',
   err: [],
   required: false,
+  containerRef: null,
 }
 
 export default Field

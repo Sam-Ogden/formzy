@@ -1,3 +1,15 @@
+.fieldContainer {
+    height: 60vh;
+    background-color: beige;
+    display: inline-block;
+    align-items: center;
+    justify-content: left;
+    padding-left: 10vw;
+    padding-right: 10vw;
+    padding-bottom: 25vh;
+    padding-top: 25vh;
+}
+
 .title {
     font-size: 1.6em;
     margin-bottom: 10px;

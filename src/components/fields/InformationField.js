@@ -8,7 +8,7 @@ import {
   commonDefaultProps,
 } from '../hocs/withValidationAndTransition'
 
-const InformationField = ( { title, description, next, nextBtnText, inputRef, children } ) => (
+const InformationField = ( { title, description, next, nextBtnText, inputRef, children, containerRef } ) => (
   <Fragment>
     <input
       style={{ width: 0, height: 0, opacity: 0, margin: 0, padding: 0 }}
@@ -16,7 +16,7 @@ const InformationField = ( { title, description, next, nextBtnText, inputRef, ch
       ref={inputRef}
       aria-label="This is a hidden field and should be ignored."
     />
-    <Field title={title} description={description} next={next} nextBtnText={nextBtnText}>
+    <Field title={title} description={description} next={next} nextBtnText={nextBtnText} containerRef={containerRef}>
       {children || []}
     </Field>
   </Fragment>

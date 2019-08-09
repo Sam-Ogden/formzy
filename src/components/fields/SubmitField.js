@@ -26,9 +26,9 @@ class SubmitField extends Component {
   }
 
   render() {
-    const { title, description, buttonText, onSubmit, inputRef } = this.props
+    const { title, description, buttonText, onSubmit, inputRef, containerRef } = this.props
     return (
-      <Field title={title} description={description}>
+      <Field title={title} description={description} containerRef={containerRef}>
         <button className={style.nextBtn} type="button" onClick={onSubmit} ref={inputRef}>{buttonText}</button>
       </Field>
     )

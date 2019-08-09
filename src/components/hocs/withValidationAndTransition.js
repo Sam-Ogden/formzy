@@ -118,6 +118,8 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
 
 // Props that may be used by all Fields of the form
 export const commonPropTypes = {
+  // Field container ref for scrolling
+  containerRef: shape( { current: instanceOf( Element ) } ),
   title: string, // Title of the Field
   description: string, // Optional description offering instructions
   name: string, // The input field name, values entered by user is stored as [name]: value
@@ -138,6 +140,7 @@ export const commonDefaultProps = {
   title: '',
   description: '',
   inputRef: null,
+  containerRef: null,
   type: 'text',
   defaultValue: null,
   name: '',

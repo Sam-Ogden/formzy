@@ -130,29 +130,32 @@ class FormContainer extends Component {
 
     const { form, active, submissionErrors } = this.state
 
-    const submitComponent = (
-      <SubmitField
-        onSubmit={this.submit}
-        title={submitTitle}
-        description={submitDescription}
-        buttonText={submitButtonText}
-      />
-    )
-
     return (
       <form className={formStyle.formContainer}>
         <Provider value={form}>
           {childrenArr.map(
             ( Field, i ) => {
               const { name } = Field.props
-              return FieldContainer(
-                i, Field, this.onChange, this.scrollToRef,
-                this.registerValidationError, submissionErrors[ name ],
-              )
+
+              return React.cloneElement( Field, {
+                onChange: this.onChange,
+                next: () => this.scrollToRef( i + 1 ),
+                inputRef: inputRefs[ i ], // Pass ref down to input element for focussing
+                containerRef: fieldContainerRefs[ i ],
+                registerValidationError: this.registerValidationError,
+                submissionErrors: submissionErrors[ name ],
+              } )
             },
           )}
 
-          {FieldContainer( childrenArr.length, submitComponent )}
+          <SubmitField
+            onSubmit={this.submit}
+            title={submitTitle}
+            description={submitDescription}
+            buttonText={submitButtonText}
+            containerRef={fieldContainerRefs[ childrenArr.length ]}
+            inputRef={inputRefs[ childrenArr.length ]}
+          />
         </Provider>
 
         {showProgress && <ProgressBar progress={progress( active, childrenArr.length )} />}
@@ -190,31 +193,6 @@ FormContainer.defaultProps = {
   submitDescription: '',
   submitButtonText: 'Submit Form',
 }
-
-/**
- * @param {Number} i The index of the field in the form
- * @param {Element} Field A field component (e.g. NumberField, DateField etc)
- * @param {Function} onChange The function to call when this Field is changed
- * @param {Function} scrollToRef The function to call to scroll to next field
- * @param {Function} registerValidationError function to register errors with a fields input
- * @param {Array<String>} errs array of errors assocaited with user input for this field
- * @returns {Element} The field wrapped in a container
- */
-const FieldContainer = ( i, Field, onChange, scrollToRef, registerValidationError, errs ) => (
-  <div
-    className={formStyle.fieldContainer}
-    ref={fieldContainerRefs[ i ]}
-    key={i}
-  >
-    {React.cloneElement( Field, {
-      onChange,
-      next: () => scrollToRef( i + 1 ),
-      inputRef: inputRefs[ i ], // Pass ref down to input element for focussing
-      registerValidationError,
-      submissionErrors: errs,
-    } )}
-  </div>
-)
 
 /**
  * @param {Number} i Current position

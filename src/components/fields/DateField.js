@@ -80,6 +80,7 @@ class DateField extends Component {
   render() {
     const { title,
       inputRef,
+      containerRef,
       required,
       description,
       includeTime,
@@ -87,7 +88,14 @@ class DateField extends Component {
       err } = this.props
 
     return (
-      <Field title={title} description={description} next={next} err={err} required={required}>
+      <Field
+        title={title}
+        description={description}
+        next={next}
+        err={err}
+        required={required}
+        containerRef={containerRef}
+      >
         <div role="presentation" onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
           <DateFieldContainer title="Day:">
             <input

@@ -36,6 +36,7 @@ class NumberField extends Component {
     const { name,
       title,
       inputRef,
+      containerRef,
       type,
       required,
       description,
@@ -46,7 +47,7 @@ class NumberField extends Component {
       err } = this.props
 
     return (
-      <Field title={title} description={description} next={next} err={err} required={required}>
+      <Field title={title} description={description} next={next} err={err} required={required} containerRef={containerRef}>
         <input
           className={`numberfield-input ${style.input}`}
           placeholder={placeholder}
