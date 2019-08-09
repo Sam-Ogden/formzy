@@ -209,7 +209,7 @@ const FieldContainer = ( i, Field, onChange, scrollToRef, registerValidationErro
     {React.cloneElement( Field, {
       onChange,
       next: () => scrollToRef( i + 1 ),
-      refProp: inputRefs[ i ], // Pass ref down to input element for focussing
+      inputRef: inputRefs[ i ], // Pass ref down to input element for focussing
       registerValidationError,
       submissionErrors: errs,
     } )}

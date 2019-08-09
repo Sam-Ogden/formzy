@@ -30,7 +30,7 @@ class MultipleChoiceField extends Component {
    * @param {String} value the selected value
    */
   onChange = ( { target: { value } } ) => {
-    const { inputChange, multiple, refProp } = this.props
+    const { inputChange, multiple, inputRef } = this.props
     const { selected } = this.state
     let newValue = [ value ]
 
@@ -44,14 +44,14 @@ class MultipleChoiceField extends Component {
     inputChange( newValue )
 
     // Focus on hidden button to allow enter key event to progress
-    refProp.current.focus()
+    inputRef.current.focus()
   }
 
   render() {
     const { title,
       description,
       options,
-      refProp,
+      inputRef,
       next,
       err,
       required } = this.props
@@ -64,7 +64,7 @@ class MultipleChoiceField extends Component {
         <button
           type="button"
           className={style.hiddenButton}
-          ref={refProp}
+          ref={inputRef}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
         />
         <Field title={title} description={description} next={next} err={err} required={required}>

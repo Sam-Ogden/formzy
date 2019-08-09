@@ -133,7 +133,7 @@ const commonPropTypes = {
 }
 const commonDefaultProps = {
   description: '',
-  refProp: null,
+  inputRef: null,
   type: 'text',
   defaultValue: null,
   name: '',

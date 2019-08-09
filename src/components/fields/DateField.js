@@ -79,7 +79,7 @@ class DateField extends Component {
 
   render() {
     const { title,
-      refProp,
+      inputRef,
       required,
       description,
       includeTime,
@@ -95,7 +95,7 @@ class DateField extends Component {
               type="number"
               placeholder="dd"
               onChange={this.onChange}
-              ref={refProp}
+              ref={inputRef}
               required={required}
               className={`datefield-day ${style.inputField}`}
             />

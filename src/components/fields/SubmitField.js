@@ -26,10 +26,10 @@ class SubmitField extends Component {
   }
 
   render() {
-    const { title, description, buttonText, onSubmit, refProp } = this.props
+    const { title, description, buttonText, onSubmit, inputRef } = this.props
     return (
       <Field title={title} description={description}>
-        <button className={style.nextBtn} type="button" onClick={onSubmit} ref={refProp}>{buttonText}</button>
+        <button className={style.nextBtn} type="button" onClick={onSubmit} ref={inputRef}>{buttonText}</button>
       </Field>
     )
   }

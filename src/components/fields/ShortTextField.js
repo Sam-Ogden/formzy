@@ -33,7 +33,7 @@ class ShortTextField extends Component {
   render() {
     const { name,
       title,
-      refProp,
+      inputRef,
       type,
       required,
       description,
@@ -51,7 +51,7 @@ class ShortTextField extends Component {
           name={name}
           onChange={this.onChange}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
-          ref={refProp}
+          ref={inputRef}
           required={required}
           maxLength={maxLength}
         />

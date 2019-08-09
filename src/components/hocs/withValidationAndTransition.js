@@ -129,7 +129,7 @@ export const commonPropTypes = {
   nextBtnText: string, // Text to display in next button
   onChange: func, // This is passed in by FormContainer to update the form state
   next: func, // This is passed in by FormContainer to scroll to the next field
-  refProp: shape( { current: instanceOf( Element ) } ),
+  inputRef: shape( { current: instanceOf( Element ) } ),
   registerValidationError: func, // Pass errors back to FormContainer (to validate when onSubmit)
   submissionErrors: arrayOf( string ),
 }
@@ -137,7 +137,7 @@ export const commonPropTypes = {
 export const commonDefaultProps = {
   title: '',
   description: '',
-  refProp: null,
+  inputRef: null,
   type: 'text',
   defaultValue: null,
   name: '',

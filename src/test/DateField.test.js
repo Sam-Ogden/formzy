@@ -19,7 +19,7 @@ const dateFieldWithTime = (
     onChange={( name, value ) => ( { name, value } )}
     next={() => 1}
     validate={() => ''} // validation passes when string is empty
-    refProp={React.createRef( 0 )}
+    inputRef={React.createRef( 0 )}
     defaultValue={{ day: 1, month: 2, year: 2000 }}
     includeTime
   />
