@@ -13,14 +13,4 @@ describe( 'FormField Component', () => {
     const wrapper = shallow( <SubmitField name="aname" title="atitle" onSubmit={() => 1} /> )
     expect( wrapper.exists() ).toBe( true )
   } )
-
-  test( 'when submit button pressed, onSubmit prop is called', () => {
-    let test = 0
-    const wrapper = mount( <SubmitField name="aname" title="atitle" onSubmit={() => { test = 1 }} /> )
-    const btn = wrapper.find( 'button' ).first()
-
-    btn.simulate( 'click' )
-
-    expect( test ).toEqual( 1 )
-  } )
 } )

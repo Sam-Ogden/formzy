@@ -42,11 +42,6 @@ describe( 'Field Component', () => {
     expect( field.children.length ).toEqual( 1 )
   } )
 
-  test( 'next button not displayed when falsy next prop given', () => {
-    const field = mount( <Field title="title" next={null}><b /></Field> )
-    expect( field.find( '.field .next-button' ).length ).toEqual( 0 )
-  } )
-
   test( 'when a next function is given, next button is displayed', () => {
     const field = mount( <Field next={() => 1} title="title"><b /></Field> )
     expect( field.find( '.field .next-button' ).length ).toEqual( 1 )
