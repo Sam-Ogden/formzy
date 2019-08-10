@@ -6,8 +6,25 @@ import { Consumer } from '../FormContext'
 import { templateToTitle } from '../../utils/utils'
 
 /**
+ * A form field with a number of choice buttons
+ * - Stores responses as an array
+ *
+ * Custom Styling
+ * - mcfOptionButton: styling of the button when not active
+ * - mcfOptionButtonActive: styling when active, merges and overrides mcfOptionButton styles
+ */
+/**
  * @param {Object} props Field props
  * @returns {Element} Field component with title, description and next button if needed
+ *
+ * Custom Styling
+ * - container: style for the container, useful for having different backgrounds across fields
+ * - title:
+ * - description:
+ * - nextButton:
+ * - pressEnter: style for the outer span of the 'Press Enter' text
+ * - pressEnterInner: style for the inner span i.e. style for the 'Enter' text
+ * - errorBar: style for the error bars
  */
 const Field = (
   { children, description, title, next, nextBtnText, err, required, containerRef, style },

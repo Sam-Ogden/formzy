@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { arrayOf, string, bool } from 'prop-types'
+import _ from 'lodash'
 
 import css from './MultipleChoiceField.css'
 import Field from './Field'
@@ -9,6 +10,11 @@ import { withValidationAndTransition,
 
 /**
  * A form field with a number of choice buttons
+ * - Stores responses as an array
+ *
+ * Custom Styling
+ * - mcfOptionButton: styling of the button when not active
+ * - mcfOptionButtonActive: styling when active, merges and overrides mcfOptionButton styles
  */
 class MultipleChoiceField extends Component {
   static propTypes = {
@@ -79,18 +85,23 @@ class MultipleChoiceField extends Component {
           style={style}
         >
           <div className="mcf-options-container">
-            {options.map( option => (
-              <button
-                value={option}
-                type="button"
-                onClick={this.onChange}
-                key={option}
-                className={[ selected.includes( option ) ? css.active : '', css.optionButton ].join( ' ' )}
-                style={style.mcfOptionButton}
-              >
-                {option}
-              </button>
-            ) )}
+            {options.map( option => {
+              const { mcfOptionButton, mcfOptionButtonActive } = style
+              const btnStyle = selected.includes( option )
+                ? _.assign( {}, mcfOptionButton, mcfOptionButtonActive ) : mcfOptionButton
+              return (
+                <button
+                  value={option}
+                  type="button"
+                  onClick={this.onChange}
+                  key={option}
+                  className={[ selected.includes( option ) ? css.active : '', css.optionButton ].join( ' ' )}
+                  style={btnStyle}
+                >
+                  {option}
+                </button>
+              )
+            } )}
           </div>
         </Field>
       </Fragment>

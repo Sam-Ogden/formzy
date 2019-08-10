@@ -32,14 +32,27 @@ export default class App extends Component {
         <InformationField 
           title="Hello, Welcome To The Fruit Order Form" 
           description="Ready to start?" 
-          nextBtnText="Lets Go" 
+          nextBtnText="Lets Go"
         />
-        <ShortTextField title="First off, what's your name?" name="name" minTextLength={2} required />
+        <ShortTextField 
+          title="First off, what's your name?" 
+          name="name" 
+          minTextLength={2} 
+          required 
+        />
         <MultipleChoiceFIeld 
           title="Nice to meet you {{_.name}}, what fruit would you like?" 
           name="fruits" 
           options={opts} 
           multiple
+          style={{
+            mcfOptionButton: { 
+              display: 'inline', width: '15%', marginRight: '20px'
+            },
+            mcfOptionButtonActive: { 
+              borderColor: '#66aef7', color: 'black', fontWeight: 'bold'
+            }
+          }}
         />
         <NumberField 
           title="How many free oranges do you want?" 
@@ -48,8 +61,16 @@ export default class App extends Component {
           max={10}
           defaultValue={5}
         />
-        <DateField title="When would you like your {{_.noranges}} oranges?" name="orrangedate" required/>
-        <SubmitField title="Thanks!" description="You will have your fruit shortly." nextBtnText="Send Form" />
+        <DateField 
+          title="When would you like your {{_.noranges}} oranges?" 
+          name="orrangedate" 
+          required
+        />
+        <SubmitField 
+          title="Thanks!" 
+          description="You will have your fruit shortly." 
+          nextBtnText="Send Form" 
+        />
       </FormContainer>
     )
   }
