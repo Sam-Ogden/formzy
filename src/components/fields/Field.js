@@ -1,7 +1,7 @@
 import React from 'react'
 import { string, func, instanceOf, arrayOf, bool, shape } from 'prop-types'
 
-import style from './Field.css'
+import styles from './Field.css'
 import { Consumer } from '../FormContext'
 import { templateToTitle } from '../../utils/utils'
 
@@ -10,15 +10,16 @@ import { templateToTitle } from '../../utils/utils'
  * @returns {Element} Field component with title, description and next button if needed
  */
 const Field = (
-  { children, description, title, next, nextBtnText, err, required, containerRef },
+  { children, description, title, next, nextBtnText, err, required, containerRef, style },
 ) => (
   <div
-    className={`field ${style.fieldContainer}`}
+    className={`field ${styles.fieldContainer}`}
     ref={containerRef}
+    style={style.container}
   >
     <Consumer>
       {form => (
-        <h4 className={`title ${style.title}`}>
+        <h4 className={`title ${styles.title}`} style={style.title}>
           {templateToTitle( title, form )}
           {' '}
           {required ? '*' : ''}
@@ -26,18 +27,23 @@ const Field = (
       )}
     </Consumer>
 
-    {description !== '' && <p className={`desc ${style.description}`}>{description}</p>}
+    {description !== ''
+     && <p className={`desc ${styles.description}`} style={style.description}>{description}</p>}
     {children}
 
     <div className="next-button">
-      <button className={style.nextBtn} type="button" onClick={next}>{nextBtnText}</button>
-      <span>
+      <button className={styles.nextBtn} style={style.nextButton} type="button" onClick={next}>
+        {nextBtnText}
+      </button>
+      <span style={styles.pressEnter}>
           Press
-        <span className={style.bold}> Enter</span>
+        <span className={styles.bold} style={style.pressEnterInner}> Enter</span>
       </span>
     </div>
 
-    {err.map( ( e, i ) => ( <div key={i} className={`validation-error ${style.errorBar}`}>{e}</div> ) )}
+    {err.map( ( e, i ) => (
+      <div key={i} className={`validation-error ${styles.errorBar}`} style={style.error}>{e}</div>
+    ) )}
   </div>
 )
 
@@ -50,6 +56,7 @@ Field.propTypes = {
   err: arrayOf( string ), // Any errors in the input given by a user
   required: bool,
   containerRef: shape( { current: instanceOf( Element ) } ),
+  style: instanceOf( Object ),
 }
 
 Field.defaultProps = {
@@ -60,6 +67,7 @@ Field.defaultProps = {
   required: false,
   containerRef: null,
   children: null,
+  style: {},
 }
 
 export default Field

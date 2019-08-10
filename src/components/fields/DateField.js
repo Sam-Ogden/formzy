@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { bool, func, string, instanceOf } from 'prop-types'
 import _ from 'lodash'
 
-import style from './DateField.css'
+import css from './DateField.css'
 import Field from './Field'
 import {
   withValidationAndTransition,
@@ -85,7 +85,8 @@ class DateField extends Component {
       description,
       includeTime,
       next,
-      err } = this.props
+      err,
+      style } = this.props
 
     return (
       <Field
@@ -95,6 +96,7 @@ class DateField extends Component {
         err={err}
         required={required}
         containerRef={containerRef}
+        style={style}
       >
         <div role="presentation" onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
           <DateFieldContainer title="Day:">
@@ -105,7 +107,7 @@ class DateField extends Component {
               onChange={this.onChange}
               ref={inputRef}
               required={required}
-              className={`datefield-day ${style.inputField}`}
+              className={`datefield-day ${css.inputField}`}
             />
           </DateFieldContainer>
           <DateFieldContainer title="Month:">
@@ -115,7 +117,7 @@ class DateField extends Component {
               placeholder="mm"
               onChange={this.onChange}
               required={required}
-              className={`datefield-month ${style.inputField}`}
+              className={`datefield-month ${css.inputField}`}
             />
           </DateFieldContainer>
           <DateFieldContainer title="Year:">
@@ -125,7 +127,7 @@ class DateField extends Component {
               placeholder="yyyy"
               onChange={this.onChange}
               required={required}
-              className={`datefield-year ${style.inputField}`}
+              className={`datefield-year ${css.inputField}`}
             />
           </DateFieldContainer>
           {includeTime
@@ -137,7 +139,7 @@ class DateField extends Component {
                     placeholder="00:00"
                     onChange={this.onChange}
                     required={required}
-                    className={`datefield-time ${style.inputField}`}
+                    className={`datefield-time ${css.inputField}`}
                   />
                 </DateFieldContainer>
               )}
@@ -148,8 +150,8 @@ class DateField extends Component {
 }
 
 const DateFieldContainer = ( { title, children } ) => (
-  <span className={style.dateInputContainer}>
-    <span className={style.dateTitles}>{title}</span>
+  <span className={css.dateInputContainer}>
+    <span className={css.dateTitles}>{title}</span>
     {children}
   </span>
 )

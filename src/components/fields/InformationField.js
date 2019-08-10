@@ -9,7 +9,7 @@ import {
 } from '../hocs/withValidationAndTransition'
 
 const InformationField = (
-  { title, description, next, nextBtnText, inputRef, children, containerRef },
+  { title, description, next, nextBtnText, inputRef, children, containerRef, style },
 ) => (
   <Fragment>
     <input
@@ -24,6 +24,7 @@ const InformationField = (
       next={next}
       nextBtnText={nextBtnText}
       containerRef={containerRef}
+      style={style}
     >
       {children || []}
     </Field>

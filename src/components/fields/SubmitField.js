@@ -5,7 +5,9 @@ import { withValidationAndTransition,
   commonPropTypes,
   commonDefaultProps } from '../hocs/withValidationAndTransition'
 
-const SubmitField = ( { title, description, nextBtnText, next, inputRef, containerRef } ) => (
+const SubmitField = (
+  { title, description, nextBtnText, next, inputRef, containerRef, style },
+) => (
   <Fragment>
     <input
       style={{ width: 0, height: 0, opacity: 0, margin: 0, padding: 0, border: 'none' }}
@@ -19,6 +21,7 @@ const SubmitField = ( { title, description, nextBtnText, next, inputRef, contain
       containerRef={containerRef}
       next={next}
       nextBtnText={nextBtnText}
+      style={style}
     />
   </Fragment>
 )

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { arrayOf, string, bool } from 'prop-types'
 
-import style from './MultipleChoiceField.css'
+import css from './MultipleChoiceField.css'
 import Field from './Field'
 import { withValidationAndTransition,
   commonPropTypes,
@@ -55,7 +55,8 @@ class MultipleChoiceField extends Component {
       containerRef,
       next,
       err,
-      required } = this.props
+      required,
+      style } = this.props
 
     const { selected } = this.state
 
@@ -64,7 +65,7 @@ class MultipleChoiceField extends Component {
         {/** Hidden button for focus and enter to progress behaviour */}
         <button
           type="button"
-          className={style.hiddenButton}
+          className={css.hiddenButton}
           ref={inputRef}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
         />
@@ -75,6 +76,7 @@ class MultipleChoiceField extends Component {
           err={err}
           required={required}
           containerRef={containerRef}
+          style={style}
         >
           <div className="mcf-options-container">
             {options.map( option => (
@@ -83,7 +85,8 @@ class MultipleChoiceField extends Component {
                 type="button"
                 onClick={this.onChange}
                 key={option}
-                className={[ selected.includes( option ) ? style.active : '', style.optionButton ].join( ' ' )}
+                className={[ selected.includes( option ) ? css.active : '', css.optionButton ].join( ' ' )}
+                style={style.mcfOptionButton}
               >
                 {option}
               </button>

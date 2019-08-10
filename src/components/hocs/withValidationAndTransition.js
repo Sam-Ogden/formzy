@@ -134,6 +134,7 @@ export const commonPropTypes = {
   inputRef: shape( { current: instanceOf( Element ) } ),
   registerValidationError: func, // Pass errors back to FormContainer (to validate when onSubmit)
   submissionErrors: arrayOf( string ),
+  style: instanceOf( Object ),
 }
 
 export const commonDefaultProps = {
@@ -151,4 +152,5 @@ export const commonDefaultProps = {
   next: () => true,
   registerValidationError: () => null,
   submissionErrors: [],
+  style: {},
 }

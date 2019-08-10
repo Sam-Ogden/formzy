@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { number } from 'prop-types'
 
-import style from './Field.css'
+import css from './Field.css'
 import Field from './Field'
 import { withValidationAndTransition,
   commonPropTypes,
@@ -44,7 +44,8 @@ class NumberField extends Component {
       min,
       max,
       next,
-      err } = this.props
+      err,
+      style } = this.props
 
     return (
       <Field
@@ -54,9 +55,10 @@ class NumberField extends Component {
         err={err}
         required={required}
         containerRef={containerRef}
+        style={style}
       >
         <input
-          className={`numberfield-input ${style.input}`}
+          className={`numberfield-input ${css.input}`}
           placeholder={placeholder}
           type={type}
           name={name}
