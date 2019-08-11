@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { arrayOf, string, bool, shape, instanceOf } from 'prop-types'
 import _ from 'lodash'
 
@@ -52,7 +52,7 @@ class MultipleChoiceField extends Component {
     const { selected } = this.state
 
     return (
-      <Fragment>
+      <div>
         {/** Hidden button for focus and enter to progress behaviour */}
         <button
           type="button"
@@ -89,7 +89,7 @@ class MultipleChoiceField extends Component {
             } )}
           </div>
         </Field>
-      </Fragment>
+      </div>
     )
   }
 }
