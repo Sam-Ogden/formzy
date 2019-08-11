@@ -4,90 +4,119 @@
 
 ✏️ React library alternative for building TypeForm style forms.
 
-
-## [See an example here](https://sam-ogden.github.io/react-formtype/).
+## [See an example](https://sam-ogden.github.io/react-formtype/).
 
 ![](example.gif)
 
+## Contents
+* [Usage](#Usage)
+* [Features](#Features)
+* [Components](#Components)
+  * [FormContainer](#FormContainer)
+  * [ShortTextField](#ShortTextField)
+  * [NumberField](#NumberField)
+  * [DateField](#DateField)
+  * [MultipleChoiceField](#MultipleChoiceField)
+  * [InformationField](#InformationField)
+  * [SubmitField](#SubmitField)
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
+import React from 'react'
+import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld,
+         InformationField, SubmitField } from 'react-formtype'
 
-import { 
-  FormContainer, 
-  ShortTextField, 
-  NumberField, 
-  DateField, 
-  MultipleChoiceFIeld, 
-  InformationField 
-} from 'react-formtype'
-
-const opts = ['Banana', 'Apple', 'Orange', 'Pear']
-
-export default class App extends Component {
-
-  submit = (data) => {
-    console.log(data)
-  }
-
-  render () {
-    return (
-      <FormContainer 
-        showProgress={true} 
-        onSubmit={this.submit}
-        submitTitle="Thanks!" 
-        submitButtonText="Send form"
-        submitDescription="You will have your fruit shortly."
-      >
-        <InformationField 
-          title="Hello, Welcome To The Fruit Order Form" 
-          description="Ready to start?" 
-          nextBtnText="Lets Go" 
-        />
-        <ShortTextField title="First off, what's your name?" name="name" minTextLength={2} required />
-        <MultipleChoiceFIeld 
-          title="Nice to meet you {{_.name}}, what fruit would you like?" 
-          name="fruits" 
-          options={opts} 
-          multiple
-        />
-        <NumberField 
-          title="How many free oranges do you want?" 
-          name="noranges"
-          min={0}
-          max={10}
-          defaultValue={5}
-        />
-        <DateField title="When would you like your {{_.noranges}} oranges?" name="orrangedate" required/>
-      </FormContainer>
-    )
-  }
-}
-
+export default () => (
+  <FormContainer 
+    showProgress={true} 
+    onSubmit={data => console.log(data)}
+    progressStyle={{ innerBar: { backgroundColor: 'black' } }}
+  >
+    <InformationField 
+      title="Hello, Welcome To The Fruit Order Form" 
+      description="Ready to start?" 
+      nextBtnText="Lets Go"
+    />
+    <ShortTextField 
+      title="First off, what's your name?" 
+      name="name" 
+      minTextLength={2} 
+      required 
+    />
+    <MultipleChoiceFIeld 
+      title="Nice to meet you {{_.name}}, what fruit would you like?" 
+      name="fruits" 
+      options={['Banana', 'Apple', 'Orange', 'Pear']} 
+      multiple
+      style={{ 
+        optionButtonActive: { 
+          borderColor: '#66aef7', color: 'black', fontWeight: 'bold'
+        }
+      }}
+    />
+    <NumberField 
+      title="How many free oranges do you want?" 
+      name="noranges"
+      min={0}
+      defaultValue={5}
+    />
+    <DateField 
+      title="When would you like your {{_.noranges}} oranges?" 
+      name="orrangedate" 
+      required
+    />
+    <SubmitField 
+      title="Thanks!" 
+      description="You will have your fruit shortly." 
+      nextBtnText="Send Form" 
+    />
+  </FormContainer>
+)
 ```
-Fields should have unique ```name``` props as values are stored in the FormContainer as {fieldName: value} pairs. And will be passed to the onSubmit method this way.
+Fields should have unique ```name``` props as values are stored in the FormContainer as {fieldName: value} pairs. And will be passed to the onSubmit callback in this format.
 
 Assuming a value is given for each field in the above example, when the user hits submit, the submit method will receive:  
 
 ```data = { name: ..., fruits: [...], noranges: ..., orangedate: { day: ..., month: ..., year: ... } }```  
 
-## Referencing User Inputs In Titles
+The last child contained in FormContainer will act as the submit field and when a user clicks the button for that field it will run the onSubmit callback method. 
+
+## Features
+* Typeform style scrolling behaviour
+* Custom styling
+* Reference user inputs in field titles
+* Progress bar
+* Easy validation
+* Ability to build [Custom Fields](#Custom-Fields)
+
+### Reference User Inputs In Titles
 Field titles can reference previous user inputs in the titles of other fields. This is achieved by:
 * using ```{{_.FIELD_NAME}}``` in the title prop.
 
+### Custom Styling
+Custom styling is applied to fields through a style prop.
+
+All Field Components can change the styling of the title, description, next button etc using the keys listed below. Some components have addional style options which can be seen in the props for the component below. 
+```jsx
+<SomeFieldComponent 
+  style={{
+    fieldContainer: {/*css styles here*/},
+    title: {},
+    description: {},
+    nextButton: {},
+    pressEnter: {},
+    pressEnterInner: {},
+    errorBar: {}
+  }} />
+```
+
 ## Components
-[FormContainer](#FormContainer)
-
-[ShortTextField](#ShortTextField)
-
-[NumberField](#NumberField)
-
-[DateField](#DateField)
-
-[MultipleChoiceField](#MultipleChoiceField)
-
-[InformationField](#InformationField)
+* [FormContainer](#FormContainer)
+* [ShortTextField](#ShortTextField)
+* [NumberField](#NumberField)
+* [DateField](#DateField)
+* [MultipleChoiceField](#MultipleChoiceField)
+* [InformationField](#InformationField)
 
 
 ### FormContainer
@@ -95,26 +124,32 @@ Container component for handling form state and transitions between form fields.
 
 **All Fields in the form must be children of the FormContainer component.**
 ```jsx
-static propTypes  = {
-  onSubmit: func.isRequired, // Function to call upon submission. Accept object as argument.
+FormContainer.propTypes = {
+  /**
+   * onSubmit: Function to call upon submission. Recieve form data object as arg.
+   * Returns: object of errors, or true if there are none.
+   * returned errors object should look like: { fieldName: [ 'err' ], field2: [ 'err' ], ... }
+   */
+  onSubmit: func.isRequired,
   children: oneOfType( [ arrayOf( // Array of fields (form body)
-  instanceOf( Object ),
+    instanceOf( Object ),
   ), instanceOf( Object ) ] ).isRequired,
   showProgress: bool, // Whether to show progress bar
   scrollDuration: number, // Scroll animation time
   edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
-  submitTitle: string, // Title of the Submit field
-  submitDescription: string,
-  submitButtonText: string,
+  progressStyle: shape( {
+    container: instanceOf( Object ),
+    label: instanceOf( Object ),
+    bar: instanceOf( Object ),
+    innerBar: instanceOf( Object ),
+  } ),
 }
 
-static defaultProps  = {
+FormContainer.defaultProps = {
   showProgress: true,
   scrollDuration: 777,
   edgeOffset: 0,
-  submitTitle: 'Thank You!',
-  submitDescription: '',
-  submitButtonText: 'Submit Form',
+  progressStyle: {},
 }
 ```
 ## Field Components
@@ -122,70 +157,95 @@ Field components are always children of the FormContainer component
 
 All fields have a common set of props as shown below, as well as additional props relevant only to themselves 
 ```jsx
-const commonPropTypes = {
-  title: string.isRequired, // Title of the Field
-  description: string, // Optional description offering instructions
-  name: string, // The input field name, values entered by user is stored as [name]: value
-  type: string, // The field type
-  defaultValue: any, // The default value the field should take
-  required: bool, // Whether a value must be entered by the user
-  placeholder: string, // Input placeholder text
+commonPropTypes = {
+  title: string,
+  description: string,
+  name: string, // Input name - values entered by user are stored as [name]: value. Must be unique.
+  defaultValue: any,
+  required: bool,
+  placeholder: string,
+  nextBtnText: string,
+  style: instanceOf( Object ), // Custom styling
 }
 const commonDefaultProps = {
+  title: '',
   description: '',
-  inputRef: null,
-  type: 'text',
-  defaultValue: null,
   name: '',
+  defaultValue: null,
   required: false,
   placeholder: 'Type your answer here...',
-  validate: () => '', 
+  nextBtnText: 'Next',
+  style: {},
 }
 ```
 ### ShortTextField
 ```jsx
-const additionalProps = {
-  maxTextLength: number,
-  minTextLength: number,
+ShortTextField.propTypes = {
+  ...commonPropTypes,
+  maxLength: number,
+  style: shape( { textInput: instanceOf( Object ) } ),
 }
-const defaultProps = {
-  maxTextLength: 524288,
-  minTextLength: 0,
+
+ShortTextField.defaultProps = {
+  ...commonDefaultProps,
+  maxLength: 524288,
 }
 ```
 ### NumberField
 ```jsx
-const additionalProps = {
+NumberField.propTypes = {
+  ...commonPropTypes,
   min: number,
   max: number,
+  style: shape( { numberInput: instanceOf( Object ) } ),
 }
-const defaultProps = {
+
+NumberField.defaultProps = {
+  ...commonDefaultProps,
   min: Number.MIN_VALUE,
-  max: Number.MAX_VALUE,,
+  max: Number.MAX_VALUE,
 }
 ```
 ### DateField
 ```jsx
-const additionalProps = {
-  includeTime: bool,
+DateField.propTypes = {
+  ...commonPropTypes,
+  includeTime: bool, // Whether to display time input field
+  style: shape( {
+    dateInput: instanceOf( Object ),
+    dateInputContainer: instanceOf( Object ),
+    dateInputLabel: instanceOf( Object ),
+  } ),
 }
-const defaultProps = {
+
+DateField.defaultProps = {
+  ...commonDefaultProps,
   includeTime: false,
 }
 ```
 ### MultipleChoiceField
 ```jsx
-const additionalProps = {
-  options: arrayOf( string ).isRequired,
+MultipleChoiceField.propTypes = {
+  ...commonPropTypes,
+  options: arrayOf( string ).isRequired, // The possible options to pick from
   multiple: bool, // Whether the user can select multiple options
+  style: shape( {
+    optionButton: instanceOf( Object ),
+    optionButtonActive: instanceOf( Object ),
+  } ),
 }
-const defaultProps = {
-  multiple: false, 
+
+MultipleChoiceField.defaultProps = {
+  ...commonDefaultProps,
+  multiple: false,
 }
 ```
 
 ### InformationField
 This field is used to display information to the user, e.g. a welcome screen. 
+
+### SubmitField
+This component should be used as the last child within FormContainer as the last child component within FormContainer is always assumed to be the submit field and will run the submit call back when the next button is pressed.
 
 
 ## Custom Fields
@@ -195,17 +255,34 @@ Fields can be created using the withValidationAndTransition higher order compone
 This is the default way to display the field components, it displays the title, description, validation errors and the next button. See ```src/components/fields/NumberField.js``` for example usage in the render method.
 ```jsx
 Field.propTypes = {
-  children: instanceOf( Object ).isRequired, // The input element
+  children: instanceOf( Object ), // The input element
   title: string.isRequired, // The title of the field
   description: string, // Description for additional instructions
   next: func, // The function to call to scroll to the next field
+  nextBtnText: string, // Text to display in the next button
   err: arrayOf( string ), // Any errors in the input given by a user
+  required: bool,
+  containerRef: shape( { current: instanceOf( Element ) } ), // Reference for container to scroll to
+  style: shape( {
+    fieldContainer: instanceOf( Object ),
+    title: instanceOf( Object ),
+    description: instanceOf( Object ),
+    nextButton: instanceOf( Object ),
+    pressEnter: instanceOf( Object ),
+    pressEnterInner: instanceOf( Object ),
+    errorBar: instanceOf( Object ),
+  } ),
 }
 
 Field.defaultProps = {
   description: '',
   next: null,
+  nextBtnText: 'Next',
   err: [],
+  required: false,
+  containerRef: null,
+  children: null,
+  style: {},
 }
 ```
 You can create your own Field component for use with your own fields. (Future feature: ability to pass in custom Field component to FormContainer so you can reuse all the premade fields with your own UI structure for the title/description/next buttons/errors).
