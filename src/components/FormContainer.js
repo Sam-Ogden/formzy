@@ -1,13 +1,13 @@
 import React, { Component, Children } from 'react'
-import { func, arrayOf, instanceOf, bool, number, oneOfType } from 'prop-types'
+import { func, arrayOf, instanceOf, bool, number, oneOfType, shape } from 'prop-types'
 import zenscroll from 'zenscroll'
 import _ from 'lodash'
 
 import ProgressBar from './ProgressBar'
 import { Provider } from './FormContext'
 
-let fieldContainerRefs = [] // to scroll to the container of a Field
-let inputRefs = [] // to focus on the next input of a field
+let fieldContainerRefs = []
+let inputRefs = []
 let childrenArr = []
 
 /**
@@ -120,6 +120,7 @@ class FormContainer extends Component {
   render() {
     const {
       showProgress,
+      progressStyle,
     } = this.props
 
     const { form, active, submissionErrors } = this.state
@@ -142,7 +143,8 @@ class FormContainer extends Component {
           )}
         </Provider>
 
-        {showProgress && <ProgressBar progress={progress( active, childrenArr.length )} />}
+        {showProgress
+        && <ProgressBar progress={progress( active, childrenArr.length )} style={progressStyle} />}
       </form>
     )
   }
@@ -152,8 +154,7 @@ FormContainer.propTypes = {
   /**
    * onSubmit: Function to call upon submission. Recieve form data object as arg.
    * Returns: object of errors, or true if there are none.
-   *    returned errors object should look like:
-   *    { fieldName: [ 'err', 'err1' ], anotherField: [ 'e1' ], ... }
+   * returned errors object should look like: { field: [ 'err' ], field2: [ 'err' ], ... }
    */
   onSubmit: func.isRequired,
   children: oneOfType( [ arrayOf( // Array of fields (form body)
@@ -162,12 +163,19 @@ FormContainer.propTypes = {
   showProgress: bool, // Whether to show progress bar
   scrollDuration: number, // Scroll animation time
   edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
+  progressStyle: shape( {
+    container: instanceOf( Object ),
+    label: instanceOf( Object ),
+    bar: instanceOf( Object ),
+    innerBar: instanceOf( Object ),
+  } ),
 }
 
 FormContainer.defaultProps = {
   showProgress: true,
   scrollDuration: 777,
   edgeOffset: 0,
+  progressStyle: {},
 }
 
 /**

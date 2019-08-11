@@ -28,6 +28,7 @@ export default class App extends Component {
       <FormContainer 
         showProgress={true} 
         onSubmit={this.submit}
+        progressStyle={{ innerBar: { backgroundColor: 'black' } }}
       >
         <InformationField 
           title="Hello, Welcome To The Fruit Order Form" 
