@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { string } from 'prop-types'
 
 import Field from './Field'
@@ -11,7 +11,7 @@ import {
 const InformationField = (
   { title, description, next, nextBtnText, inputRef, children, containerRef, style },
 ) => (
-  <Fragment>
+  <div>
     <input
       style={{ width: 0, height: 0, opacity: 0, margin: 0, padding: 0, border: 'none' }}
       onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
@@ -28,7 +28,7 @@ const InformationField = (
     >
       {children || []}
     </Field>
-  </Fragment>
+  </div>
 )
 
 InformationField.propTypes = {

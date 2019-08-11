@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import Field from './Field'
 import { withValidationAndTransition,
@@ -8,7 +8,7 @@ import { withValidationAndTransition,
 const SubmitField = (
   { title, description, nextBtnText, next, inputRef, containerRef, style },
 ) => (
-  <Fragment>
+  <div>
     <input
       style={{ width: 0, height: 0, opacity: 0, margin: 0, padding: 0, border: 'none' }}
       onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
@@ -23,7 +23,7 @@ const SubmitField = (
       nextBtnText={nextBtnText}
       style={style}
     />
-  </Fragment>
+  </div>
 )
 
 SubmitField.propTypes = {
