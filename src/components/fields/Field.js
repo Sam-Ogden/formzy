@@ -6,14 +6,6 @@ import { Consumer } from '../FormContext'
 import { templateToTitle } from '../../utils/utils'
 
 /**
- * A form field with a number of choice buttons
- * - Stores responses as an array
- *
- * Custom Styling
- * - mcfOptionButton: styling of the button when not active
- * - mcfOptionButtonActive: styling when active, merges and overrides mcfOptionButton styles
- */
-/**
  * @param {Object} props Field props
  * @returns {Element} Field component with title, description and next button if needed
  *

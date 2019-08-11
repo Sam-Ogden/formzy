@@ -123,7 +123,6 @@ export const commonPropTypes = {
   title: string, // Title of the Field
   description: string, // Optional description offering instructions
   name: string, // The input field name, values entered by user is stored as [name]: value
-  type: string, // The field type
   // eslint-disable-next-line react/forbid-prop-types
   defaultValue: any, // The default value the field should take
   required: bool, // Whether a value must be entered by the user
@@ -142,7 +141,6 @@ export const commonDefaultProps = {
   description: '',
   inputRef: null,
   containerRef: null,
-  type: 'text',
   defaultValue: null,
   name: '',
   required: false,
