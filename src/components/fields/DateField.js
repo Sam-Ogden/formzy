@@ -39,8 +39,12 @@ const validateDate = ( value, testVal, props ) => {
 
 /**
  * Form Field that takes date and time values.
- * A custom input is used instead of type="date", this is to provide consistency across browsers
- * The value is stored as { day: ..., month: ..., year: ..., time: ... }
+ * Value is returned as { day: ..., month: ..., year: ..., time: ... }
+ *
+ * Custom Styling
+ * - dateInput: styling for all the input fields
+ * - dateInputContainer: styling for container around an input element
+ * - dateInputLabel: styling for label of each input element
  */
 class DateField extends Component {
   static propTypes = {
@@ -52,7 +56,6 @@ class DateField extends Component {
 
   static defaultProps = {
     ...commonDefaultProps,
-    type: 'date',
     includeTime: false,
   }
 
@@ -60,14 +63,13 @@ class DateField extends Component {
 
   componentDidMount() {
     const { addValidationChecks, updateValidationChecks } = this.props
-    // Override the required function without func specific to DateField
+    // Override the required function with func specific to DateField
     updateValidationChecks( { required, validateDate } )
     addValidationChecks( { validateDate: { func: validateDate, test: true } } )
   }
 
   /**
-   * Function to call when the user updates a date input field
-   * Have 4 values for each component of the date
+   * Store values for each component of date seperatly
    */
   onChange = ( { target: { name, value: val } } ) => {
     this.setState( ( { value } ) => ( { value: ( { ...value, [ name ]: val } ) } ), () => {
@@ -99,7 +101,7 @@ class DateField extends Component {
         style={style}
       >
         <div role="presentation" onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
-          <DateFieldContainer title="Day:">
+          <DateFieldContainer style={style} title="Day:">
             <input
               name="day"
               type="number"
@@ -108,9 +110,10 @@ class DateField extends Component {
               ref={inputRef}
               required={required}
               className={`datefield-day ${css.inputField}`}
+              style={style.dateInput}
             />
           </DateFieldContainer>
-          <DateFieldContainer title="Month:">
+          <DateFieldContainer style={style} title="Month:">
             <input
               name="month"
               type="number"
@@ -118,9 +121,10 @@ class DateField extends Component {
               onChange={this.onChange}
               required={required}
               className={`datefield-month ${css.inputField}`}
+              style={style.dateInput}
             />
           </DateFieldContainer>
-          <DateFieldContainer title="Year:">
+          <DateFieldContainer style={style} title="Year:">
             <input
               name="year"
               type="number"
@@ -128,11 +132,12 @@ class DateField extends Component {
               onChange={this.onChange}
               required={required}
               className={`datefield-year ${css.inputField}`}
+              style={style.dateInput}
             />
           </DateFieldContainer>
           {includeTime
               && (
-                <DateFieldContainer title="Time:">
+                <DateFieldContainer style={style} title="Time:">
                   <input
                     name="time"
                     type="time"
@@ -140,6 +145,7 @@ class DateField extends Component {
                     onChange={this.onChange}
                     required={required}
                     className={`datefield-time ${css.inputField}`}
+                    style={style.dateInput}
                   />
                 </DateFieldContainer>
               )}
@@ -149,14 +155,20 @@ class DateField extends Component {
   }
 }
 
-const DateFieldContainer = ( { title, children } ) => (
-  <span className={css.dateInputContainer}>
-    <span className={css.dateTitles}>{title}</span>
+const DateFieldContainer = ( { title, children, style } ) => (
+  <span className={css.dateInputContainer} style={style.dateInputContainer}>
+    <span className={css.dateTitles} style={style.dateInputLabel}>{title}</span>
     {children}
   </span>
 )
+
 DateFieldContainer.propTypes = {
   title: string.isRequired,
   children: instanceOf( Object ).isRequired,
+  style: instanceOf( Object ),
+}
+
+DateFieldContainer.defaultProps = {
+  style: {},
 }
 export default withValidationAndTransition( DateField )
