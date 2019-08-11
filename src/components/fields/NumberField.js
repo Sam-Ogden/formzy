@@ -9,6 +9,9 @@ import { withValidationAndTransition,
 
 /**
  * A form field the accepts numbers only
+ *
+ * Custom styling
+ * - numberInput: style the input field
  */
 class NumberField extends Component {
   static propTypes = {
@@ -19,14 +22,10 @@ class NumberField extends Component {
 
   static defaultProps = {
     ...commonDefaultProps,
-    type: 'number',
     min: Number.MIN_VALUE,
     max: Number.MAX_VALUE,
   }
 
-  /**
-   * Function to call when the user updates the value
-   */
   onChange = ( { target: { value } } ) => {
     const { inputChange } = this.props
     inputChange( value )
@@ -37,7 +36,6 @@ class NumberField extends Component {
       title,
       inputRef,
       containerRef,
-      type,
       required,
       description,
       placeholder,
@@ -60,7 +58,8 @@ class NumberField extends Component {
         <input
           className={`numberfield-input ${css.input}`}
           placeholder={placeholder}
-          type={type}
+          type="number"
+          style={style.numberInput}
           name={name}
           onChange={this.onChange}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}

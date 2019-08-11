@@ -18,7 +18,7 @@ import { templateToTitle } from '../../utils/utils'
  * @returns {Element} Field component with title, description and next button if needed
  *
  * Custom Styling
- * - container: style for the container, useful for having different backgrounds across fields
+ * - fieldContainer: style for the container, useful for having different backgrounds across fields
  * - title:
  * - description:
  * - nextButton:
@@ -32,7 +32,7 @@ const Field = (
   <div
     className={`field ${styles.fieldContainer}`}
     ref={containerRef}
-    style={style.container}
+    style={style.fieldContainer}
   >
     <Consumer>
       {form => (
