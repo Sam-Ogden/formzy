@@ -36,9 +36,5 @@ SubmitField.defaultProps = {
   description: 'We will be in touch shortly.',
   buttonText: 'Submit Form',
 }
-/**
- * Submit Field is a Field without a value
- * Does not have a next option
- */
 
 export default withValidationAndTransition( SubmitField )
