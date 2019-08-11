@@ -9,7 +9,13 @@ import { Provider } from './FormContext'
 let fieldContainerRefs = []
 let inputRefs = []
 let childrenArr = []
-
+const formBackground = { width: '100%',
+  position: 'fixed',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  height: '100%',
+  zIndex: '-1' }
 /**
  * Container component for the form
  * Maintains the form state and scrolling behaviour between form fields
@@ -121,12 +127,14 @@ class FormContainer extends Component {
     const {
       showProgress,
       progressStyle,
+      style,
     } = this.props
 
     const { form, active, submissionErrors } = this.state
 
     return (
       <form style={{ width: '100%', flexDirection: 'column', display: 'flex' }}>
+        <div style={_.assign( {}, formBackground, style.background )} />
         <Provider value={form}>
           {childrenArr.map(
             ( Field, i ) => {
@@ -142,7 +150,6 @@ class FormContainer extends Component {
             },
           )}
         </Provider>
-
         {showProgress
         && <ProgressBar progress={progress( active, childrenArr.length )} style={progressStyle} />}
       </form>
@@ -169,6 +176,7 @@ FormContainer.propTypes = {
     bar: instanceOf( Object ),
     innerBar: instanceOf( Object ),
   } ),
+  style: shape( { background: instanceOf( Object ) } ),
 }
 
 FormContainer.defaultProps = {
@@ -176,6 +184,7 @@ FormContainer.defaultProps = {
   scrollDuration: 777,
   edgeOffset: 0,
   progressStyle: {},
+  style: {},
 }
 
 /**

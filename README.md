@@ -143,6 +143,7 @@ FormContainer.propTypes = {
     bar: instanceOf( Object ),
     innerBar: instanceOf( Object ),
   } ),
+  style: shape( { background: instanceOf( Object ) } ),
 }
 
 FormContainer.defaultProps = {
@@ -150,6 +151,7 @@ FormContainer.defaultProps = {
   scrollDuration: 777,
   edgeOffset: 0,
   progressStyle: {},
+  style: {},
 }
 ```
 ## Field Components

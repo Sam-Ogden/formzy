@@ -1,7 +1,7 @@
 import React from 'react'
 import { string, func, instanceOf, arrayOf, bool, shape } from 'prop-types'
 
-import styles from './Field.css'
+import css from './Field.css'
 import { Consumer } from '../FormContext'
 import { templateToTitle } from '../../utils/utils'
 
@@ -13,13 +13,13 @@ const Field = (
   { children, description, title, next, nextBtnText, err, required, containerRef, style },
 ) => (
   <div
-    className={`field ${styles.fieldContainer}`}
+    className={`field ${css.fieldContainer}`}
     ref={containerRef}
     style={style.fieldContainer}
   >
     <Consumer>
       {form => (
-        <h4 className={`title ${styles.title}`} style={style.title}>
+        <h4 className={`title ${css.title}`} style={style.title}>
           {templateToTitle( title, form )}
           {' '}
           {required ? '*' : ''}
@@ -28,21 +28,21 @@ const Field = (
     </Consumer>
 
     {description !== ''
-     && <p className={`desc ${styles.description}`} style={style.description}>{description}</p>}
+     && <p className={`desc ${css.description}`} style={style.description}>{description}</p>}
     {children}
 
     <div className="next-button">
-      <button className={styles.nextBtn} style={style.nextButton} type="button" onClick={next}>
+      <button className={css.nextBtn} style={style.nextButton} type="button" onClick={next}>
         {nextBtnText}
       </button>
-      <span style={styles.pressEnter}>
+      <span style={style.pressEnter}>
           Press
-        <span className={styles.bold} style={style.pressEnterInner}> Enter</span>
+        <span className={css.bold} style={style.pressEnterInner}> Enter</span>
       </span>
     </div>
 
     {err.map( ( e, i ) => (
-      <div key={i} className={`validation-error ${styles.errorBar}`} style={style.error}>{e}</div>
+      <div key={i} className={`validation-error ${css.errorBar}`} style={style.errorBar}>{e}</div>
     ) )}
   </div>
 )
