@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { bool, func, string, instanceOf } from 'prop-types'
+import { bool, func, string, instanceOf, shape } from 'prop-types'
 import _ from 'lodash'
 
 import css from './DateField.css'
@@ -40,25 +40,8 @@ const validateDate = ( value, testVal, props ) => {
 /**
  * Form Field that takes date and time values.
  * Value is returned as { day: ..., month: ..., year: ..., time: ... }
- *
- * Custom Styling
- * - dateInput: styling for all the input fields
- * - dateInputContainer: styling for container around an input element
- * - dateInputLabel: styling for label of each input element
  */
 class DateField extends Component {
-  static propTypes = {
-    ...commonPropTypes,
-    includeTime: bool, // Whether to display time input field
-    addValidationChecks: func.isRequired,
-    updateValidationChecks: func.isRequired,
-  }
-
-  static defaultProps = {
-    ...commonDefaultProps,
-    includeTime: false,
-  }
-
   state = { value: null }
 
   componentDidMount() {
@@ -155,9 +138,28 @@ class DateField extends Component {
   }
 }
 
-const DateFieldContainer = ( { title, children, style } ) => (
-  <span className={css.dateInputContainer} style={style.dateInputContainer}>
-    <span className={css.dateTitles} style={style.dateInputLabel}>{title}</span>
+DateField.propTypes = {
+  ...commonPropTypes,
+  includeTime: bool, // Whether to display time input field
+  addValidationChecks: func.isRequired,
+  updateValidationChecks: func.isRequired,
+  style: shape( {
+    dateInput: instanceOf( Object ),
+    dateInputContainer: instanceOf( Object ),
+    dateInputLabel: instanceOf( Object ),
+  } ),
+}
+
+DateField.defaultProps = {
+  ...commonDefaultProps,
+  includeTime: false,
+}
+
+const DateFieldContainer = (
+  { title, children, style: { dateInputContainer, dateInputLabel } },
+) => (
+  <span className={css.dateInputContainer} style={dateInputContainer}>
+    <span className={css.dateTitles} style={dateInputLabel}>{title}</span>
     {children}
   </span>
 )
@@ -165,7 +167,10 @@ const DateFieldContainer = ( { title, children, style } ) => (
 DateFieldContainer.propTypes = {
   title: string.isRequired,
   children: instanceOf( Object ).isRequired,
-  style: instanceOf( Object ),
+  style: shape( {
+    dateInputContainer: instanceOf( Object ),
+    dateInputLabel: instanceOf( Object ),
+  } ),
 }
 
 DateFieldContainer.defaultProps = {

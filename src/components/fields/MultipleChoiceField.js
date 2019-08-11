@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { arrayOf, string, bool } from 'prop-types'
+import { arrayOf, string, bool, shape, instanceOf } from 'prop-types'
 import _ from 'lodash'
 
 import css from './MultipleChoiceField.css'
@@ -11,23 +11,8 @@ import { withValidationAndTransition,
 /**
  * A form field with a number of choice buttons
  * - Stores responses as an array
- *
- * Custom Styling
- * - mcfOptionButton: styling of the button when not active
- * - mcfOptionButtonActive: styling when active, merges and overrides mcfOptionButton styles
  */
 class MultipleChoiceField extends Component {
-  static propTypes = {
-    ...commonPropTypes,
-    options: arrayOf( string ).isRequired, // The possible options to pick from
-    multiple: bool, // Whether the user can select multiple options
-  }
-
-  static defaultProps = {
-    ...commonDefaultProps,
-    multiple: false,
-  }
-
   state = { selected: [] }
 
   /**
@@ -86,9 +71,9 @@ class MultipleChoiceField extends Component {
         >
           <div className="mcf-options-container">
             {options.map( option => {
-              const { mcfOptionButton, mcfOptionButtonActive } = style
+              const { optionButton, optionButtonActive } = style
               const btnStyle = selected.includes( option )
-                ? _.assign( {}, mcfOptionButton, mcfOptionButtonActive ) : mcfOptionButton
+                ? _.assign( {}, optionButton, optionButtonActive ) : optionButton
               return (
                 <button
                   value={option}
@@ -107,6 +92,21 @@ class MultipleChoiceField extends Component {
       </Fragment>
     )
   }
+}
+
+MultipleChoiceField.propTypes = {
+  ...commonPropTypes,
+  options: arrayOf( string ).isRequired, // The possible options to pick from
+  multiple: bool, // Whether the user can select multiple options
+  style: shape( {
+    optionButton: instanceOf( Object ),
+    optionButtonActive: instanceOf( Object ),
+  } ),
+}
+
+MultipleChoiceField.defaultProps = {
+  ...commonDefaultProps,
+  multiple: false,
 }
 
 export default withValidationAndTransition( MultipleChoiceField )

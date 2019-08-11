@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { number } from 'prop-types'
+import { number, shape, instanceOf } from 'prop-types'
 
 import css from './Field.css'
 import Field from './Field'
@@ -7,23 +7,7 @@ import { withValidationAndTransition,
   commonPropTypes,
   commonDefaultProps } from '../hocs/withValidationAndTransition'
 
-/**
- * Text Field
- *
- * Custom styling
- * - textInput: style the text input field
- */
 class ShortTextField extends Component {
-  static propTypes = {
-    ...commonPropTypes,
-    maxLength: number,
-  }
-
-  static defaultProps = {
-    ...commonDefaultProps,
-    maxLength: 524288,
-  }
-
   onChange = ( { target: { value } } ) => {
     const { inputChange } = this.props
     inputChange( value )
@@ -67,6 +51,17 @@ class ShortTextField extends Component {
       </Field>
     )
   }
+}
+
+ShortTextField.propTypes = {
+  ...commonPropTypes,
+  maxLength: number,
+  style: shape( { textInput: instanceOf( Object ) } ),
+}
+
+ShortTextField.defaultProps = {
+  ...commonDefaultProps,
+  maxLength: 524288,
 }
 
 export default withValidationAndTransition( ShortTextField )

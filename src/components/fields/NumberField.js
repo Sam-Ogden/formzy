@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { number } from 'prop-types'
+import { number, shape, instanceOf } from 'prop-types'
 
 import css from './Field.css'
 import Field from './Field'
@@ -9,23 +9,8 @@ import { withValidationAndTransition,
 
 /**
  * A form field the accepts numbers only
- *
- * Custom styling
- * - numberInput: style the input field
  */
 class NumberField extends Component {
-  static propTypes = {
-    ...commonPropTypes,
-    min: number,
-    max: number,
-  }
-
-  static defaultProps = {
-    ...commonDefaultProps,
-    min: Number.MIN_VALUE,
-    max: Number.MAX_VALUE,
-  }
-
   onChange = ( { target: { value } } ) => {
     const { inputChange } = this.props
     inputChange( value )
@@ -71,6 +56,19 @@ class NumberField extends Component {
       </Field>
     )
   }
+}
+
+NumberField.propTypes = {
+  ...commonPropTypes,
+  min: number,
+  max: number,
+  style: shape( { numberInput: instanceOf( Object ) } ),
+}
+
+NumberField.defaultProps = {
+  ...commonDefaultProps,
+  min: Number.MIN_VALUE,
+  max: Number.MAX_VALUE,
 }
 
 export default withValidationAndTransition( NumberField )

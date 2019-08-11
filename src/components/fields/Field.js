@@ -8,15 +8,6 @@ import { templateToTitle } from '../../utils/utils'
 /**
  * @param {Object} props Field props
  * @returns {Element} Field component with title, description and next button if needed
- *
- * Custom Styling
- * - fieldContainer: style for the container, useful for having different backgrounds across fields
- * - title:
- * - description:
- * - nextButton:
- * - pressEnter: style for the outer span of the 'Press Enter' text
- * - pressEnterInner: style for the inner span i.e. style for the 'Enter' text
- * - errorBar: style for the error bars
  */
 const Field = (
   { children, description, title, next, nextBtnText, err, required, containerRef, style },
@@ -65,7 +56,15 @@ Field.propTypes = {
   err: arrayOf( string ), // Any errors in the input given by a user
   required: bool,
   containerRef: shape( { current: instanceOf( Element ) } ),
-  style: instanceOf( Object ),
+  style: shape( {
+    fieldContainer: instanceOf( Object ),
+    title: instanceOf( Object ),
+    description: instanceOf( Object ),
+    nextButton: instanceOf( Object ),
+    pressEnter: instanceOf( Object ),
+    pressEnterInner: instanceOf( Object ),
+    errorBar: instanceOf( Object ),
+  } ),
 }
 
 Field.defaultProps = {
