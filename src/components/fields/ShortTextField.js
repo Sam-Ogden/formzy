@@ -8,7 +8,10 @@ import { withValidationAndTransition,
   commonDefaultProps } from '../hocs/withValidationAndTransition'
 
 /**
- * Form Field that accepts text
+ * Text Field
+ *
+ * Custom styling
+ * - textInput: style the text input field
  */
 class ShortTextField extends Component {
   static propTypes = {
@@ -18,13 +21,9 @@ class ShortTextField extends Component {
 
   static defaultProps = {
     ...commonDefaultProps,
-    type: 'text',
     maxLength: 524288,
   }
 
-  /**
-   * Function to call when the user updates the value
-   */
   onChange = ( { target: { value } } ) => {
     const { inputChange } = this.props
     inputChange( value )
@@ -35,7 +34,6 @@ class ShortTextField extends Component {
       title,
       inputRef,
       containerRef,
-      type,
       required,
       description,
       placeholder,
@@ -57,8 +55,9 @@ class ShortTextField extends Component {
         <input
           className={`textfield-input ${css.input}`}
           placeholder={placeholder}
-          type={type}
+          type="text"
           name={name}
+          style={style.textInput}
           onChange={this.onChange}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
           ref={inputRef}
