@@ -1,29 +1,12 @@
 import React from 'react'
 
-import Field from './Field'
+import InformationField from './InformationField'
 import { withValidationAndTransition,
   commonPropTypes,
   commonDefaultProps } from '../hocs/withValidationAndTransition'
 
-const SubmitField = (
-  { title, description, nextBtnText, next, inputRef, containerRef, style },
-) => (
-  <div>
-    <input
-      style={{ width: 0, height: 0, opacity: 0, margin: 0, padding: 0, border: 'none' }}
-      onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
-      ref={inputRef}
-      aria-label="This is a hidden field and should be ignored."
-    />
-    <Field
-      title={title}
-      description={description}
-      containerRef={containerRef}
-      next={next}
-      nextBtnText={nextBtnText}
-      style={style}
-    />
-  </div>
+const SubmitField = props => (
+  <InformationField {...props} />
 )
 
 SubmitField.propTypes = {
