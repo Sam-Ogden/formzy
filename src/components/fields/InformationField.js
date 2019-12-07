@@ -9,13 +9,13 @@ import {
 } from '../hocs/withValidationAndTransition'
 
 const InformationField = (
-  { title, description, next, nextBtnText, inputRef, children, containerRef, style },
+  { title, description, next, nextBtnText, focusRef, children, containerRef, style },
 ) => (
   <div>
     <input
       style={{ width: 0, height: 0, opacity: 0, margin: 0, padding: 0, border: 'none' }}
       onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
-      ref={inputRef}
+      ref={focusRef}
       aria-label="This is a hidden field and should be ignored."
     />
     <Field

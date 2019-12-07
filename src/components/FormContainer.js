@@ -1,14 +1,11 @@
 import React, { Component, Children } from 'react'
 import { func, arrayOf, instanceOf, bool, number, oneOfType, shape } from 'prop-types'
-import zenscroll from 'zenscroll'
 import _ from 'lodash'
 
 import ProgressBar from './ProgressBar'
 import { Provider } from './FormContext'
+import ScrollController from './ScrollController'
 
-let fieldContainerRefs = []
-let inputRefs = []
-let childrenArr = []
 const formBackground = { width: '100%',
   position: 'fixed',
   backgroundRepeat: 'no-repeat',
@@ -21,46 +18,11 @@ const formBackground = { width: '100%',
  * Maintains the form state and scrolling behaviour between form fields
  */
 class FormContainer extends Component {
-  state = { form: {}, active: 0, submissionErrors: {} }
+  state = { form: {}, submissionErrors: {}, progress: 0 }
 
   errors = {}
 
-  componentWillMount = () => {
-    const { children } = this.props
-    childrenArr = Children.toArray( children )
-    const formLength = childrenArr.length
-    // Create refs for field containers and inputs
-    fieldContainerRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( i ) )
-    inputRefs = [ ...Array( formLength + 1 ) ].map( i => React.createRef( -i ) )
-  }
-
-  componentDidMount = () => {
-    const { scrollDuration, edgeOffset } = this.props
-    // Setup scroll behaviour
-    window.noZensmooth = true
-    zenscroll.setup( scrollDuration, edgeOffset )
-    if ( process.env.NODE_ENV !== 'test' ) inputRefs[ 0 ].current.focus()
-  }
-
-  /**
-   *  Handles scrolling between form elements and focus on next input field
-   *  Handle scrolling behaviour differently depending on platform
-   *  @param {Number} i The index of form elements to scroll to
-   */
-  scrollToRef = i => {
-    const { defaultDuration } = zenscroll.setup()
-
-    if ( i <= childrenArr.length ) {
-      try {
-        zenscroll.to( fieldContainerRefs[ i ].current, null )
-        setTimeout( () => { inputRefs[ i ].current.focus() }, defaultDuration )
-      } catch ( TypeError ) {
-        return
-      }
-    }
-
-    this.setState( prevState => ( { ...prevState, active: i } ) )
-  }
+  mapNameToIndex = {}
 
   /**
    * Called by Fields to update the form state in the container
@@ -103,7 +65,7 @@ class FormContainer extends Component {
       ( bool, fieldName ) => ( bool && this.errors[ fieldName ].length === 0 ),
       true,
     )
-    // Run submit callback
+
     if ( isValid ) {
       const result = onSubmit( form )
       if ( result === true || result === {} || result === undefined ) return true
@@ -111,16 +73,19 @@ class FormContainer extends Component {
     }
 
     // Re render with registered errors
-    this.setState( prevState => ( { ...prevState, submissionErrors: this.errors } ) )
+    const firstErrorIndex = this.mapNameToIndex[
+      _.findKey( this.mapNameToIndex, ( i, name ) => (
+        this.errors.name !== undefined
+          ? this.errors[ name ].length > 0
+          : false
+      ) )
+    ]
 
-    // Scroll to first error
-    this.scrollToRef(
-      _.findIndex(
-        childrenArr,
-        child => child.props.name === _.keys( this.errors )[ 0 ],
-      ),
-    )
-    return false
+    this.setState( prevState => (
+      { ...prevState, submissionErrors: this.errors }
+    ) )
+
+    return firstErrorIndex
   }
 
   render() {
@@ -128,30 +93,39 @@ class FormContainer extends Component {
       showProgress,
       progressStyle,
       style,
+      scrollDuration,
+      edgeOffset,
+      children,
     } = this.props
 
-    const { form, active, submissionErrors } = this.state
+    const { form, progress, submissionErrors } = this.state
 
     return (
       <form style={{ width: '100%', flexDirection: 'column', display: 'flex' }}>
         <div style={_.assign( {}, formBackground, style.background )} />
         <Provider value={form}>
-          {childrenArr.map(
-            ( Field, i ) => {
-              const { name } = Field.props
-              return React.cloneElement( Field, {
-                onChange: this.onChange,
-                next: i === childrenArr.length - 1 ? this.submit : () => this.scrollToRef( i + 1 ),
-                inputRef: inputRefs[ i ], // Pass ref down to input element for focussing
-                containerRef: fieldContainerRefs[ i ],
-                registerValidationError: this.registerValidationError,
-                submissionErrors: submissionErrors[ name ],
-              } )
-            },
-          )}
+          <ScrollController
+            scrollDuration={scrollDuration}
+            edgeOffset={edgeOffset}
+            onChange={i => this.setState(
+              { progress: calcProgress( i, Children.count( children ) ) },
+            )}
+            onFinalNext={this.submit}
+          >
+            {Children.map( children,
+              ( Field, i ) => {
+                const { name } = Field.props
+                this.mapNameToIndex[ name ] = i
+                return React.cloneElement( Field, {
+                  onChange: this.onChange,
+                  registerValidationError: this.registerValidationError,
+                  submissionErrors: submissionErrors[ name ],
+                } )
+              } )}
+          </ScrollController>
         </Provider>
         {showProgress
-        && <ProgressBar progress={progress( active, childrenArr.length )} style={progressStyle} />}
+        && <ProgressBar progress={progress} style={progressStyle} />}
       </form>
     )
   }
@@ -192,6 +166,6 @@ FormContainer.defaultProps = {
  * @param {*} length Total length of form
  * @returns {Number} Progress percentage rounded to nearest whole number
  */
-const progress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
+const calcProgress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
 
 export default FormContainer

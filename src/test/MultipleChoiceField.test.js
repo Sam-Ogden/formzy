@@ -16,7 +16,7 @@ const MCFWithPassingValidation = (
     onChange={( name, value ) => ( { name, value } )}
     next={() => 1}
     validate={() => ''} // validation passes when string is empty
-    inputRef={React.createRef( 0 )}
+    focusRef={React.createRef( 0 )}
     defaultValue={[ 'A' ]}
   />
 )

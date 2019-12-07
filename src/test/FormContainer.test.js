@@ -60,9 +60,7 @@ describe( 'FormContainer Component', () => {
         const errors = [ 'error1', 'error2' ]
         wrapper.instance().registerValidationError( fieldIndex, errors )
 
-        const result = wrapper.instance().submit()
-
-        expect( result ).toEqual( false )
+        wrapper.instance().submit()
         expect( wrapper.instance().errors[ fieldIndex ] ).toEqual( errors )
         expect( wrapper.instance().state.submissionErrors[ fieldIndex ] ).toEqual( errors )
       } )
@@ -92,7 +90,7 @@ describe( 'FormContainer Component', () => {
       } )
 
     test(
-      'when onSubmit returns errors, these errors are saved to submissionErrors and submit returns false',
+      'when onSubmit returns errors, these errors are saved to submissionErrors',
       () => {
         const error = [ 'err' ]
         const wrapper = shallow(
@@ -101,10 +99,8 @@ describe( 'FormContainer Component', () => {
           </FormContainer>,
         )
 
-        const result = wrapper.instance().submit()
-
+        wrapper.instance().submit()
         // errors return by callback onSubmit are registered in state
-        expect( result ).toEqual( false )
         expect( wrapper.instance().state.submissionErrors.testField ).toEqual( error )
       },
     )

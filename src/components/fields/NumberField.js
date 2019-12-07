@@ -19,7 +19,7 @@ class NumberField extends Component {
   render() {
     const { name,
       title,
-      inputRef,
+      focusRef,
       containerRef,
       required,
       description,
@@ -48,7 +48,7 @@ class NumberField extends Component {
           name={name}
           onChange={this.onChange}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
-          ref={inputRef}
+          ref={focusRef}
           required={required}
           min={min}
           max={max}

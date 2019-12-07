@@ -22,7 +22,7 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
 
   static defaultProps = commonDefaultProps
 
-  componentWillMount() {
+  componentDidMount() {
     const { defaultValue, onChange, name } = this.props
     // Set default value and save in FormContainer state
     if ( defaultValue ) {
@@ -110,9 +110,7 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
       updateValidationChecks: this.updateValidationChecks,
     }
 
-    return next
-      ? ( <WrappedComponent {...props} next={this.next} /> )
-      : ( <WrappedComponent {...props} /> )
+    return <WrappedComponent {...props} next={this.next} />
   }
 }
 
@@ -130,7 +128,7 @@ export const commonPropTypes = {
   nextBtnText: string, // Text to display in next button
   onChange: func, // This is passed in by FormContainer to update the form state
   next: func, // This is passed in by FormContainer to scroll to the next field
-  inputRef: shape( { current: instanceOf( Element ) } ),
+  focusRef: shape( { current: instanceOf( Element ) } ),
   registerValidationError: func, // Pass errors back to FormContainer (to validate when onSubmit)
   submissionErrors: arrayOf( string ),
   style: instanceOf( Object ),
@@ -139,7 +137,7 @@ export const commonPropTypes = {
 export const commonDefaultProps = {
   title: '',
   description: '',
-  inputRef: null,
+  focusRef: null,
   containerRef: null,
   defaultValue: null,
   name: '',

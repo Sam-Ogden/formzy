@@ -16,7 +16,7 @@ class ShortTextField extends Component {
   render() {
     const { name,
       title,
-      inputRef,
+      focusRef,
       containerRef,
       required,
       description,
@@ -44,7 +44,7 @@ class ShortTextField extends Component {
           style={style.textInput}
           onChange={this.onChange}
           onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
-          ref={inputRef}
+          ref={focusRef}
           required={required}
           maxLength={maxLength}
         />
