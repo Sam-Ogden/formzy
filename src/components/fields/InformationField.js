@@ -36,8 +36,6 @@ InformationField.propTypes = {
   nextBtnText: string,
 }
 
-InformationField.defaultProps = {
-  ...commonDefaultProps,
-}
+InformationField.defaultProps = { ...commonDefaultProps }
 
 export default withValidationAndTransition( InformationField )

@@ -3,9 +3,11 @@ import { number, shape, instanceOf } from 'prop-types'
 
 import css from './Field.css'
 import Field from './Field'
-import { withValidationAndTransition,
+import {
+  withValidationAndTransition,
   commonPropTypes,
-  commonDefaultProps } from '../hocs/withValidationAndTransition'
+  commonDefaultProps,
+} from '../hocs/withValidationAndTransition'
 
 /**
  * A form field the accepts numbers only
@@ -17,7 +19,8 @@ class NumberField extends Component {
   }
 
   render() {
-    const { name,
+    const {
+      name,
       title,
       focusRef,
       containerRef,
@@ -28,7 +31,8 @@ class NumberField extends Component {
       max,
       next,
       err,
-      style } = this.props
+      style,
+    } = this.props
 
     return (
       <Field

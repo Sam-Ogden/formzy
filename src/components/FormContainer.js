@@ -1,6 +1,6 @@
 import React, { useState, Children } from 'react'
 import PropTypes from 'prop-types'
-import { reduce, keys, findKey } from 'lodash'
+import { reduce, keys } from 'lodash'
 import { makeStyles } from '@material-ui/core/styles'
 import ProgressBar from './ProgressBar'
 import { Provider } from './FormContext'
@@ -38,12 +38,12 @@ function FormContainer( props ) {
     onSubmit,
   } = props
 
-  const classes = useStyles( props )
   const [ form, setForm ] = useState( {} )
   const [ submissionErrors, setSubmissionErrors ] = useState( {} )
   const [ progress, setProgress ] = useState( 0 )
-  let errors = {}
+  const classes = useStyles( props )
   const mapNameToIndex = {}
+  let errors = {}
 
   const handleScroll = i => setProgress( calcProgress( i, Children.count( children ) ) )
   const childrenProps = useScroll( children, scrollDuration, edgeOffset, handleScroll, submit )
@@ -64,10 +64,6 @@ function FormContainer( props ) {
     errors = { ...errors, [ fieldName ]: err }
   }
 
-  /**
-   * Validate inputs and handle result of onSubmit callback
-   * @returns {Boolean} true if submission was successful, false otherwise
-   */
   const submit = () => {
     const isValid = reduce(
       keys( errors ),
@@ -77,22 +73,10 @@ function FormContainer( props ) {
 
     if ( isValid ) {
       const result = onSubmit( form )
-      if ( result === true || result === {} || result === undefined ) return true
-      errors = result
+      if ( !( result === true || result === {} || result === undefined ) ) {
+        setSubmissionErrors( { ...submissionErrors, submissionErrors: result } )
+      }
     }
-
-    // Re render with registered errors
-    const firstErrorIndex = mapNameToIndex[
-      findKey( mapNameToIndex, ( i, name ) => (
-        errors.name !== undefined
-          ? errors[ name ].length > 0
-          : false
-      ) )
-    ]
-
-    setSubmissionErrors( { ...submissionErrors, submissionErrors: errors } )
-
-    return firstErrorIndex
   }
 
   return (
@@ -153,11 +137,6 @@ FormContainer.propTypes = {
   } ),
 }
 
-/**
- * @param {Number} i Current position
- * @param {*} length Total length of form
- * @returns {Number} Progress percentage rounded to nearest whole number
- */
 const calcProgress = ( i, length ) => Math.round( 100 * ( i ) / length, 0 )
 
 export default FormContainer

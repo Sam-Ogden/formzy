@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { bool, func, string, instanceOf, shape } from 'prop-types'
-import _ from 'lodash'
+import { has } from 'lodash'
 
 import css from './DateField.css'
 import Field from './Field'
@@ -13,10 +13,10 @@ import {
 const required = ( value, isRequired, props ) => (
   isRequired
    && (
-     !_.has( value, 'day' )
-   || !_.has( value, 'month' )
-   || !_.has( value, 'year' )
-   || ( props.includeTime && !_.has( value, 'time' ) ) )
+     !has( value, 'day' )
+   || !has( value, 'month' )
+   || !has( value, 'year' )
+   || ( props.includeTime && !has( value, 'time' ) ) )
     ? 'All fields are required' : ''
 )
 
@@ -63,7 +63,8 @@ class DateField extends Component {
   }
 
   render() {
-    const { title,
+    const {
+      title,
       focusRef,
       containerRef,
       required,
@@ -71,7 +72,8 @@ class DateField extends Component {
       includeTime,
       next,
       err,
-      style } = this.props
+      style,
+    } = this.props
 
     return (
       <Field
@@ -173,7 +175,5 @@ DateFieldContainer.propTypes = {
   } ),
 }
 
-DateFieldContainer.defaultProps = {
-  style: {},
-}
+DateFieldContainer.defaultProps = { style: {} }
 export default withValidationAndTransition( DateField )

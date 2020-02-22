@@ -1,17 +1,17 @@
 import React from 'react'
 
 import InformationField from './InformationField'
-import { withValidationAndTransition,
+import {
+  withValidationAndTransition,
   commonPropTypes,
-  commonDefaultProps } from '../hocs/withValidationAndTransition'
+  commonDefaultProps,
+} from '../hocs/withValidationAndTransition'
 
 const SubmitField = props => (
   <InformationField {...props} />
 )
 
-SubmitField.propTypes = {
-  ...commonPropTypes,
-}
+SubmitField.propTypes = { ...commonPropTypes }
 
 SubmitField.defaultProps = {
   ...commonDefaultProps,

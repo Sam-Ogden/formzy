@@ -3,9 +3,11 @@ import { number, shape, instanceOf } from 'prop-types'
 
 import css from './Field.css'
 import Field from './Field'
-import { withValidationAndTransition,
+import {
+  withValidationAndTransition,
   commonPropTypes,
-  commonDefaultProps } from '../hocs/withValidationAndTransition'
+  commonDefaultProps,
+} from '../hocs/withValidationAndTransition'
 
 class ShortTextField extends Component {
   onChange = ( { target: { value } } ) => {
@@ -14,7 +16,8 @@ class ShortTextField extends Component {
   }
 
   render() {
-    const { name,
+    const {
+      name,
       title,
       focusRef,
       containerRef,
@@ -24,7 +27,8 @@ class ShortTextField extends Component {
       maxLength,
       next,
       err,
-      style } = this.props
+      style,
+    } = this.props
 
     return (
       <Field

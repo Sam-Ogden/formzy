@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { arrayOf, string, bool, shape, instanceOf } from 'prop-types'
-import _ from 'lodash'
+import { assign } from 'lodash'
 
 import css from './MultipleChoiceField.css'
 import Field from './Field'
-import { withValidationAndTransition,
+import {
+  withValidationAndTransition,
   commonPropTypes,
-  commonDefaultProps } from '../hocs/withValidationAndTransition'
+  commonDefaultProps,
+} from '../hocs/withValidationAndTransition'
 
 /**
  * A form field with a number of choice buttons
@@ -39,7 +41,8 @@ class MultipleChoiceField extends Component {
   }
 
   render() {
-    const { title,
+    const {
+      title,
       description,
       options,
       focusRef,
@@ -47,7 +50,8 @@ class MultipleChoiceField extends Component {
       next,
       err,
       required,
-      style } = this.props
+      style,
+    } = this.props
 
     const { selected } = this.state
 
@@ -73,7 +77,7 @@ class MultipleChoiceField extends Component {
             {options.map( option => {
               const { optionButton, optionButtonActive } = style
               const btnStyle = selected.includes( option )
-                ? _.assign( {}, optionButton, optionButtonActive ) : optionButton
+                ? assign( {}, optionButton, optionButtonActive ) : optionButton
               return (
                 <button
                   value={option}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { func, string, instanceOf, shape, bool, any, arrayOf } from 'prop-types'
-import _ from 'lodash'
+import { forEach, keys, union } from 'lodash'
 
 import {
   validate,
@@ -61,8 +61,8 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
   updateValidationChecks = methods => {
     const { value } = this.state
     const { registerValidationError, name } = this.props
-    _.forEach( methods, ( method, key ) => {
-      if ( _.keys( this.checks ).includes( key ) ) {
+    forEach( methods, ( method, key ) => {
+      if ( keys( this.checks ).includes( key ) ) {
         this.checks[ key ].func = method
       }
     } )
@@ -99,13 +99,13 @@ export const withValidationAndTransition = WrappedComponent => class extends Com
   }
 
   render() {
-    const { next, submissionErrors } = this.props
+    const { submissionErrors } = this.props
     const { err } = this.state
 
     const props = {
       ...this.props,
       inputChange: this.inputChange,
-      err: _.union( err, submissionErrors ),
+      err: union( err, submissionErrors ),
       addValidationChecks: this.addValidationChecks,
       updateValidationChecks: this.updateValidationChecks,
     }
