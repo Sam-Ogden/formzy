@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { templateSettings, template } from 'lodash'
 
 /**
 * Converts a template string into a title with the values inserted into it
@@ -13,7 +13,7 @@ import _ from 'lodash'
 * @returns {String} str with values inserted into placeholders
 */
 export const templateToTitle = ( str, params, placeholder = '_ _ _ _ _' ) => {
-  _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
+  templateSettings.interpolate = /{{([\s\S]+?)}}/g
   const fieldNames = str.match( /({{_.).+?(?=}})/g ) || []
 
   const paramsWithPlaceholder = params
@@ -27,5 +27,5 @@ export const templateToTitle = ( str, params, placeholder = '_ _ _ _ _' ) => {
     paramsWithPlaceholder[ name ] = params[ name ] || placeholder
   } )
 
-  return _.template( str, { variable: '_' } )( paramsWithPlaceholder )
+  return template( str, { variable: '_' } )( paramsWithPlaceholder )
 }

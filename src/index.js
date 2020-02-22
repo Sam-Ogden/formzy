@@ -1,27 +1,14 @@
-import FormContainer from './components/FormContainer'
-import ProgressBar from './components/ProgressBar'
+export { default as FormContainer } from './components/FormContainer'
+export { default as ProgressBar } from './components/ProgressBar'
 
-import ShortTextField from './components/fields/ShortTextField'
-import NumberField from './components/fields/NumberField'
-import Field from './components/fields/Field'
-import DateField from './components/fields/DateField'
-import MultipleChoiceFIeld from './components/fields/MultipleChoiceField'
-import InformationField from './components/fields/InformationField'
-import SubmitField from './components/fields/SubmitField'
+export { default as ShortTextField } from './components/fields/ShortTextField'
+export { default as NumberField } from './components/fields/NumberField'
+export { default as Field } from './components/fields/Field'
+export { default as DateField } from './components/fields/DateField'
+export { default as MultipleChoiceFIeld } from './components/fields/MultipleChoiceField'
+export { default as InformationField } from './components/fields/InformationField'
+export { default as SubmitField } from './components/fields/SubmitField'
 
-import { withValidationAndTransition } from './components/hocs/withValidationAndTransition'
-import { templateToTitle } from './utils/utils'
+export { default as withValidationAndTransition } from './components/hocs/withValidationAndTransition'
+export * from './utils/utils'
 
-export {
-  FormContainer,
-  ShortTextField,
-  NumberField,
-  Field,
-  ProgressBar,
-  DateField,
-  MultipleChoiceFIeld,
-  SubmitField,
-  InformationField,
-  withValidationAndTransition,
-  templateToTitle,
-}

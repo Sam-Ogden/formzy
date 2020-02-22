@@ -150,3 +150,5 @@ export const commonDefaultProps = {
   submissionErrors: [],
   style: {},
 }
+
+export default withValidationAndTransition
