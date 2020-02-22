@@ -1,43 +1,50 @@
 import React, { useState, Children } from 'react'
-import { func, arrayOf, instanceOf, bool, number, oneOfType, shape } from 'prop-types'
-import _ from 'lodash'
-
+import PropTypes from 'prop-types'
+import { reduce, keys, findKey } from 'lodash'
+import { makeStyles } from '@material-ui/core/styles'
 import ProgressBar from './ProgressBar'
 import { Provider } from './FormContext'
 import ScrollController from './ScrollController'
 
-const formBackground = { width: '100%',
-  position: 'fixed',
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center',
-  backgroundSize: 'cover',
-  height: '100%',
-  zIndex: '-1' }
-/**
- * Container component for the form
- * Maintains the form state and scrolling behaviour between form fields
- */
-function FormContainer( {
-  showProgress,
-  progressStyle,
-  style,
-  scrollDuration,
-  edgeOffset,
-  children,
-  onSubmit,
-} ) {
+const useStyles = makeStyles( {
+  root: {
+    width: '100%',
+    flexDirection: 'column',
+    display: 'flex',
+  },
+  fieldContainer: {
+    width: '100%',
+    position: 'fixed',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    height: '100%',
+    zIndex: '-1',
+  },
+  progressRoot: {},
+  progressInnerContainer: {},
+  progressBar: {},
+  progressLabel: {},
+  progressTransition: {},
+} )
+
+function FormContainer( props ) {
+  const {
+    showProgress = true,
+    progressStyle = {},
+    scrollDuration = 777,
+    edgeOffset = 0,
+    children,
+    onSubmit,
+  } = props
+
+  const classes = useStyles( props )
   const [ form, setForm ] = useState( {} )
   const [ submissionErrors, setSubmissionErrors ] = useState( {} )
   const [ progress, setProgress ] = useState( 0 )
   let errors = {}
   const mapNameToIndex = {}
 
-  /**
-   * Called by Fields to update the form state in the container
-   * @param {String} fieldName The name attribute value of an input field
-   * @param {Any} newVal The value to update fieldName to
-   * @returns {void}
-   */
   const onChange = ( fieldName, newVal ) => setForm( { ...form, [ fieldName ]: newVal } )
 
   /**
@@ -60,8 +67,8 @@ function FormContainer( {
    * @returns {Boolean} true if submission was successful, false otherwise
    */
   const submit = () => {
-    const isValid = _.reduce(
-      _.keys( errors ),
+    const isValid = reduce(
+      keys( errors ),
       ( bool, fieldName ) => ( bool && errors[ fieldName ].length === 0 ),
       true,
     )
@@ -74,7 +81,7 @@ function FormContainer( {
 
     // Re render with registered errors
     const firstErrorIndex = mapNameToIndex[
-      _.findKey( mapNameToIndex, ( i, name ) => (
+      findKey( mapNameToIndex, ( i, name ) => (
         errors.name !== undefined
           ? errors[ name ].length > 0
           : false
@@ -87,8 +94,8 @@ function FormContainer( {
   }
 
   return (
-    <form style={{ width: '100%', flexDirection: 'column', display: 'flex' }}>
-      <div style={_.assign( {}, formBackground, style.background )} />
+    <form className={classes.root}>
+      <div className={classes.fieldContainer} />
       <Provider value={form}>
         <ScrollController
           scrollDuration={scrollDuration}
@@ -109,7 +116,19 @@ function FormContainer( {
         </ScrollController>
       </Provider>
       {showProgress
-        && <ProgressBar progress={progress} style={progressStyle} />}
+        && (
+        <ProgressBar
+          progress={progress}
+          style={progressStyle}
+          classes={{
+            root: classes.progressRoot,
+            inner: classes.progressInnerContainer,
+            bar: classes.progressBar,
+            label: classes.progressLabel,
+            progress: classes.progressTransition,
+          }}
+        />
+        )}
     </form>
   )
 }
@@ -120,28 +139,22 @@ FormContainer.propTypes = {
    * Returns: object of errors, or true if there are none.
    * returned errors object should look like: { field: [ 'err' ], field2: [ 'err' ], ... }
    */
-  onSubmit: func.isRequired,
-  children: oneOfType( [ arrayOf( // Array of fields (form body)
-    instanceOf( Object ),
-  ), instanceOf( Object ) ] ).isRequired,
-  showProgress: bool, // Whether to show progress bar
-  scrollDuration: number, // Scroll animation time
-  edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
-  progressStyle: shape( {
-    container: instanceOf( Object ),
-    label: instanceOf( Object ),
-    bar: instanceOf( Object ),
-    innerBar: instanceOf( Object ),
+  onSubmit: PropTypes.func.isRequired,
+  children: PropTypes.oneOfType( [ PropTypes.arrayOf( // Array of fields (form body)
+    PropTypes.instanceOf( Object ),
+  ), PropTypes.instanceOf( Object ) ] ).isRequired,
+  showProgress: PropTypes.bool, // Whether to show progress bar
+  scrollDuration: PropTypes.number, // Scroll animation time
+  /**
+   * Add offset to scroll to prevent field from being hidden by a header
+   */
+  edgeOffset: PropTypes.number,
+  progressStyle: PropTypes.shape( {
+    container: PropTypes.instanceOf( Object ),
+    label: PropTypes.instanceOf( Object ),
+    bar: PropTypes.instanceOf( Object ),
+    innerBar: PropTypes.instanceOf( Object ),
   } ),
-  style: shape( { background: instanceOf( Object ) } ),
-}
-
-FormContainer.defaultProps = {
-  showProgress: true,
-  scrollDuration: 777,
-  edgeOffset: 0,
-  progressStyle: {},
-  style: {},
 }
 
 /**

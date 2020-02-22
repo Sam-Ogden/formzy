@@ -12,7 +12,8 @@ import SubmitField from './components/fields/SubmitField'
 import { withValidationAndTransition } from './components/hocs/withValidationAndTransition'
 import { templateToTitle } from './utils/utils'
 
-export { FormContainer,
+export {
+  FormContainer,
   ShortTextField,
   NumberField,
   Field,
@@ -22,4 +23,5 @@ export { FormContainer,
   SubmitField,
   InformationField,
   withValidationAndTransition,
-  templateToTitle }
+  templateToTitle,
+}

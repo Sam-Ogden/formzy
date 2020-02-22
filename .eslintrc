@@ -48,12 +48,7 @@
         "ignoreRestSiblings": true
       }
     ],
-    "object-curly-newline": [
-      "error",
-      {
-        "consistent": true
-      }
-    ],
+    "object-curly-newline": ["error", { "multiline": true }],
     "object-property-newline": [
       "error",
       {
@@ -63,6 +58,7 @@
     "react/jsx-filename-extension": 0,
     "react/sort-comp": 0,
     "react/no-array-index-key": 0,
+    "react/require-default-props": 0,
     "semi": [
       "error",
       "never"
