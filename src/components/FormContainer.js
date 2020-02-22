@@ -4,7 +4,7 @@ import { reduce, keys, findKey } from 'lodash'
 import { makeStyles } from '@material-ui/core/styles'
 import ProgressBar from './ProgressBar'
 import { Provider } from './FormContext'
-import ScrollController from './ScrollController'
+import useScroll from './useScroll'
 
 const useStyles = makeStyles( {
   root: {
@@ -45,6 +45,8 @@ function FormContainer( props ) {
   let errors = {}
   const mapNameToIndex = {}
 
+  const handleScroll = i => setProgress( calcProgress( i, Children.count( children ) ) )
+  const childrenProps = useScroll( children, scrollDuration, edgeOffset, handleScroll, submit )
   const onChange = ( fieldName, newVal ) => setForm( { ...form, [ fieldName ]: newVal } )
 
   /**
@@ -97,23 +99,17 @@ function FormContainer( props ) {
     <form className={classes.root}>
       <div className={classes.fieldContainer} />
       <Provider value={form}>
-        <ScrollController
-          scrollDuration={scrollDuration}
-          edgeOffset={edgeOffset}
-          onChange={i => setProgress( calcProgress( i, Children.count( children ) ) )}
-          onFinalNext={submit}
-        >
-          {Children.map( children,
-            ( Field, i ) => {
-              const { name } = Field.props
-              mapNameToIndex[ name ] = i
-              return React.cloneElement( Field, {
-                onChange,
-                registerValidationError,
-                submissionErrors: submissionErrors[ name ],
-              } )
-            } )}
-        </ScrollController>
+        {Children.map( children,
+          ( Field, i ) => {
+            const { name } = Field.props
+            mapNameToIndex[ name ] = i
+            return React.cloneElement( Field, {
+              onChange,
+              registerValidationError,
+              submissionErrors: submissionErrors[ name ],
+              ...childrenProps[ i ],
+            } )
+          } )}
       </Provider>
       {showProgress
         && (
