@@ -1,10 +1,10 @@
-# react-formtype
+# Formzy
 >
-[![NPM](https://img.shields.io/npm/v/react-form.svg)](https://www.npmjs.com/package/react-formtype) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-airbnb-brightgreen.svg)](https://github.com/airbnb/javascript)
+[![NPM](https://img.shields.io/npm/v/react-form.svg)](https://www.npmjs.com/package/formzy) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-airbnb-brightgreen.svg)](https://github.com/airbnb/javascript)
 
 ✏️ React library alternative for building TypeForm style forms.
 
-## [See an example](https://sam-ogden.github.io/react-formtype/).
+## [See an example](https://sam-ogden.github.io/formzy/).
 
 ![](example.gif)
 
@@ -24,7 +24,7 @@
 ```jsx
 import React from 'react'
 import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld,
-         InformationField, SubmitField } from 'react-formtype'
+         InformationField, SubmitField } from 'formzy'
 
 export default () => (
   <FormContainer 
@@ -251,7 +251,7 @@ This component should be used as the last child within FormContainer as the last
 
 
 ## Custom Fields
-Fields can be created using the withValidationAndTransition higher order component and the ```<Field />``` component which are both exported by react-formtype. 
+Fields can be created using the withValidationAndTransition higher order component and the ```<Field />``` component which are both exported by formzy. 
 
 ### The ```<Field />``` Component
 This is the default way to display the field components, it displays the title, description, validation errors and the next button. See ```src/components/fields/NumberField.js``` for example usage in the render method.

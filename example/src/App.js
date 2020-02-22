@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormContainer, ShortTextField, NumberField, DateField, MultipleChoiceFIeld,
-         InformationField, SubmitField } from 'react-formtype'
+         InformationField, SubmitField } from 'formzy'
 
 const style = {
   title: { color: '#eee', fontSize: '26px' },
