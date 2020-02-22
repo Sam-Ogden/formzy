@@ -8,7 +8,9 @@
   "dependencies": {
     "formzy": "file:..",
     "prop-types": "^15.6.2",
-    "react-scripts": "^1.1.4"
+    "react-scripts": "^1.1.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "scripts": {
     "start": "react-scripts start",
