@@ -1,23 +1,30 @@
 import React from 'react'
-
+import PropTypes from 'prop-types'
 import InformationField from './InformationField'
-import {
-  withValidationAndTransition,
-  commonPropTypes,
-  commonDefaultProps,
-} from '../hocs/withValidationAndTransition'
+import { withValidationAndTransition } from '../hocs/withValidationAndTransition'
 
-const SubmitField = props => (
-  <InformationField {...props} />
-)
+const SubmitField = props => {
+  const {
+    title = 'Thanks You!',
+    description = 'We will be in touch shortly.',
+    buttonText = 'Submit Form',
+    ...rest
+  } = props
 
-SubmitField.propTypes = { ...commonPropTypes }
+  return (
+    <InformationField
+      title={title}
+      description={description}
+      buttonText={buttonText}
+      {...rest}
+    />
+  )
+}
 
-SubmitField.defaultProps = {
-  ...commonDefaultProps,
-  title: 'Thank You!',
-  description: 'We will be in touch shortly.',
-  buttonText: 'Submit Form',
+SubmitField.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  buttonText: PropTypes.string,
 }
 
 export default withValidationAndTransition( SubmitField )

@@ -10,7 +10,16 @@ import {
   SubmitField 
 } from 'formzy'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
+  fieldRoot: {
+    '& $nextButton': {
+      color: '#808080', 
+      backgroundColor: '#eee',
+    },
+    '& $description': {
+      color: '#eee',
+    },
+  },
   fieldContainer: {
     backgroundImage: 'url("https://gracefulresources.com/wp-content/uploads/2016/06/PenOnNotebookwComputerKeyboard1680.jpg")', 
     WebkitFilter: 'brightness(0.4)',
@@ -22,49 +31,86 @@ const useStyles = makeStyles({
       backgroundColor: 'black' 
     },
   },
-  progressTransition: {}
-})
+  title: {
+    color: '#eee', 
+    fontSize: 26,
+  },
+  nextActionDescription: {
+    color: '#eee'
+  },
+  error: {
+    maxWidth: 'fit-content', 
+    opacity: 0.8,
+  },
+  multipleChoiceField: {
+    '& $optionButton': {
+      backgroundColor: '#ccc', 
+      color: 'black', 
+      borderColor: 'black', 
+      width: '15%'
+    },
+    '& $optionButtonActive': {
+      backgroundColor: '#555', 
+      color: 'white'
+    },
+  },
+  optionButton: {},
+  optionButtonActive: {},
+  description: {},
+  progressTransition: {},
+  nextButton: {},
+}))
 const style = {
-  title: { color: '#eee', fontSize: '26px' },
-  description: { color: '#eee' },
   nextButton: { color: '#808080', backgroundColor: '#eee' },
-  pressEnter: { color: '#eee' },
   textInput: { color: '#eee' },
   numberInput: { color: '#eee' },
-  optionButton: { backgroundColor: '#ccc', color: 'black', borderColor: 'black', width: '15%' },
-  optionButtonActive: { backgroundColor: '#555', color: 'white' },
   dateInputLabel: { color: 'white' },
   dateInput: { backgroundColor: '#ccc', margin: '10px 0px 20px 0px' },
-  errorBar: { maxWidth: 'fit-content', opacity: 0.8 }
 }
 
 export default () => {
-  const classes = useStyles()
+  const classes = useStyles({})
+  const fieldClasses = {
+    fieldRoot: classes.fieldRoot, 
+    nextButton: classes.nextButton, 
+    title: classes.title,
+    description: classes.description,
+    nextActionDescription: classes.nextActionDescription,
+    error: classes.error
+  }
   return (
     <FormContainer 
       showProgress={true}
       onSubmit={data => console.log(data)}
-      classes={classes}
+      classes={{
+        fieldContainer: classes.fieldContainer,
+        progressInnerContainer: classes.progressInnerContainer,
+      }}
     >
       <InformationField 
         title="Hi, Welcome to Our Job Application Form" 
         description="Ready to begin?" 
         nextBtnText="Lets Go"
-        style={style}
+        classes={{...fieldClasses}}
       />
       <ShortTextField 
         title="First off, what's your first name?" 
         name="name" 
         minTextLength={2} 
         required 
-        style={style}
+        classes={{...fieldClasses}}
       />
       <MultipleChoiceFIeld 
         title="Nice to meet you {{_.name}}, what roles are you interested in?" 
         name="fruits" 
         options={['Front End Dev', 'Back End Dev', 'Full Stack Dev']} 
         multiple
-        style={style}
+        className={classes.multipleChoiceField}
+        classes={{ 
+          ...fieldClasses,
+          optionButton: classes.optionButton,
+          active: classes.optionButtonActive
+        }}
       />
       <NumberField 
         title="How many years of experience do you have?" 

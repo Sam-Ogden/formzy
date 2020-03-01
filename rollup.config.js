@@ -23,12 +23,8 @@ export default {
     },
   ],
   plugins: [
-    external( {
-      includeDependencies: true,
-    } ),
-    postcss( {
-      modules: true,
-    } ),
+    external( { includeDependencies: true } ),
+    postcss( { modules: true } ),
     url(),
     svgr(),
     babel( {

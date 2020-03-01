@@ -1,7 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { number, shape, instanceOf } from 'prop-types'
 
-import css from './Field.css'
 import Field from './Field'
 import {
   withValidationAndTransition,
@@ -9,52 +8,51 @@ import {
   commonDefaultProps,
 } from '../hocs/withValidationAndTransition'
 
-class ShortTextField extends Component {
-  onChange = ( { target: { value } } ) => {
-    const { inputChange } = this.props
-    inputChange( value )
-  }
+const ShortTextField = props => {
+  const {
+    name,
+    title,
+    focusRef,
+    containerRef,
+    required,
+    description,
+    placeholder,
+    maxLength,
+    next,
+    err,
+    style,
+    inputChange,
+    className,
+    classes,
+  } = props
 
-  render() {
-    const {
-      name,
-      title,
-      focusRef,
-      containerRef,
-      required,
-      description,
-      placeholder,
-      maxLength,
-      next,
-      err,
-      style,
-    } = this.props
+  const onChange = ( { target: { value } } ) => inputChange( value )
 
-    return (
-      <Field
-        title={title}
-        description={description}
-        next={next}
-        err={err}
+  return (
+    <Field
+      title={title}
+      description={description}
+      next={next}
+      err={err}
+      required={required}
+      containerRef={containerRef}
+      style={style}
+      classes={classes}
+      className={className}
+    >
+      <input
+        placeholder={placeholder}
+        type="text"
+        name={name}
+        style={style.textInput}
+        onChange={onChange}
+        onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
+        ref={focusRef}
         required={required}
-        containerRef={containerRef}
-        style={style}
-      >
-        <input
-          className={`textfield-input ${css.input}`}
-          placeholder={placeholder}
-          type="text"
-          name={name}
-          style={style.textInput}
-          onChange={this.onChange}
-          onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
-          ref={focusRef}
-          required={required}
-          maxLength={maxLength}
-        />
-      </Field>
-    )
-  }
+        maxLength={maxLength}
+      />
+    </Field>
+  )
 }
 
 ShortTextField.propTypes = {
@@ -63,9 +61,6 @@ ShortTextField.propTypes = {
   style: shape( { textInput: instanceOf( Object ) } ),
 }
 
-ShortTextField.defaultProps = {
-  ...commonDefaultProps,
-  maxLength: 524288,
-}
+ShortTextField.defaultProps = { ...commonDefaultProps }
 
 export default withValidationAndTransition( ShortTextField )

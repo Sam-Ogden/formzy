@@ -67,6 +67,7 @@
   ],
   "dependencies": {
     "@material-ui/core": "^4.9.3",
+    "classnames": "^2.2.6",
     "keycode-js": "^2.0.3",
     "lodash": "^4.17.15",
     "zenscroll": "^4.0.2"

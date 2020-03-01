@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { number, shape, instanceOf } from 'prop-types'
 
-import css from './Field.css'
 import Field from './Field'
 import {
   withValidationAndTransition,
@@ -32,6 +31,7 @@ class NumberField extends Component {
       next,
       err,
       style,
+      className,
     } = this.props
 
     return (
@@ -43,9 +43,9 @@ class NumberField extends Component {
         required={required}
         containerRef={containerRef}
         style={style}
+        className={className}
       >
         <input
-          className={`numberfield-input ${css.input}`}
           placeholder={placeholder}
           type="number"
           style={style.numberInput}

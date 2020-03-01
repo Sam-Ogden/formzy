@@ -1,5 +1,6 @@
 import React, { useState, Children } from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 import { reduce, keys } from 'lodash'
 import { makeStyles } from '@material-ui/core/styles'
 import ProgressBar from './ProgressBar'
@@ -30,6 +31,7 @@ const useStyles = makeStyles( {
 
 function FormContainer( props ) {
   const {
+    className,
     showProgress = true,
     progressStyle = {},
     scrollDuration = 777,
@@ -80,7 +82,7 @@ function FormContainer( props ) {
   }
 
   return (
-    <form className={classes.root}>
+    <form className={classnames( classes.root, className )}>
       <div className={classes.fieldContainer} />
       <Provider value={form}>
         {Children.map( children,
@@ -120,6 +122,7 @@ FormContainer.propTypes = {
    * returned errors object should look like: { field: [ 'err' ], field2: [ 'err' ], ... }
    */
   onSubmit: PropTypes.func.isRequired,
+  className: PropTypes.string,
   children: PropTypes.oneOfType( [ PropTypes.arrayOf( // Array of fields (form body)
     PropTypes.instanceOf( Object ),
   ), PropTypes.instanceOf( Object ) ] ).isRequired,
