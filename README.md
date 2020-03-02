@@ -34,7 +34,7 @@ export default () => (
     <InformationField 
       title="Hello, Welcome To The Fruit Order Form" 
       description="Ready to start?" 
-      nextBtnText="Lets Go"
+      nextButtonText="Lets Go"
     />
     <ShortTextField 
       title="First off, what's your name?" 

@@ -63,7 +63,6 @@ const useStyles = makeStyles(() => ({
     color: 'white'
   },
   dateInput: {
-    backgroundColor: '#ccc',
     color: '#eee',
     margin: '10px 0px 20px 0px'
   },
@@ -75,7 +74,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 export default () => {
-  const classes = useStyles({})
+  const classes = useStyles()
   const fieldClasses = {
     fieldRoot: classes.fieldRoot, 
     nextButton: classes.nextButton, 
@@ -98,7 +97,7 @@ export default () => {
       <InformationField 
         title="Hi, Welcome to Our Job Application Form" 
         description="Ready to begin?" 
-        nextBtnText="Lets Go"
+        nextButtonText="Lets Go"
         classes={{...fieldClasses}}
       />
       <ShortTextField 
