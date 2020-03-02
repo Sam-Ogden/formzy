@@ -3,6 +3,7 @@ import { arrayOf, string, bool } from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import classnames from 'classnames'
 import Field from './Field'
+import fieldStyles from './FieldStyle'
 import {
   withValidationAndTransition,
   commonPropTypes,
@@ -28,6 +29,7 @@ const useStyles = makeStyles( {
     border: 0,
   },
   active: { },
+  ...fieldStyles,
 } )
 /**
  * A form field with a number of choice buttons
@@ -68,7 +70,6 @@ const MultipleChoiceField = props => {
 
   return (
     <div>
-      {/** Hidden button for focus and enter to progress behaviour */}
       <button
         type="button"
         className={classes.hiddenButton}
@@ -83,6 +84,7 @@ const MultipleChoiceField = props => {
         required={required}
         containerRef={containerRef}
         className={className}
+        classes={classes}
       >
         <div>
           {options.map( option => (
@@ -93,7 +95,6 @@ const MultipleChoiceField = props => {
               key={option}
               className={classnames( classes.optionButton,
                 { [ classes.active ]: selected.includes( option ) } )}
-              disableRipple
             >
               {option}
             </button>

@@ -48,7 +48,6 @@ function FormContainer( props ) {
   let errors = {}
 
   const handleScroll = i => setProgress( calcProgress( i, Children.count( children ) ) )
-  const childrenProps = useScroll( children, scrollDuration, edgeOffset, handleScroll, submit )
   const onChange = ( fieldName, newVal ) => setForm( { ...form, [ fieldName ]: newVal } )
 
   /**
@@ -80,6 +79,8 @@ function FormContainer( props ) {
       }
     }
   }
+
+  const childrenProps = useScroll( children, scrollDuration, edgeOffset, handleScroll, submit )
 
   return (
     <form className={classnames( classes.root, className )}>

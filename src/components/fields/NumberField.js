@@ -1,78 +1,67 @@
-import React, { Component } from 'react'
-import { number, shape, instanceOf } from 'prop-types'
-
+import React from 'react'
+import { number } from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
 import Field from './Field'
+import fieldStyles from './FieldStyle'
 import {
   withValidationAndTransition,
   commonPropTypes,
-  commonDefaultProps,
 } from '../hocs/withValidationAndTransition'
+
+const useStyles = makeStyles( { ...fieldStyles } )
 
 /**
  * A form field the accepts numbers only
  */
-class NumberField extends Component {
-  onChange = ( { target: { value } } ) => {
-    const { inputChange } = this.props
-    inputChange( value )
-  }
+const NumberField = props => {
+  const {
+    name,
+    title,
+    focusRef,
+    containerRef,
+    inputChange,
+    required,
+    description,
+    placeholder,
+    min,
+    max,
+    next,
+    err,
+    className,
+  } = props
+  const classes = useStyles( props )
+  const onChange = ( { target: { value } } ) => inputChange( value )
 
-  render() {
-    const {
-      name,
-      title,
-      focusRef,
-      containerRef,
-      required,
-      description,
-      placeholder,
-      min,
-      max,
-      next,
-      err,
-      style,
-      className,
-    } = this.props
-
-    return (
-      <Field
-        title={title}
-        description={description}
-        next={next}
-        err={err}
+  return (
+    <Field
+      title={title}
+      description={description}
+      next={next}
+      err={err}
+      required={required}
+      containerRef={containerRef}
+      className={className}
+      classes={classes}
+    >
+      <input
+        placeholder={placeholder}
+        type="number"
+        name={name}
+        onChange={onChange}
+        onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
+        ref={focusRef}
         required={required}
-        containerRef={containerRef}
-        style={style}
-        className={className}
-      >
-        <input
-          placeholder={placeholder}
-          type="number"
-          style={style.numberInput}
-          name={name}
-          onChange={this.onChange}
-          onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
-          ref={focusRef}
-          required={required}
-          min={min}
-          max={max}
-        />
-      </Field>
-    )
-  }
+        min={min}
+        max={max}
+      />
+    </Field>
+  )
 }
 
 NumberField.propTypes = {
   ...commonPropTypes,
   min: number,
   max: number,
-  style: shape( { numberInput: instanceOf( Object ) } ),
-}
-
-NumberField.defaultProps = {
-  ...commonDefaultProps,
-  min: Number.MIN_VALUE,
-  max: Number.MAX_VALUE,
 }
 
 export default withValidationAndTransition( NumberField )

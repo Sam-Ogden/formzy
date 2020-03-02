@@ -125,7 +125,7 @@ export const commonPropTypes = {
   defaultValue: any, // The default value the field should take
   required: bool, // Whether a value must be entered by the user
   placeholder: string, // Input placeholder text
-  nextBtnText: string, // Text to display in next button
+  nextButtonText: string, // Text to display in next button
   onChange: func, // This is passed in by FormContainer to update the form state
   next: func, // This is passed in by FormContainer to scroll to the next field
   focusRef: shape( { current: instanceOf( Element ) } ),
@@ -143,7 +143,6 @@ export const commonDefaultProps = {
   name: '',
   required: false,
   placeholder: 'Type your answer here...',
-  nextBtnText: 'Next',
   onChange: () => null,
   next: () => true,
   registerValidationError: () => null,

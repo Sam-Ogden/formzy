@@ -1,11 +1,15 @@
 import React from 'react'
 import { string } from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
 import Field from './Field'
+import fieldStyles from './FieldStyle'
 import {
   withValidationAndTransition,
   commonPropTypes,
   commonDefaultProps,
 } from '../hocs/withValidationAndTransition'
+
+const useStyles = makeStyles( { ...fieldStyles } )
 
 const InformationField = props => {
   const {
@@ -13,12 +17,14 @@ const InformationField = props => {
     description,
     className,
     next,
-    nextBtnText,
+    nextButtonText,
     focusRef,
     children,
     containerRef,
-    classes,
   } = props
+
+  const classes = useStyles( props )
+
   return (
     <div>
       <input
@@ -31,7 +37,7 @@ const InformationField = props => {
         title={title}
         description={description}
         next={next}
-        nextBtnText={nextBtnText}
+        nextButtonText={nextButtonText}
         containerRef={containerRef}
         classes={classes}
         className={className}
@@ -43,7 +49,7 @@ const InformationField = props => {
 }
 InformationField.propTypes = {
   ...commonPropTypes,
-  nextBtnText: string,
+  nextButtonText: string,
 }
 
 InformationField.defaultProps = { ...commonDefaultProps }

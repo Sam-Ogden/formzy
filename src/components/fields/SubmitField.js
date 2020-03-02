@@ -7,7 +7,7 @@ const SubmitField = props => {
   const {
     title = 'Thanks You!',
     description = 'We will be in touch shortly.',
-    buttonText = 'Submit Form',
+    nextButtonText = 'Submit Form',
     ...rest
   } = props
 
@@ -15,7 +15,7 @@ const SubmitField = props => {
     <InformationField
       title={title}
       description={description}
-      buttonText={buttonText}
+      nextButtonText={nextButtonText}
       {...rest}
     />
   )
@@ -24,7 +24,7 @@ const SubmitField = props => {
 SubmitField.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  buttonText: PropTypes.string,
+  nextButtonText: PropTypes.string,
 }
 
 export default withValidationAndTransition( SubmitField )

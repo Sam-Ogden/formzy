@@ -1,16 +1,35 @@
-import React, { Component } from 'react'
-import { bool, func, string, instanceOf, shape } from 'prop-types'
-import { has } from 'lodash'
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import has from 'lodash/has'
+import { makeStyles } from '@material-ui/core/styles'
 
-import css from './DateField.css'
 import Field from './Field'
+import fieldStyles from './FieldStyle'
 import {
   withValidationAndTransition,
   commonPropTypes,
-  commonDefaultProps,
 } from '../hocs/withValidationAndTransition'
 
-const required = ( value, isRequired, props ) => (
+const useStyles = makeStyles( {
+  dateInputContainer: {
+    display: 'inline-block',
+    marginRight: 15,
+    '& $inputField, $inputField:focus': {
+      width: '5em',
+      display: 'block',
+      padding: '0.5rem',
+      borderRadius: 5,
+      border: 'none',
+    },
+  },
+  dateTitle: {
+    width: 100,
+    margin: 0,
+  },
+  inputField: {},
+  ...fieldStyles,
+} )
+const requiredTest = ( value, isRequired, props ) => (
   isRequired
    && (
      !has( value, 'day' )
@@ -41,139 +60,121 @@ const validateDate = ( value, testVal, props ) => {
  * Form Field that takes date and time values.
  * Value is returned as { day: ..., month: ..., year: ..., time: ... }
  */
-class DateField extends Component {
-  state = { value: null }
+const DateField = props => {
+  const {
+    title,
+    focusRef,
+    containerRef,
+    required,
+    description,
+    includeTime,
+    inputChange,
+    next,
+    err,
+    addValidationChecks,
+    updateValidationChecks,
+    className,
+  } = props
 
-  componentDidMount() {
-    const { addValidationChecks, updateValidationChecks } = this.props
+  const [ value, setValue ] = useState( null )
+  const classes = useStyles( props )
+
+  useEffect( () => {
     // Override the required function with func specific to DateField
-    updateValidationChecks( { required, validateDate } )
+    updateValidationChecks( { required: requiredTest, validateDate } )
     addValidationChecks( { validateDate: { func: validateDate, test: true } } )
-  }
+  }, [] )
 
   /**
    * Store values for each component of date seperatly
    */
-  onChange = ( { target: { name, value: val } } ) => {
-    this.setState( ( { value } ) => ( { value: ( { ...value, [ name ]: val } ) } ), () => {
-      const { inputChange } = this.props
-      const { value } = this.state
-      inputChange( value )
-    } )
+  const handleInputChange = ( { target: { name, value: val } } ) => {
+    const newDate = { ...value, [ name ]: val }
+    setValue( newDate )
+    inputChange( newDate )
   }
 
-  render() {
-    const {
-      title,
-      focusRef,
-      containerRef,
-      required,
-      description,
-      includeTime,
-      next,
-      err,
-      style,
-    } = this.props
-
-    return (
-      <Field
-        title={title}
-        description={description}
-        next={next}
-        err={err}
-        required={required}
-        containerRef={containerRef}
-        style={style}
-      >
-        <div role="presentation" onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
-          <DateFieldContainer style={style} title="Day:">
-            <input
-              name="day"
-              type="number"
-              placeholder="dd"
-              onChange={this.onChange}
-              ref={focusRef}
-              required={required}
-              className={`datefield-day ${css.inputField}`}
-              style={style.dateInput}
-            />
-          </DateFieldContainer>
-          <DateFieldContainer style={style} title="Month:">
-            <input
-              name="month"
-              type="number"
-              placeholder="mm"
-              onChange={this.onChange}
-              required={required}
-              className={`datefield-month ${css.inputField}`}
-              style={style.dateInput}
-            />
-          </DateFieldContainer>
-          <DateFieldContainer style={style} title="Year:">
-            <input
-              name="year"
-              type="number"
-              placeholder="yyyy"
-              onChange={this.onChange}
-              required={required}
-              className={`datefield-year ${css.inputField}`}
-              style={style.dateInput}
-            />
-          </DateFieldContainer>
-          {includeTime
+  return (
+    <Field
+      title={title}
+      description={description}
+      next={next}
+      err={err}
+      required={required}
+      containerRef={containerRef}
+      className={className}
+      classes={classes}
+    >
+      <div role="presentation" onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}>
+        <DateFieldContainer title="Day:" classes={classes}>
+          <input
+            name="day"
+            type="number"
+            placeholder="dd"
+            onChange={handleInputChange}
+            ref={focusRef}
+            required={required}
+            className={classes.inputField}
+          />
+        </DateFieldContainer>
+        <DateFieldContainer title="Month:" classes={classes}>
+          <input
+            name="month"
+            type="number"
+            placeholder="mm"
+            onChange={handleInputChange}
+            required={required}
+            className={classes.inputField}
+          />
+        </DateFieldContainer>
+        <DateFieldContainer title="Year:" classes={classes}>
+          <input
+            name="year"
+            type="number"
+            placeholder="yyyy"
+            onChange={handleInputChange}
+            required={required}
+            className={classes.inputField}
+          />
+        </DateFieldContainer>
+        {includeTime
               && (
-                <DateFieldContainer style={style} title="Time:">
+                <DateFieldContainer title="Time:" classes={classes}>
                   <input
                     name="time"
                     type="time"
                     placeholder="00:00"
-                    onChange={this.onChange}
+                    onChange={handleInputChange}
                     required={required}
-                    className={`datefield-time ${css.inputField}`}
-                    style={style.dateInput}
+                    className={classes.inputField}
                   />
                 </DateFieldContainer>
               )}
-        </div>
-      </Field>
-    )
-  }
+      </div>
+    </Field>
+  )
 }
 
 DateField.propTypes = {
   ...commonPropTypes,
-  includeTime: bool, // Whether to display time input field
-  addValidationChecks: func.isRequired,
-  updateValidationChecks: func.isRequired,
-  style: shape( {
-    dateInput: instanceOf( Object ),
-    dateInputContainer: instanceOf( Object ),
-    dateInputLabel: instanceOf( Object ),
-  } ),
-}
-
-DateField.defaultProps = {
-  ...commonDefaultProps,
-  includeTime: false,
+  includeTime: PropTypes.bool, // Whether to display time input field
+  addValidationChecks: PropTypes.func.isRequired,
+  updateValidationChecks: PropTypes.func.isRequired,
 }
 
 const DateFieldContainer = (
-  { title, children, style: { dateInputContainer, dateInputLabel } },
+  { title, children, classes: { dateInputContainer, dateTitle } },
 ) => (
-  <span className={css.dateInputContainer} style={dateInputContainer}>
-    <span className={css.dateTitles} style={dateInputLabel}>{title}</span>
+  <span className={dateInputContainer}>
+    <span className={dateTitle}>{title}</span>
     {children}
   </span>
 )
 
 DateFieldContainer.propTypes = {
-  title: string.isRequired,
-  children: instanceOf( Object ).isRequired,
-  style: shape( {
-    dateInputContainer: instanceOf( Object ),
-    dateInputLabel: instanceOf( Object ),
-  } ),
+  title: PropTypes.string.isRequired,
+  children: PropTypes.instanceOf( Object ).isRequired,
+  classes: PropTypes.objectOf( PropTypes.string ),
 }
 
-DateFieldContainer.defaultProps = { style: {} }
 export default withValidationAndTransition( DateField )

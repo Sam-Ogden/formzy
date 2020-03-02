@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { 
-  FormContainer, 
+  FormContainer as Form, 
   ShortTextField, 
   NumberField, 
   DateField, 
@@ -24,6 +24,11 @@ const useStyles = makeStyles(() => ({
     backgroundImage: 'url("https://gracefulresources.com/wp-content/uploads/2016/06/PenOnNotebookwComputerKeyboard1680.jpg")', 
     WebkitFilter: 'brightness(0.4)',
     filter: 'brightness(0.4)'
+  },
+  fieldChildrenContainer: {
+    '& input': {
+      color: 'white'
+    }
   },
   progressInnerContainer: {
     backgroundColor: '#555',
@@ -54,19 +59,20 @@ const useStyles = makeStyles(() => ({
       color: 'white'
     },
   },
+  dateTitle: {
+    color: 'white'
+  },
+  dateInput: {
+    backgroundColor: '#ccc',
+    color: '#eee',
+    margin: '10px 0px 20px 0px'
+  },
   optionButton: {},
   optionButtonActive: {},
   description: {},
   progressTransition: {},
   nextButton: {},
 }))
-const style = {
-  nextButton: { color: '#808080', backgroundColor: '#eee' },
-  textInput: { color: '#eee' },
-  numberInput: { color: '#eee' },
-  dateInputLabel: { color: 'white' },
-  dateInput: { backgroundColor: '#ccc', margin: '10px 0px 20px 0px' },
-}
 
 export default () => {
   const classes = useStyles({})
@@ -76,15 +82,17 @@ export default () => {
     title: classes.title,
     description: classes.description,
     nextActionDescription: classes.nextActionDescription,
-    error: classes.error
+    error: classes.error,
+    fieldChildrenContainer: classes.fieldChildrenContainer
   }
   return (
-    <FormContainer 
+    <Form
       showProgress={true}
       onSubmit={data => console.log(data)}
       classes={{
         fieldContainer: classes.fieldContainer,
         progressInnerContainer: classes.progressInnerContainer,
+        progressTransition: classes.progressTransition
       }}
     >
       <InformationField 
@@ -117,19 +125,23 @@ export default () => {
         name="noranges"
         min={0}
         defaultValue={0}
-        style={style}
+        classes={{...fieldClasses}}
       />
       <DateField 
         title="When are you free for a chat?" 
         name="orrangedate" 
         required
-        style={style}
+        classes={{
+          ...fieldClasses,
+          dateTitle: classes.dateTitle,
+          inputField: classes.dateInput
+        }}
       />
       <SubmitField 
         title="Thanks {{_.name}}, we will be in touch with you shortly!" 
-        nextBtnText="Send Application" 
-        style={style}
+        nextButtonText="Send Application" 
+        classes={{...fieldClasses}}
       />
-    </FormContainer>
+    </Form>
   )
 }

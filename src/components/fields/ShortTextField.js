@@ -1,12 +1,15 @@
 import React from 'react'
-import { number, shape, instanceOf } from 'prop-types'
-
+import { number } from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
 import Field from './Field'
+import fieldStyles from './FieldStyle'
 import {
   withValidationAndTransition,
   commonPropTypes,
   commonDefaultProps,
 } from '../hocs/withValidationAndTransition'
+
+const useStyles = makeStyles( { ...fieldStyles } )
 
 const ShortTextField = props => {
   const {
@@ -20,12 +23,11 @@ const ShortTextField = props => {
     maxLength,
     next,
     err,
-    style,
     inputChange,
     className,
-    classes,
   } = props
 
+  const classes = useStyles( props )
   const onChange = ( { target: { value } } ) => inputChange( value )
 
   return (
@@ -36,7 +38,6 @@ const ShortTextField = props => {
       err={err}
       required={required}
       containerRef={containerRef}
-      style={style}
       classes={classes}
       className={className}
     >
@@ -44,7 +45,6 @@ const ShortTextField = props => {
         placeholder={placeholder}
         type="text"
         name={name}
-        style={style.textInput}
         onChange={onChange}
         onKeyPress={( { key } ) => ( key === 'Enter' ? next() : null )}
         ref={focusRef}
@@ -58,7 +58,6 @@ const ShortTextField = props => {
 ShortTextField.propTypes = {
   ...commonPropTypes,
   maxLength: number,
-  style: shape( { textInput: instanceOf( Object ) } ),
 }
 
 ShortTextField.defaultProps = { ...commonDefaultProps }

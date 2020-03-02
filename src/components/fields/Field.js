@@ -1,66 +1,9 @@
 import React from 'react'
-import { string, func, instanceOf, arrayOf, bool, shape } from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Button from '@material-ui/core/Button'
 import { Consumer } from '../FormContext'
 import { templateToTitle } from '../../utils/utils'
-
-const useStyles = makeStyles( () => ( {
-  fieldRoot: {
-    height: '60vh',
-    display: 'inline-block',
-    alignItems: 'center',
-    justifyContent: 'left',
-    paddingLeft: '10vw',
-    paddingRight: '10vw',
-    paddingBottom: '25vh',
-    paddingTop: '25vh',
-    maxWidth: '100%',
-    '& input': {
-      border: 0,
-      borderBottom: [ [ 2, 'solid', '#555' ] ],
-      backgroundColor: 'transparent',
-      height: '6vh',
-      width: '100%',
-      fontSize: '1.4em',
-      transition: 'border 0.2s',
-    },
-    '& input:focus': {
-      outline: 'none',
-      borderBottom: [ [ 2, 'solid', 'transparent' ] ],
-    },
-  },
-  nextButton: {
-    padding: [ [ 10, 20 ] ],
-    fontSize: '1em',
-    borderRadius: 5,
-    marginRight: 10,
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    border: 'none',
-    marginTop: 15,
-  },
-  title: {
-    fontSize: '1.6em',
-    marginBottom: 10,
-    marginTop: '0vh',
-  },
-  description: {
-    color: '#777',
-    fontSize: '1.2em',
-  },
-  error: {
-    marginTop: '20px',
-    backgroundColor: 'indianred',
-    padding: '10px',
-    borderRadius: 5,
-    color: 'beige',
-    fontWeight: 'bold',
-  },
-  '@media (min-width: 960px)': { title: { fontSize: '2em' } },
-  nextActionDescription: { '& span': { fontWeight: 'bold' } },
-} ) )
 
 /**
  * @param {Object} props Field props
@@ -72,14 +15,13 @@ const Field = props => {
     description = '',
     title,
     next = () => undefined,
-    nextBtnText = 'Next',
+    nextButtonText = 'Next',
     err = [],
     required = false,
     containerRef,
     className,
+    classes,
   } = props
-
-  const classes = useStyles( props )
 
   return (
     <div
@@ -98,11 +40,13 @@ const Field = props => {
 
       {description !== ''
         && <p className={classes.description}>{description}</p>}
-      {children}
+      <div className={classes.fieldChildrenContainer}>
+        {children}
+      </div>
 
-      <div>
+      <div className={classes.fieldAction}>
         <Button classes={{ root: classes.nextButton }} onClick={next} variant="contained">
-          {nextBtnText}
+          {nextButtonText}
         </Button>
         <span className={classes.nextActionDescription}>
           Press
@@ -118,15 +62,16 @@ const Field = props => {
 }
 
 Field.propTypes = {
-  children: instanceOf( Object ), // The input element
-  className: string,
-  title: string.isRequired, // The title of the field
-  description: string, // Description for additional instructions
-  next: func, // The function to call to scroll to the next field
-  nextBtnText: string, // Text to display in the next button
-  err: arrayOf( string ), // Any errors in the input given by a user
-  required: bool,
-  containerRef: shape( { current: instanceOf( Element ) } ),
+  children: PropTypes.instanceOf( Object ), // The input element
+  className: PropTypes.string,
+  title: PropTypes.string.isRequired, // The title of the field
+  description: PropTypes.string, // Description for additional instructions
+  next: PropTypes.func, // The function to call to scroll to the next field
+  nextButtonText: PropTypes.string, // Text to display in the next button
+  err: PropTypes.arrayOf( PropTypes.string ), // Any errors in the input given by a user
+  required: PropTypes.bool,
+  containerRef: PropTypes.shape( { current: PropTypes.instanceOf( Element ) } ),
+  classes: PropTypes.objectOf( PropTypes.string ),
 }
 
 export default Field
