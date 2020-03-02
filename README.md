@@ -30,7 +30,6 @@ export default () => (
   <FormContainer 
     showProgress={true} 
     onSubmit={data => console.log(data)}
-    progressStyle={{ innerBar: { backgroundColor: 'black' } }}
   >
     <InformationField 
       title="Hello, Welcome To The Fruit Order Form" 
@@ -48,11 +47,6 @@ export default () => (
       name="fruits" 
       options={['Banana', 'Apple', 'Orange', 'Pear']} 
       multiple
-      style={{ 
-        optionButtonActive: { 
-          borderColor: '#66aef7', color: 'black', fontWeight: 'bold'
-        }
-      }}
     />
     <NumberField 
       title="How many free oranges do you want?" 
@@ -93,23 +87,6 @@ The last child contained in FormContainer will act as the submit field and when 
 Field titles can reference previous user inputs in the titles of other fields. This is achieved by:
 * using ```{{_.FIELD_NAME}}``` in the title prop.
 
-### Custom Styling
-Custom styling is applied to fields through a style prop.
-
-All Field Components can change the styling of the title, description, next button etc using the keys listed below. Some components have addional style options which can be seen in the props for the component below. 
-```jsx
-<SomeFieldComponent 
-  style={{
-    fieldContainer: {/*css styles here*/},
-    title: {},
-    description: {},
-    nextButton: {},
-    pressEnter: {},
-    pressEnterInner: {},
-    errorBar: {}
-  }} />
-```
-
 ## Components
 * [FormContainer](#FormContainer)
 * [ShortTextField](#ShortTextField)
@@ -137,21 +114,12 @@ FormContainer.propTypes = {
   showProgress: bool, // Whether to show progress bar
   scrollDuration: number, // Scroll animation time
   edgeOffset: number, // Add offset to scroll to prevent field from being hidden by a header
-  progressStyle: shape( {
-    container: instanceOf( Object ),
-    label: instanceOf( Object ),
-    bar: instanceOf( Object ),
-    innerBar: instanceOf( Object ),
-  } ),
-  style: shape( { background: instanceOf( Object ) } ),
 }
 
 FormContainer.defaultProps = {
   showProgress: true,
   scrollDuration: 777,
   edgeOffset: 0,
-  progressStyle: {},
-  style: {},
 }
 ```
 ## Field Components
@@ -167,7 +135,6 @@ commonPropTypes = {
   required: bool,
   placeholder: string,
   nextBtnText: string,
-  style: instanceOf( Object ), // Custom styling
 }
 const commonDefaultProps = {
   title: '',
@@ -177,7 +144,6 @@ const commonDefaultProps = {
   required: false,
   placeholder: 'Type your answer here...',
   nextBtnText: 'Next',
-  style: {},
 }
 ```
 ### ShortTextField
@@ -185,7 +151,6 @@ const commonDefaultProps = {
 ShortTextField.propTypes = {
   ...commonPropTypes,
   maxLength: number,
-  style: shape( { textInput: instanceOf( Object ) } ),
 }
 
 ShortTextField.defaultProps = {
@@ -199,7 +164,6 @@ NumberField.propTypes = {
   ...commonPropTypes,
   min: number,
   max: number,
-  style: shape( { numberInput: instanceOf( Object ) } ),
 }
 
 NumberField.defaultProps = {
@@ -213,11 +177,6 @@ NumberField.defaultProps = {
 DateField.propTypes = {
   ...commonPropTypes,
   includeTime: bool, // Whether to display time input field
-  style: shape( {
-    dateInput: instanceOf( Object ),
-    dateInputContainer: instanceOf( Object ),
-    dateInputLabel: instanceOf( Object ),
-  } ),
 }
 
 DateField.defaultProps = {
@@ -231,10 +190,6 @@ MultipleChoiceField.propTypes = {
   ...commonPropTypes,
   options: arrayOf( string ).isRequired, // The possible options to pick from
   multiple: bool, // Whether the user can select multiple options
-  style: shape( {
-    optionButton: instanceOf( Object ),
-    optionButtonActive: instanceOf( Object ),
-  } ),
 }
 
 MultipleChoiceField.defaultProps = {
@@ -265,15 +220,6 @@ Field.propTypes = {
   err: arrayOf( string ), // Any errors in the input given by a user
   required: bool,
   containerRef: shape( { current: instanceOf( Element ) } ), // Reference for container to scroll to
-  style: shape( {
-    fieldContainer: instanceOf( Object ),
-    title: instanceOf( Object ),
-    description: instanceOf( Object ),
-    nextButton: instanceOf( Object ),
-    pressEnter: instanceOf( Object ),
-    pressEnterInner: instanceOf( Object ),
-    errorBar: instanceOf( Object ),
-  } ),
 }
 
 Field.defaultProps = {
@@ -284,7 +230,6 @@ Field.defaultProps = {
   required: false,
   containerRef: null,
   children: null,
-  style: {},
 }
 ```
 You can create your own Field component for use with your own fields. (Future feature: ability to pass in custom Field component to FormContainer so you can reuse all the premade fields with your own UI structure for the title/description/next buttons/errors).
