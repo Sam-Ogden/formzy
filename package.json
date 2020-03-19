@@ -12,7 +12,8 @@
   "repository": "https://github.com/sam-ogden/formzy",
   "scripts": {
     "build": "lerna run build",
-    "lint": "eslint \"packages/*/src/**/*.{ts,tsx,js,jsx}\" --fix"
+    "lint": "eslint \"packages/*/src/**/*.{ts,tsx,js,jsx}\" --fix",
+    "lint:no-fix": "eslint \"./packages/*/src/**/*.{ts,tsx,js,jsx}\""
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -23,12 +24,14 @@
     "@typescript-eslint/parser": "^2.24.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
     "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.2.3",
     "lerna": "^3.20.2",
     "prettier": "^1.19.1",
     "source-map-loader": "^0.2.4",

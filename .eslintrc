@@ -1,12 +1,18 @@
 {
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint"
+  ],
   "env": {
     "es6": true,
     "browser": true,
     "node": true
   },
-  "plugins": ["react-hooks", "prettier", "react", "import", "node"],
-  "parser": "babel-eslint",
+  "plugins": ["react-hooks", "prettier", "react", "import", "node", "@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2018,
@@ -25,5 +31,8 @@
       }
     }
   },
-  "ignorePatterns": ["coverage", "node_modules"]
+  "ignorePatterns": ["coverage", "node_modules"],
+  "rules": {
+    "no-multiple-empty-lines": 2
+  }
 }
