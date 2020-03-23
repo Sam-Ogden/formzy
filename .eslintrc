@@ -33,6 +33,7 @@
   },
   "ignorePatterns": ["coverage", "node_modules"],
   "rules": {
-    "no-multiple-empty-lines": 2
+    "no-multiple-empty-lines": 2,
+    "@typescript-eslint/explicit-function-return-type": 0
   }
 }
