@@ -2,6 +2,7 @@
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
+    "plugin:jest/recommended",
     "eslint:recommended",
     "plugin:prettier/recommended",
     "prettier/@typescript-eslint"

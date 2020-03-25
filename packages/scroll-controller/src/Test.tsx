@@ -1,5 +1,9 @@
 import * as React from 'react';
 
-const Test = () => <div></div>;
+type TestProps = {
+  name?: string;
+};
+
+const Test = ({ name }: TestProps) => <div>{name}</div>;
 
 export { Test };
