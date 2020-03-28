@@ -15,7 +15,8 @@
     "lint": "eslint \"packages/*/src/**/*.{ts,tsx,js,jsx}\" --fix",
     "lint:no-fix": "eslint \"./packages/*/src/**/*.{ts,tsx,js,jsx}\"",
     "test": "jest --coverage",
-    "pre-push": "yarn lint:no-fix && yarn test"
+    "pre-push": "yarn lint:no-fix && yarn test",
+    "start": "cd storybook && yarn start"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
