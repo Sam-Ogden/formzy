@@ -1,14 +1,13 @@
 import * as React from 'react';
 
-type useSequenceType = (
-  length: number,
-  activeIndex?: number
-) => {
+export interface UseSequenceReturnType {
   next: () => void;
   previous: () => void;
   goToPosition: (position: number) => void;
   active: number;
-};
+}
+
+type useSequenceType = (length: number, activeIndex?: number) => UseSequenceReturnType;
 
 const useSequence: useSequenceType = (length, activeIndex = 0) => {
   const [active, setActive] = React.useState(activeIndex);
@@ -17,7 +16,7 @@ const useSequence: useSequenceType = (length, activeIndex = 0) => {
     setActive(currentActive => (currentActive === length - 1 ? currentActive : currentActive + 1));
   const previous = () =>
     setActive(currentActive => (currentActive === 0 ? currentActive : currentActive - 1));
-  const goToPosition = position =>
+  const goToPosition = (position: number) =>
     setActive(currentPosition => (position >= 0 && position < length ? position : currentPosition));
 
   return { next, previous, goToPosition, active };

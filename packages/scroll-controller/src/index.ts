@@ -1,2 +1,2 @@
-export * from './ScrollController';
+export * from './useScrollController';
 export * from './useSequence';
