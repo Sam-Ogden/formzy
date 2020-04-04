@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { render, fireEvent } from 'test-utils';
-import { useScrollController } from '../';
+import { useScrollController } from '..';
 
 const TestComponent = ({
   initialActive = 0,
@@ -12,10 +12,10 @@ const TestComponent = ({
   elementHeight?: number;
   verticalOffset?: number;
 }) => {
-  const { createScrollRef, next, previous, active } = useScrollController(
+  const { createScrollRef, next, previous, active } = useScrollController({
     initialActive,
     verticalOffset
-  );
+  });
   return (
     <>
       <button onClick={() => next()} data-testid="next-button">
@@ -58,47 +58,22 @@ test('first renders with initialActive element active', () => {
 });
 
 test('next() calls window.scrollTo and increments active element', () => {
-  window.scrollTo = noop;
   const { getByTestId } = render(<TestComponent />);
-  window.scrollTo = jest.fn();
   fireEvent.click(getByTestId('next-button'));
-  expect(window.scrollTo).toHaveBeenCalledWith({
-    top: getByTestId('elem-1').offsetTop,
-    behavior: 'smooth'
-  });
   expect(getByTestId('elem-1').classList).toContain('active');
   expect(getByTestId('elem-0').classList).not.toContain('active');
 });
 
 test('previous() calls window.scrollTo and decrements active element', () => {
-  window.scrollTo = noop;
   const { getByTestId } = render(<TestComponent initialActive={1} />);
-  window.scrollTo = jest.fn();
   fireEvent.click(getByTestId('previous-button'));
-  expect(window.scrollTo).toHaveBeenCalledWith({
-    top: getByTestId('elem-0').offsetTop,
-    behavior: 'smooth'
-  });
   expect(getByTestId('elem-0').classList).toContain('active');
   expect(getByTestId('elem-1').classList).not.toContain('active');
 });
 
-test('verticalOffset reduces the scrollHeight', () => {
-  window.scrollTo = noop;
-  const verticalOffset = 50;
-  const { getByTestId } = render(<TestComponent verticalOffset={verticalOffset} />);
-  window.scrollTo = jest.fn();
-  fireEvent.click(getByTestId('next-button'));
-  expect(window.scrollTo).toHaveBeenCalledWith({
-    top: getByTestId('elem-1').offsetTop - verticalOffset,
-    behavior: 'smooth'
-  });
-});
-
 test.each(['next', 'previous', 'goToPosition', 'active', 'createScrollRef'])(
-  `useScrollController returns %i`,
+  `useScrollController returns %s`,
   property => {
-    window.scrollTo = noop;
     const { result } = renderHook(() => useScrollController());
     expect(result.current).toHaveProperty(property);
   }

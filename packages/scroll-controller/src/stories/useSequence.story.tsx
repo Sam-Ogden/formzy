@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useSequence } from '..';
 
 export default { title: 'ScrollController/Hooks' };

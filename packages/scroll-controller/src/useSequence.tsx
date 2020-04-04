@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 export interface UseSequenceReturnType {
   next: () => void;
@@ -10,7 +10,7 @@ export interface UseSequenceReturnType {
 type useSequenceType = (length: number, activeIndex?: number) => UseSequenceReturnType;
 
 const useSequence: useSequenceType = (length, activeIndex = 0) => {
-  const [active, setActive] = React.useState(activeIndex);
+  const [active, setActive] = useState(activeIndex);
 
   const next = () =>
     setActive(currentActive => (currentActive === length - 1 ? currentActive : currentActive + 1));
