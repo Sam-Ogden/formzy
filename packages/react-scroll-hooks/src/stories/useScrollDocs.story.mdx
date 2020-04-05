@@ -1,0 +1,47 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+
+<Meta title="react-scroll-hooks/useScroll/Docs" />
+
+# useScroll Hook
+The `useScroll` hook can be used to scroll an entire document or within a container.
+
+## Usage 
+
+```javascript
+import { useScroll } from 'react-scroll-hooks';
+
+const Component = () => {
+    const containerRef = React.useRef();
+    const elementRef = React.useRef();
+    const scrollSpeed = 50;
+
+    const { scrollToElement, scrollToY } = useScroll({ scrollSpeed, containerRef })
+
+    return (
+        <div ref={containerRef}>
+            <button onClick={() => scrollToElement(elementRef)}
+            ...
+            <p ref={elementRef}></p>
+        </div>
+    )
+}
+```
+## Props  
+The hook takes an **object** as a parameter with the following properties:  
+
+| Parameter    | Type   | Default                  | Description                                                                            |
+|--------------|--------|--------------------------|----------------------------------------------------------------------------------------|
+| scrollSpeed  | number | 40                       | The speed at which scrolling occurs                                                    |
+| containerRef | Ref    | document.documentElement | A ref to the container.  If a ref is not provided then it scrolls the entire document. |
+
+## Returns
+
+| Property        | Type                                                                      | Description                                                                                                                                     |
+|-----------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| scrollToElement | (ref: MutableRefObject<.HTMLElement>, verticalOffset: number) => undefined | Use this method to scroll to an element with a given ref leaving `verticalOffset` pixels between element and the top of the container/document. |
+| scrollToY       | (y: number) => undefined                                                  | Use this method to scroll to a `y` position in the container/document.                                                                          |
+
+You can destructure these properties as follows:  
+```javascript
+const { scrollToElement, scrollToY } = useScroll();
+```

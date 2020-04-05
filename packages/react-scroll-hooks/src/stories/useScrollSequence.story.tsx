@@ -1,15 +1,19 @@
-import React, { MutableRefObject, useRef, LegacyRef, forwardRef } from 'react';
-import { useScrollController } from '..';
+import React, { forwardRef, MutableRefObject, LegacyRef, useRef } from 'react';
+import { useScrollSequence } from '..';
+import { number, withKnobs } from '@storybook/addon-knobs';
 
-export default { title: 'ScrollController/Hooks' };
+export default {
+  title: 'react-scroll-hooks/useScrollSequence/Examples',
+  decorators: [withKnobs],
+  component: useScrollSequence
+};
 
-export const ScrollControllerWithContainer = () => {
+export const Example1 = () => {
   const containerRef = useRef<HTMLElement>() as MutableRefObject<HTMLElement>;
-
-  const { createScrollRef, next, previous, goToPosition, active } = useScrollController({
-    initialActive: 2,
-    verticalOffset: 100,
-    scrollSpeed: 50,
+  const { createScrollRef, next, previous, goToPosition, active } = useScrollSequence({
+    initialActive: 0,
+    verticalOffset: number('Vertical Offset', 100),
+    scrollSpeed: number('Scroll Speed', 30),
     containerRef
   });
 
@@ -17,7 +21,7 @@ export const ScrollControllerWithContainer = () => {
     <>
       <div
         ref={containerRef as LegacyRef<HTMLDivElement>}
-        style={{ height: '75vh', border: '2px solid black' }}
+        style={{ height: '50vh', border: '2px solid black' }}
       >
         <button style={{ position: 'fixed', left: 100 }} onClick={() => next()}>
           Next
