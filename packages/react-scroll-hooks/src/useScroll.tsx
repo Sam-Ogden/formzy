@@ -1,4 +1,4 @@
-import { useEffect, MutableRefObject, useRef } from 'react';
+import { useEffect, MutableRefObject, useRef, useState, useLayoutEffect } from 'react';
 
 const cancelAllAnimationFrames = (frames: Array<number>) => {
   frames.forEach(frame => window.cancelAnimationFrame(frame));
@@ -21,20 +21,26 @@ export const useScroll = (
 ) => {
   const { scrollSpeed = 40, containerRef = { current: document.documentElement } } = options;
   const animationFrames = useRef<Array<number>>([]);
+  const [y, setY] = useState(-1);
 
   useEffect(() => {
     containerRef.current.style.overflow = 'scroll';
   }, []);
 
-  const scrollToY = (y: number) => {
+  const performScroll = (y: number) => {
     cancelAllAnimationFrames(animationFrames.current);
     animationFrames.current.push(
       window.requestAnimationFrame(function step() {
         const scrollTop = getScrollTop(containerRef);
         const difference = y - scrollTop;
-        if (difference < 0) {
+        if (Math.abs(difference) < 1) {
+          cancelAllAnimationFrames(animationFrames.current);
+          animationFrames.current = [];
+          return;
+        } else if (difference < 0) {
           if (atTopOfContainer(containerRef)) {
             cancelAllAnimationFrames(animationFrames.current);
+            animationFrames.current = [];
             return;
           }
           const delta = Math.abs(difference) < scrollSpeed ? difference : -scrollSpeed;
@@ -43,6 +49,7 @@ export const useScroll = (
         } else if (difference > 0) {
           if (atBottomOfContainer(containerRef)) {
             cancelAllAnimationFrames(animationFrames.current);
+            animationFrames.current = [];
             return;
           }
           const delta = Math.abs(difference) < scrollSpeed ? difference : scrollSpeed;
@@ -52,6 +59,14 @@ export const useScroll = (
       })
     );
   };
+
+  const scrollToY = (y: number) => setY(y < 0 ? 0 : y);
+
+  useLayoutEffect(() => {
+    if (y >= 0) {
+      performScroll(y);
+    }
+  }, [y]);
 
   const scrollToElement = (element: MutableRefObject<HTMLElement>, verticalOffset = 0) => {
     const elementOffsetTop = element.current.offsetTop;
