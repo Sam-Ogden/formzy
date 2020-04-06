@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { render, fireEvent } from 'test-utils';
-import { useScrollController } from '..';
+import { useScrollSequence } from '..';
 
 const TestComponent = ({
   initialActive = 0,
@@ -12,7 +12,7 @@ const TestComponent = ({
   elementHeight?: number;
   verticalOffset?: number;
 }) => {
-  const { createScrollRef, next, previous, active } = useScrollController({
+  const { createScrollRef, next, previous, active } = useScrollSequence({
     initialActive,
     verticalOffset
   });
@@ -74,7 +74,7 @@ test('previous() calls window.scrollTo and decrements active element', () => {
 test.each(['next', 'previous', 'goToPosition', 'active', 'createScrollRef'])(
   `useScrollController returns %s`,
   property => {
-    const { result } = renderHook(() => useScrollController());
+    const { result } = renderHook(() => useScrollSequence());
     expect(result.current).toHaveProperty(property);
   }
 );
