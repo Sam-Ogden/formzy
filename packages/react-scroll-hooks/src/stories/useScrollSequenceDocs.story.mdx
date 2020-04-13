@@ -21,7 +21,7 @@ const Component = () => {
     });
 
     return (
-        <div ref={containerRef}>
+        <div ref={containerRef} style={{ position: 'relative', overflow: 'scroll' }}>
             <button onClick={() => next()}>next</button>
             <button onClick={() => previous()}>previous</button>
             <button onClick={() => goToPosition(2)}>Go To Position 2</button>
@@ -33,6 +33,11 @@ const Component = () => {
     )
 }
 ```
+**Note**: The container in which scrolling occurs requires the following CSS properties to work as expected:
+```css
+position: relative;
+overflow: scroll;
+```  
 ## Props  
 The hook takes an **object** as a parameter with the following properties:  
 

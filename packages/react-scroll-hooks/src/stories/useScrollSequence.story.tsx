@@ -1,18 +1,18 @@
-import React, { forwardRef, MutableRefObject, LegacyRef, useRef } from 'react';
+import React, { forwardRef, MutableRefObject, RefObject, useRef } from 'react';
 import { useScrollSequence } from '..';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
 export default {
-  title: 'react-scroll-hooks/useScrollSequence/Examples',
+  title: 'react-scroll-hooks/useScrollSequence',
   decorators: [withKnobs],
   component: useScrollSequence
 };
 
-export const Example1 = () => {
+export const ContainerExample = () => {
   const containerRef = useRef<HTMLElement>() as MutableRefObject<HTMLElement>;
   const { createScrollRef, next, previous, goToPosition, active } = useScrollSequence({
     initialActive: 0,
-    verticalOffset: number('Vertical Offset', 100),
+    verticalOffset: number('Vertical Offset', 50),
     scrollSpeed: number('Scroll Speed', 30),
     containerRef
   });
@@ -20,8 +20,13 @@ export const Example1 = () => {
   return (
     <>
       <div
-        ref={containerRef as LegacyRef<HTMLDivElement>}
-        style={{ height: '50vh', border: '2px solid black' }}
+        ref={containerRef as RefObject<HTMLDivElement>}
+        style={{
+          height: '50vh',
+          border: '2px solid black',
+          position: 'relative',
+          overflow: 'scroll'
+        }}
       >
         <button style={{ position: 'fixed', left: 100 }} onClick={() => next()}>
           Next
@@ -52,7 +57,7 @@ type WrapperProps = {
 };
 const Wrapper = forwardRef(({ index, active }: WrapperProps, ref) => (
   <div
-    ref={ref as MutableRefObject<HTMLDivElement>}
+    ref={ref as RefObject<HTMLDivElement>}
     style={active === index ? { background: 'wheat' } : {}}
   >
     <p style={{ height: 450 }}>Test {index}</p>

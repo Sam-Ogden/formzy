@@ -5,6 +5,7 @@ module.exports = {
     '@storybook/addon-knobs/register',
     '@storybook/addon-docs'
   ],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   webpackFinal: async config => {
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
