@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
   },
+  "exclude": ["packages/**/src/__tests__/cypress"]
 }

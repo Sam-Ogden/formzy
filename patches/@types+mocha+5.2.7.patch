@@ -1,0 +1,66 @@
+diff --git a/node_modules/@types/mocha/index.d.ts b/node_modules/@types/mocha/index.d.ts
+index ef9bdf7..31c74df 100644
+--- a/node_modules/@types/mocha/index.d.ts
++++ b/node_modules/@types/mocha/index.d.ts
+@@ -2677,7 +2677,7 @@ declare var suiteTeardown: Mocha.HookFunction;
+  *
+  * @see https://mochajs.org/api/global.html#beforeEach
+  */
+-declare var beforeEach: Mocha.HookFunction;
++// declare var beforeEach: Mocha.HookFunction;
+ 
+ /**
+  * Execute before each test case.
+@@ -2695,7 +2695,7 @@ declare var setup: Mocha.HookFunction;
+  *
+  * @see https://mochajs.org/api/global.html#afterEach
+  */
+-declare var afterEach: Mocha.HookFunction;
++// declare var afterEach: Mocha.HookFunction;
+ 
+ /**
+  * Execute after each test case.
+@@ -2711,7 +2711,7 @@ declare var teardown: Mocha.HookFunction;
+  *
+  * - _Only available when invoked via the mocha CLI._
+  */
+-declare var describe: Mocha.SuiteFunction;
++// declare var describe: Mocha.SuiteFunction;
+ 
+ /**
+  * Describe a "suite" containing nested suites and tests.
+@@ -2732,7 +2732,7 @@ declare var suite: Mocha.SuiteFunction;
+  *
+  * - _Only available when invoked via the mocha CLI._
+  */
+-declare var xdescribe: Mocha.PendingSuiteFunction;
++// declare var xdescribe: Mocha.PendingSuiteFunction;
+ 
+ /**
+  * Pending suite.
+@@ -2746,7 +2746,7 @@ declare var xcontext: Mocha.PendingSuiteFunction;
+  *
+  * - _Only available when invoked via the mocha CLI._
+  */
+-declare var it: Mocha.TestFunction;
++// declare var it: Mocha.TestFunction;
+ 
+ /**
+  * Describes a test case.
+@@ -2760,14 +2760,14 @@ declare var specify: Mocha.TestFunction;
+  *
+  * - _Only available when invoked via the mocha CLI._
+  */
+-declare var test: Mocha.TestFunction;
++// declare var test: Mocha.TestFunction;
+ 
+ /**
+  * Describes a pending test case.
+  *
+  * - _Only available when invoked via the mocha CLI._
+  */
+-declare var xit: Mocha.PendingTestFunction;
++// declare var xit: Mocha.PendingTestFunction;
+ 
+ /**
+  * Describes a pending test case.

@@ -1,0 +1,6 @@
+{
+    "baseUrl": "http://localhost:5000",
+    "testFiles": "**/src/__tests__/cypress/*",
+    "integrationFolder": "packages/",
+    "video": false
+}

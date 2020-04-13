@@ -5,14 +5,16 @@
     "plugin:jest/recommended",
     "eslint:recommended",
     "plugin:prettier/recommended",
+    "plugin:cypress/recommended",
     "prettier/@typescript-eslint"
   ],
   "env": {
     "es6": true,
     "browser": true,
-    "node": true
+    "node": true,
+    "cypress/globals": true
   },
-  "plugins": ["react-hooks", "prettier", "react", "import", "node", "@typescript-eslint"],
+  "plugins": ["cypress", "react-hooks", "prettier", "react", "import", "node", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
@@ -36,5 +38,13 @@
   "rules": {
     "no-multiple-empty-lines": 2,
     "@typescript-eslint/explicit-function-return-type": 0
-  }
+  },
+  "overrides": [
+    {
+     "files": ["packages/**/src/__tests__/cypress/*"],
+        "rules": {
+           "jest/expect-expect": "off"   
+        }
+    }
+  ]
 }
