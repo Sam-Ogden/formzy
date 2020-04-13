@@ -1,4 +1,5 @@
 import { useEffect, MutableRefObject, useRef, useState, useLayoutEffect } from 'react';
+import warning from 'warning';
 
 const cancelAllAnimationFrames = (frames: Array<number>) => {
   frames.forEach(frame => window.cancelAnimationFrame(frame));
@@ -8,8 +9,6 @@ const getScrollTop = (ref: MutableRefObject<HTMLElement>) => ref.current.scrollT
 const getScrollHeight = (ref: MutableRefObject<HTMLElement>) => ref.current.scrollHeight;
 const getClientHeight = (ref: MutableRefObject<HTMLElement>) => ref.current.clientHeight;
 
-const atTopOfContainer = (containerRef: MutableRefObject<HTMLElement>) =>
-  getScrollTop(containerRef) === 0;
 const atBottomOfContainer = (containerRef: MutableRefObject<HTMLElement>) =>
   getScrollTop(containerRef) + getClientHeight(containerRef) === getScrollHeight(containerRef);
 
@@ -20,7 +19,6 @@ export const useScroll = (
   } = {}
 ) => {
   const { scrollSpeed = 40, containerRef = { current: document.documentElement } } = options;
-
   const animationFrames = useRef<Array<number>>([]);
   const lastScrollPosition = useRef<number>(0);
   const isScrollingUp = useRef(false);
@@ -36,14 +34,10 @@ export const useScroll = (
   };
 
   const userDidScrollInOppositeDirection = () => {
-    if (isScrollingUp.current) {
-      if (getScrollTop(containerRef) > lastScrollPosition.current) {
-        return true;
-      }
-    } else if (isScrollingDown.current) {
-      if (getScrollTop(containerRef) < lastScrollPosition.current) {
-        return true;
-      }
+    if (isScrollingUp.current && getScrollTop(containerRef) > lastScrollPosition.current) {
+      return true;
+    } else if (isScrollingDown.current && getScrollTop(containerRef) < lastScrollPosition.current) {
+      return true;
     }
     return false;
   };
@@ -59,10 +53,6 @@ export const useScroll = (
           cancelScrolling();
           return;
         } else if (difference < 0) {
-          if (atTopOfContainer(containerRef)) {
-            cancelScrolling();
-            return;
-          }
           isScrollingUp.current = true;
           const delta = Math.abs(difference) < scrollSpeed ? difference : -scrollSpeed;
           containerRef.current.scrollTop = getScrollTop(containerRef) + delta;
@@ -82,10 +72,24 @@ export const useScroll = (
   };
 
   useEffect(() => {
-    containerRef.current.style.overflow = 'scroll';
+    const isScrollingDocument = containerRef.current === document.documentElement;
+    if (process.env.NODE_ENV !== 'production') {
+      warning(
+        containerRef.current.style.position || isScrollingDocument,
+        'Scrolling may behave unexpectedly if the containerRef does not have a css position set on it.'
+      );
+      warning(
+        containerRef.current.style.overflow === 'scroll' || isScrollingDocument,
+        'Expected containerRef to have css property overflow set to `scroll`. Without this property scrolling may not work.'
+      );
+    }
+  }, []);
+
+  useEffect(() => {
     containerRef.current.addEventListener('scroll', () => {
       if (userDidScrollInOppositeDirection()) cancelScrolling();
       lastScrollPosition.current = getScrollTop(containerRef);
+      setY(-1);
     });
   }, []);
 

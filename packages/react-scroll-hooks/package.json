@@ -10,12 +10,16 @@
   "devDependencies": {
     "@storybook/addon-knobs": "^5.3.18",
     "@types/jest": "^25.1.4",
-    "@types/react": "^16.9.23",
+    "@types/jsdom": "^16.2.1",
+    "@types/react": "^16.9.25",
+    "@types/warning": "^3.0.0",
+    "jsdom": "^16.2.2",
     "prop-types": "^15.7.2",
     "typescript": "^3.8.3"
   },
   "dependencies": {
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "warning": "^4.0.3"
   }
 }
