@@ -1,15 +1,11 @@
 
 name: ValidateQuality
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ dev, master ]
+on: pull_request
 
 jobs:
   lint-and-test:
-    name: Test
+    name: lint-and-test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
