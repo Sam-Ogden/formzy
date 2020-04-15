@@ -1,97 +1,50 @@
 {
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:cypress/recommended",
+    "prettier/@typescript-eslint"
+  ],
   "env": {
-    "browser": true,
     "es6": true,
-    "mocha": true,
-    "node": true
+    "browser": true,
+    "node": true,
+    "cypress/globals": true
   },
-  "extends": "airbnb",
-  "parser": "babel-eslint",
+  "plugins": ["cypress", "react-hooks", "prettier", "react", "import", "node", "@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2018,
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "ignorePatterns": ["coverage", "node_modules"],
   "rules": {
-    "array-bracket-spacing": [
-      "error",
-      "always"
-    ],
-    "arrow-parens": [
-      "error",
-      "as-needed",
-      {
-        "requireForBlockBody": false
-      }
-    ],
-    "computed-property-spacing": [
-      "error",
-      "always"
-    ],
-    "func-names": [
-      "error",
-      "never"
-    ],
-    "import/extensions": 0,
-    "import/no-unresolved": 0,
-    "import/prefer-default-export": 0,
-    "linebreak-style": 0,
-    "no-await-in-loop": 0,
-    "no-use-before-define": 0,
-    "no-loop-func": 0,
-    "no-multiple-empty-lines": [
-      "error",
-      {
-        "max": 1
-      }
-    ],
-    "no-restricted-syntax": 0,
-    "no-shadow": 0,
-    "no-unused-vars": [
-      "error",
-      {
-        "ignoreRestSiblings": true
-      }
-    ],
-    "object-curly-newline": [
-      "error",
-      {
-        "consistent": true
-      }
-    ],
-    "object-property-newline": [
-      "error",
-      {
-        "allowAllPropertiesOnSameLine": true
-      }
-    ],
-    "react/jsx-filename-extension": 0,
-    "react/sort-comp": 0,
-    "react/no-array-index-key": 0,
-    "semi": [
-      "error",
-      "never"
-    ],
-    "semi-style": [
-      "error",
-      "first"
-    ],
-    "space-in-parens": [
-      "error",
-      "always",
-      {
-        "exceptions": [
-          "empty"
-        ]
-      }
-    ],
-    "valid-jsdoc": [
-      "warn",
-      {
-        "preferType": {
-          "array": "Array",
-          "boolean": "Boolean",
-          "number": "Number",
-          "object": "Object",
-          "string": "String"
-        },
-        "requireReturn": false
-      }
-    ]
-  }
+    "no-multiple-empty-lines": 2,
+    "@typescript-eslint/explicit-function-return-type": 0
+  },
+  "overrides": [
+    {
+     "files": ["packages/**/src/__tests__/cypress/*"],
+        "rules": {
+           "jest/expect-expect": "off"   
+        }
+    }
+  ]
 }

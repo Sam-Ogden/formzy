@@ -1,0 +1,41 @@
+{
+  "name": "react-scroll-hooks",
+  "private": false,
+  "version": "0.1.0",
+  "main": "build/cjs/index.js",
+  "module": "build/es/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sam-Ogden/formzy",
+    "directory": "packages/react-scroll-hooks"
+  },
+  "keywords": [
+    "react",
+    "react-hooks",
+    "scroll"
+  ],
+  "scripts": {
+    "build": "yarn build:es && yarn build:cjs",
+    "build:es": "tsc --module es2015 --target es5 --outdir build/es",
+    "build:cjs": "tsc --module commonjs --target es5 --outdir build/cjs"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-knobs": "^5.3.18",
+    "@types/jest": "^25.1.4",
+    "@types/jsdom": "^16.2.1",
+    "@types/react": "^16.9.25",
+    "@types/warning": "^3.0.0",
+    "jsdom": "^16.2.2",
+    "prop-types": "^15.7.2",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "warning": "^4.0.3"
+  }
+}

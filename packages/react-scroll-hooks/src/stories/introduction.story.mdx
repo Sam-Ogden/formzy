@@ -1,0 +1,22 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { ContainerExample } from './useScroll.story'
+
+<Meta title="react-scroll-hooks/Introduction" />
+
+# Scrolling
+**Cross-browser scroll hooks** to manage scrolling between react elements.
+
+## Features
+- **Cross Browser**
+- **Scroll Inside Container**
+- **Scroll Entire Document**
+- **Simple Hook Based API**
+- **Efficient**
+
+## Hooks
+- **useScroll**: A hook to manage the scrolling between elements.
+- **useScrollSequence**: Includes ref management on top of `useScroll`. Use the `createScrollRef` function returned by the hook to quickly attach refs to a sequence of elements, then use `next`, `previous` and `goToPosition` methods to scroll between them.
+
+<Preview>
+    <ContainerExample />
+</Preview>

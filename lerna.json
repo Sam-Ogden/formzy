@@ -1,0 +1,16 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "version": "independent",
+  "command": {
+    "publish": {
+      "allowBranch": ["restart", "master"],
+      "conventionalCommits": true,
+      "message": "chore: publish"
+    }
+  },
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "ignoreChanges": ["**/__tests__/**", "**/*.md", "**/stories/**"]
+}
