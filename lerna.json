@@ -11,5 +11,6 @@
     }
   },
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "ignoreChanges": ["**/__tests__/**", "**/*.md", "**/stories/**"]
 }
