@@ -11,21 +11,24 @@
   "license": "MIT",
   "repository": "https://github.com/sam-ogden/formzy",
   "scripts": {
+    "start": "cd storybook && yarn start",
     "build": "lerna run build",
     "lint": "eslint \"packages/*/src/**/*.{ts,tsx,js,jsx}\" --fix",
     "lint:no-fix": "eslint \"./packages/*/src/**/*.{ts,tsx,js,jsx}\"",
     "test": "jest --coverage",
-    "cypress:open": "cypress open",
     "test:cypress": "cypress run --headless",
+    "cypress:open": "cypress open",
+    "postinstall": "patch-package",
     "pre-push": "yarn lint:no-fix && yarn test",
-    "start": "cd storybook && yarn start",
-    "postinstall": "patch-package"
+    "pre-commit": "yarn lint:no-fix"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "@babel/preset-react": "^7.8.3",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^10.0.1",
     "@testing-library/react-hooks": "^3.2.1",
