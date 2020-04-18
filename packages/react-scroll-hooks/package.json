@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "main": "build/cjs/index.js",
   "module": "build/es/index.js",
-  "types": "dist/index.d.ts",
+  "types": "build/types/index.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,8 +18,8 @@
   ],
   "scripts": {
     "build": "yarn build:es && yarn build:cjs",
-    "build:es": "tsc --module es2015 --target es5 --outdir build/es",
-    "build:cjs": "tsc --module commonjs --target es5 --outdir build/cjs"
+    "build:es": "tsc --module es2015 --target es5 --outdir build/es --declarationDir build/types",
+    "build:cjs": "tsc --module commonjs --target es5 --outdir build/cjs --declarationDir build/types"
   },
   "peerDependencies": {
     "react": "^16.8.0",
