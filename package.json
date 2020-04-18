@@ -21,7 +21,7 @@
     "postinstall": "patch-package",
     "pre-push": "yarn lint:no-fix && yarn test",
     "pre-commit": "yarn lint:no-fix",
-    "danger": "danger pr https://github.com/Sam-Ogden/formzy/pull/23 --dangerfile ./scripts/danger.ts"
+    "danger": "danger ci --dangerfile ./scripts/danger.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -63,6 +63,7 @@
     "source-map-loader": "^0.2.4",
     "ts-jest": "^25.2.1",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "write": "^2.0.0"
   }
 }
