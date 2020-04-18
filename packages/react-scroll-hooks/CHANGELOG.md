@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/Sam-Ogden/formzy/compare/react-scroll-hooks@0.1.0...react-scroll-hooks@0.1.1) (2020-04-18)
+
+
+### Bug Fixes
+
+* **react-scroll-hooks:** typescript types ([32eb2f1](https://github.com/Sam-Ogden/formzy/commit/32eb2f19af2617e4bdceff0a4f806ea4abd10e0d))
+
+
+
+
+
 # 0.1.0 (2020-04-15)
 
 
