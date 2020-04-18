@@ -89,7 +89,7 @@ export const useScroll = (
     containerRef.current.addEventListener('scroll', () => {
       if (userDidScrollInOppositeDirection()) cancelScrolling();
       lastScrollPosition.current = getScrollTop(containerRef);
-      setY(-1);
+      setY(-2);
     });
   }, []);
 
