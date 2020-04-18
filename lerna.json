@@ -5,7 +5,7 @@
   "version": "independent",
   "command": {
     "publish": {
-      "allowBranch": ["restart", "master"],
+      "allowBranch": ["add-dangerjs", "master"],
       "conventionalCommits": true,
       "message": "chore: publish"
     }
