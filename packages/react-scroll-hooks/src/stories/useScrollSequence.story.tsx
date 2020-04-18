@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject, RefObject, useRef } from 'react';
+import React, { forwardRef, RefObject, useRef } from 'react';
 import { useScrollSequence } from '..';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
@@ -9,7 +9,7 @@ export default {
 };
 
 export const ContainerExample = () => {
-  const containerRef = useRef<HTMLElement>() as MutableRefObject<HTMLElement>;
+  const containerRef = useRef<HTMLElement>(null);
   const { createScrollRef, next, previous, goToPosition, active } = useScrollSequence({
     initialActive: 0,
     verticalOffset: number('Vertical Offset', 50),
