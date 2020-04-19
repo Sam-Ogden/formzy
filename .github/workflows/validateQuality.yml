@@ -17,6 +17,8 @@ jobs:
       uses: CultureHQ/actions-yarn@master
       with:
         args: danger
+      env:
+        GITHUB_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
     - name: Lint
       uses: CultureHQ/actions-yarn@master
       with:
