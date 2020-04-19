@@ -5,8 +5,6 @@ export const generateVersionImpact = async function() {
   const branch = `versionchange-${Math.floor(1000 * Math.random())}`;
   let impact = 'Unable to generate version impact.';
   try {
-    await execa('git', ['checkout', '-b', branch]);
-    await execa('git', ['rebase', 'origin/master']);
     const { stdout } = await execa('lerna', ['version', '--no-push', '--allow-branch', branch], {
       input: 'n'
     });
