@@ -13,6 +13,8 @@ jobs:
       uses: CultureHQ/actions-yarn@master
       with:
         args: install
+    - name: Install Git
+      run: npm i -g git
     - name: Danger JS Action
       uses: CultureHQ/actions-yarn@master
       with:
