@@ -8,15 +8,15 @@ jobs:
     name: lint-and-test
     runs-on: ubuntu-latest
     steps:
-    - name: Danger JS Action
-      uses: danger/danger-js@9.1.8
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@master
     - name: Install
       uses: CultureHQ/actions-yarn@master
       with:
         args: install
+    - name: Danger JS Action
+      uses: danger/danger-js@9.1.8
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Lint
       uses: CultureHQ/actions-yarn@master
       with:
