@@ -63,7 +63,6 @@
     "source-map-loader": "^0.2.4",
     "ts-jest": "^25.2.1",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.8.3",
-    "write": "^2.0.0"
+    "typescript": "^3.8.3"
   }
 }
