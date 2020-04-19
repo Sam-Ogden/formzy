@@ -13,6 +13,10 @@ jobs:
       uses: CultureHQ/actions-yarn@master
       with:
         args: install
+    - name: Danger JS Action
+      uses: CultureHQ/actions-yarn@master
+      with:
+        args: danger
     - name: Lint
       uses: CultureHQ/actions-yarn@master
       with:
@@ -21,4 +25,3 @@ jobs:
       uses: CultureHQ/actions-yarn@master
       with:
         args: test
-      
