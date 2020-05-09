@@ -15,7 +15,8 @@ const atBottomOfContainer = (containerRef: MutableRefObject<HTMLElement>) =>
 export const useScroll = (
   options: {
     scrollSpeed?: number;
-    containerRef?: MutableRefObject<HTMLElement>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    containerRef?: MutableRefObject<any>;
   } = {}
 ) => {
   const { scrollSpeed = 40, containerRef = { current: document.documentElement } } = options;
@@ -100,8 +101,8 @@ export const useScroll = (
   }, [y]);
 
   const scrollToY = (y: number) => setY(y < 0 ? 0 : y);
-  const scrollToElement = (element: MutableRefObject<HTMLElement>, verticalOffset = 0) => {
-    const elementOffsetTop = element.current.offsetTop;
+  const scrollToElement = (element: React.RefObject<HTMLElement>, verticalOffset = 0) => {
+    const elementOffsetTop = element?.current?.offsetTop || 0;
     scrollToY(elementOffsetTop - verticalOffset);
   };
 

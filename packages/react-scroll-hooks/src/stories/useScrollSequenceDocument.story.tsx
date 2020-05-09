@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject } from 'react';
+import React, { forwardRef, RefObject } from 'react';
 import { useScrollSequence } from '..';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
@@ -38,7 +38,7 @@ type WrapperProps = {
 };
 const Wrapper = forwardRef(({ index, active }: WrapperProps, ref) => (
   <div
-    ref={ref as MutableRefObject<HTMLDivElement>}
+    ref={ref as RefObject<HTMLDivElement>}
     style={active === index ? { background: 'wheat' } : {}}
   >
     <p style={{ height: 450 }}>Test {index}</p>

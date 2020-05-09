@@ -1,4 +1,4 @@
-import React, { useRef, RefObject, MutableRefObject, forwardRef } from 'react';
+import React, { useRef, forwardRef, RefObject } from 'react';
 import { number, withKnobs } from '@storybook/addon-knobs';
 import { useScroll } from '..';
 
@@ -9,21 +9,21 @@ export default {
 };
 
 export const ContainerExample = () => {
-  const containerRef = useRef<HTMLElement>() as MutableRefObject<HTMLElement>;
+  const containerRef = useRef<HTMLDivElement>(null);
   const scrollSpeed = number('Scroll Speed', 50);
   const verticalOffset = number('Vertical Offset', 0);
   const { scrollToElement, scrollToY } = useScroll({ scrollSpeed, containerRef });
-  const refs = [useRef<HTMLDivElement>(), useRef<HTMLDivElement>()];
+  const refs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)];
   return (
     <>
       <button
-        onClick={() => scrollToElement(refs[0] as MutableRefObject<HTMLDivElement>, verticalOffset)}
+        onClick={() => scrollToElement(refs[0], verticalOffset)}
         className="scroll-to-second-element"
       >
         Scroll to second element
       </button>
       <button
-        onClick={() => scrollToElement(refs[1] as MutableRefObject<HTMLDivElement>, verticalOffset)}
+        onClick={() => scrollToElement(refs[1], verticalOffset)}
         className="scroll-to-last-element"
       >
         scroll to fifth element
@@ -32,7 +32,7 @@ export const ContainerExample = () => {
         Go To Top
       </button>
       <div
-        ref={containerRef as RefObject<HTMLDivElement>}
+        ref={containerRef}
         style={{
           height: '600px',
           border: '2px solid black',
@@ -53,7 +53,7 @@ export const ContainerExample = () => {
 };
 
 const Wrapper = forwardRef((props, ref) => (
-  <div ref={ref as MutableRefObject<HTMLDivElement>} style={{ height: 500 }}>
+  <div ref={ref as RefObject<HTMLDivElement>} style={{ height: 500 }}>
     <p style={{ margin: 0 }}>Some Element</p>
   </div>
 ));
