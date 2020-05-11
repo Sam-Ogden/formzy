@@ -20,7 +20,8 @@
     "cypress:open": "cypress open",
     "postinstall": "patch-package",
     "pre-push": "yarn lint:no-fix && yarn test",
-    "pre-commit": "yarn lint:no-fix"
+    "pre-commit": "yarn lint:no-fix",
+    "danger": "danger ci --dangerfile ./scripts/danger.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -40,6 +41,7 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
     "cypress": "^4.3.0",
+    "danger": "^10.1.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-cypress": "^2.10.3",
@@ -50,6 +52,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
     "eslint-plugin-standard": "^4.0.1",
+    "execa": "^4.0.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "lerna": "^3.20.2",

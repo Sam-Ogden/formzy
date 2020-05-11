@@ -6,8 +6,8 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const customRender = (ui: React.ReactElement, options?: any) =>
-  render(ui, { wrapper: Wrapper, ...options });
+const customRender = (ui: React.ReactElement, options1?: any) =>
+  render(ui, { wrapper: Wrapper, ...options1 });
 
 // re-export everything
 export * from '@testing-library/react';

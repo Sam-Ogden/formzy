@@ -13,6 +13,14 @@ jobs:
       uses: CultureHQ/actions-yarn@master
       with:
         args: install
+    - name: Install Git
+      run: git status
+    - name: Danger JS Action
+      uses: CultureHQ/actions-yarn@master
+      with:
+        args: danger
+      env:
+        GITHUB_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
     - name: Lint
       uses: CultureHQ/actions-yarn@master
       with:
@@ -21,4 +29,3 @@ jobs:
       uses: CultureHQ/actions-yarn@master
       with:
         args: test
-      
